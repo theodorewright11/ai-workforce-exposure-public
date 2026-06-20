@@ -1,0 +1,8 @@
+# Paper-figure regeneration dependencies.
+# (The Phase-2 dashboard will add its own backend/frontend deps.)
+pandas
+numpy
+plotly
+kaleido          # static PNG export for plotly (pio.write_image)
+scipy            # hierarchical clustering (state clusters figure)
+scikit-learn     # k-means robustness check (state clusters figure)

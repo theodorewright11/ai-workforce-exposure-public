@@ -1,0 +1,22 @@
+# ---- Data: NEVER committed ----
+# All raw + reference CSVs live locally for figure regeneration only.
+# Hosting/fetch is decided before first push (see README).
+data/
+
+# ---- Generated figure outputs + run logs (regenerable) ----
+paper_figures/results/
+paper_figures/lib/**/results/
+paper_figures/*.log
+
+# ---- Python ----
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+
+# ---- OS / editor ----
+.DS_Store
+.vscode/
+.idea/
