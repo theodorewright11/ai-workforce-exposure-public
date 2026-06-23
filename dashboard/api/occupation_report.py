@@ -695,11 +695,18 @@ def _intensity_rank_table() -> dict[str, dict]:
     dedup_occ["adj"] = dedup_occ["pct_normalized"] / dedup_occ["avg_bias"]
     occ_num = dedup_occ.groupby("title_current")["adj"].sum().rename("num")
     occ_den = dedup_occ.groupby("title_current")["eco_weight"].sum().rename("den")
-    occ_df = pd.concat([occ_num, occ_den], axis=1).fillna(0.0)
+    occ_df = pd.concat([occ_num, occ_den], axis=1)
+    # Reindex to ALL occupations so the rank is out of the full economy (923);
+    # occupations with no measured usage get ratio 0 and rank last.
+    all_titles = list(_occ_index().keys())
+    occ_df = occ_df.reindex(all_titles).fillna(0.0)
     occ_df["ratio"] = np.where(occ_df["den"] > 0, occ_df["num"] / occ_df["den"], 0.0)
-    total_occ = occ_df["ratio"].sum() or 1.0
-    occ_df["ratio_pct"] = occ_df["ratio"] / total_occ * 100.0
-    occ_df = occ_df.sort_values("ratio_pct", ascending=False).reset_index()
+    # ×median: ratio relative to the median across occupations that have any usage
+    median_ratio = float(occ_df.loc[occ_df["ratio"] > 0, "ratio"].median() or 0.0) or 1.0
+    occ_df["x_median"] = occ_df["ratio"] / median_ratio
+    total_occ_sum = occ_df["ratio"].sum() or 1.0
+    occ_df["ratio_pct"] = occ_df["ratio"] / total_occ_sum * 100.0
+    occ_df = occ_df.sort_values("ratio", ascending=False).reset_index()
     occ_df["rank"] = occ_df.index + 1
     occ_total = len(occ_df)
 
@@ -730,6 +737,7 @@ def _intensity_rank_table() -> dict[str, dict]:
         maj_pct, maj_rank = maj_lookup.get(major, (None, None))
         out[title] = {
             "occ_intensity_pct":   _round_or_none(row["ratio_pct"], 3),
+            "occ_intensity_x_median": _round_or_none(row["x_median"], 1),
             "occ_intensity_rank":  int(row["rank"]),
             "occ_intensity_total": occ_total,
             "major_intensity_pct":   _round_or_none(maj_pct, 3),
@@ -921,6 +929,35 @@ def _primary_pairs_lookup() -> dict:
                     "freq":     _safe_num(r.get("freq_mean")),
                 }
     _primary_pairs_cache = out
+    return out
+
+
+_primary_tasklevel_cache: Optional[dict] = None
+
+
+def _primary_task_level_lookup() -> dict:
+    """{task_normalized: {auto, pct, freq}} — All-Confirmed values aggregated to
+    the task level (mean across occupations). Used by the WA task-list drill where
+    tasks are pooled across occupations."""
+    global _primary_tasklevel_cache
+    if _primary_tasklevel_cache is not None:
+        return _primary_tasklevel_cache
+    out: dict = {}
+    fpath = DATASETS.get(PRIMARY_DATASET, {}).get("file", "")
+    if Path(fpath).exists():
+        df = pd.read_csv(fpath, low_memory=False)
+        for c in ("auto_aug_mean", "pct_normalized", "freq_mean"):
+            if c in df.columns:
+                df[c] = pd.to_numeric(df[c], errors="coerce")
+        if "task_normalized" in df.columns:
+            g = df.groupby("task_normalized").agg(
+                auto=("auto_aug_mean", "mean"),
+                pct=("pct_normalized", "mean"),
+                freq=("freq_mean", "mean"),
+            )
+            for tn, r in g.iterrows():
+                out[tn] = {"auto": _safe_num(r["auto"]), "pct": _safe_num(r["pct"]), "freq": _safe_num(r["freq"])}
+    _primary_tasklevel_cache = out
     return out
 
 
@@ -1438,8 +1475,79 @@ def _build_major_ranking(title: str, window: int = 5) -> dict:
     return {
         "major": major,
         "pct":      _window(lambda t: float(pct_map.get(t, 0.0) or 0.0)),
-        "adoption": _window(lambda t: float((intens.get(t, {}) or {}).get("occ_intensity_pct", 0.0) or 0.0)),
+        "adoption": _window(lambda t: float((intens.get(t, {}) or {}).get("occ_intensity_x_median", 0.0) or 0.0)),
     }
+
+
+def get_wa_task_list(level: str, name: str) -> list[dict]:
+    """Tasks under one work activity (gwa/iwa/dwa), pooled across occupations.
+    Same card shape as the My-Occupation tasks: All-Confirmed automation level,
+    usage-vs-median, GWA/IWA/DWA detail, top MCP tools. Centrality is the mean
+    freq×imp×rel across the occupations sharing the task, ranked within the list.
+    Sorted by automation level desc."""
+    eco = load_eco_raw()
+    col = {"gwa": "gwa_title", "iwa": "iwa_title", "dwa": "dwa_title"}.get(level)
+    if eco is None or col is None or col not in eco.columns:
+        return []
+    sub = eco[eco[col] == name].copy()
+    if sub.empty:
+        return []
+
+    tl = _primary_task_level_lookup()
+    wa_stats = _eco_wa_stats("nat")
+    top_mcps_lookup = _build_top_mcps_lookup()
+    desc_lookup = _mcp_titles_desc_lookup()
+
+    for c in ("freq_mean", "importance", "relevance"):
+        sub[c] = pd.to_numeric(sub.get(c), errors="coerce").fillna(0.0)
+    sub["_cent"] = sub["freq_mean"] * sub["importance"] * sub["relevance"]
+    cent_by_tn = sub.groupby("task_normalized")["_cent"].mean()
+    reps = sub.drop_duplicates("task_normalized").set_index("task_normalized")
+
+    usage_vals: list[float] = []
+    for tn in cent_by_tn.index:
+        t = tl.get(tn)
+        if t and t.get("pct") and t.get("freq") and t["freq"] > 0:
+            usage_vals.append(t["pct"] / t["freq"])
+    umed = float(np.median(usage_vals)) if usage_vals else 0.0
+
+    def _wad(lvl: str, nm) -> Optional[dict]:
+        if nm is None or (isinstance(nm, float) and pd.isna(nm)) or not str(nm):
+            return None
+        rec = wa_stats.get(lvl, {}).get(str(nm)) or {}
+        return {"name": str(nm), "auto": rec.get("auto_aug_mean"), "rank_pct": rec.get("rank_pct"), "total": rec.get("total")}
+
+    rows: list[dict] = []
+    for tn in cent_by_tn.index:
+        t = tl.get(tn, {})
+        auto = t.get("auto")
+        pct, freq = t.get("pct"), t.get("freq")
+        umult = (pct / freq) / umed if (pct and freq and freq > 0 and umed > 0) else None
+        rep = reps.loc[tn]
+        mcps: list[dict] = []
+        for m in top_mcps_lookup.get(tn, [])[:N_TASK_MCPS]:
+            ttl = (m.get("title") or "").strip()
+            mcps.append({"title": ttl, "rating": m.get("rating"), "url": m.get("url"),
+                         "description": desc_lookup.get(ttl) or desc_lookup.get(ttl.lower())})
+        rows.append({
+            "task": rep.get("task"),
+            "task_normalized": tn,
+            "centrality": _round_or_none(float(cent_by_tn.loc[tn]), 1),
+            "auto": _round_or_none(auto, 1),
+            "auto_label": _auto_label(auto),
+            "color_bucket": _color_bucket_auto(auto),
+            "usage_mult": _round_or_none(umult, 1),
+            "gwa": _wad("gwa", rep.get("gwa_title")),
+            "iwa": _wad("iwa", rep.get("iwa_title")),
+            "dwa": _wad("dwa", rep.get("dwa_title")),
+            "top_mcps": mcps,
+        })
+    # centrality rank within this WA's task list
+    by_cent = sorted(rows, key=lambda r: (r["centrality"] is None, -(r["centrality"] or 0.0)))
+    for i, r in enumerate(by_cent, start=1):
+        r["centrality_rank"] = i
+    rows.sort(key=lambda r: (r["auto"] is None, -(r["auto"] or 0.0)))
+    return rows
 
 
 def get_occupation_report(title: str, geo: str = "nat") -> Optional[dict]:

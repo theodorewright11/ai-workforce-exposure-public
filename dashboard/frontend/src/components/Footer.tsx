@@ -40,7 +40,7 @@ export default function Footer() {
           rel="noopener noreferrer"
           style={LINK_STYLE}
         >
-          {GITHUB_ICON} Dashboard &amp; Figures GitHub
+          {GITHUB_ICON} Dashboard &amp; Paper Figures GitHub
         </a>
         <a
           href="https://github.com/theodorewright11/mcp-onet-task-classification-public"
