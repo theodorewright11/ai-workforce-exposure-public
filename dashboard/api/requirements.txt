@@ -4,3 +4,7 @@ uvicorn[standard]
 pydantic
 pandas
 numpy
+# plotly is imported at module load by paper_figures/lib (paper_config, utils,
+# intensity) which the dashboard reuses for config + bias-ratio helpers. Only the
+# import is needed; kaleido (image export) is not, so it's intentionally omitted.
+plotly
