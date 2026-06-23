@@ -1,9 +1,7 @@
-# ---- Data: NEVER committed ----
-# All raw + reference CSVs live locally for figure regeneration only.
-# Hosting/fetch is decided before first push (see README).
-# Anchored to repo root (leading slash) so it does NOT swallow source dirs
-# named "data" elsewhere — e.g. dashboard/frontend/src/app/data/.
-/data/
+# ---- Data ----
+# Data IS committed (under /data/) so the dashboard backend image and the figure
+# scripts have everything they need at build time. Only the regenerable bits below
+# are ignored.
 
 # ---- Generated figure outputs + run logs (regenerable) ----
 paper_figures/results/
