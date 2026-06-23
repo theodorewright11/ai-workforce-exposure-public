@@ -54,7 +54,9 @@ TREND_SERIES: list[str] = [
 ]
 
 # Color thresholds (auto_aug 0–5 scale)
-AUTO_HIGH: float = 4.0
+# Color-bucket cutoffs on the 0–5 auto-aug scale. high = rounds to 5 (≥4.5),
+# mid = rounds to 3–4 (2.5–4.5), low = rounds to 1–2 (<2.5).
+AUTO_HIGH: float = 4.5
 AUTO_MID: float = 2.5
 # SKA color thresholds (AI as % of occ need; > 100 means AI exceeds need)
 SKA_PCT_HIGH: float = 100.0
@@ -548,12 +550,23 @@ def _risk_table() -> pd.DataFrame:
     ska_pct_last  = ska_last.occ_gaps.set_index("title_current").get(
         "overall_pct", pd.Series(dtype=float))
 
+    # BLS 2025–34 projected employment change per occ (for the focused-set gate)
+    eco_proj = load_eco_raw()
+    emp_proj_map: dict[str, float] = {}
+    if eco_proj is not None and "emp_change_pct__PROJ_2025_2034__" in eco_proj.columns:
+        _sub = eco_proj.drop_duplicates("title_current")
+        emp_proj_map = dict(zip(
+            _sub["title_current"],
+            pd.to_numeric(_sub["emp_change_pct__PROJ_2025_2034__"], errors="coerce"),
+        ))
+
     occ_idx = _occ_index()
     rows: list[dict] = []
     for title, occ in occ_idx.items():
         rows.append({
             "title_current": title,
             "pct":       float(pct.get(title, 0.0) or 0.0),
+            "emp_proj":  _safe_num(emp_proj_map.get(title)),
             "pct_delta": float(pct_last.get(title, 0.0) or 0.0)
                        - float(pct_first.get(title, 0.0) or 0.0),
             "ska_pct":   _safe_num(ska_pct_now.get(title)),
@@ -607,6 +620,15 @@ def _risk_table() -> pd.DataFrame:
     df["flag8_auto_aug"]   = (df["auto_avg"] > medians["auto_avg"]).astype(int)
 
     df["risk_score"] = sum(df[c] * w for c, w in FLAG_WEIGHTS.items())
+
+    # ── Focused-set exposure gates (the 4 paper conditions) ──────────────────
+    # (1) % tasks exposed > 50%, (2) SKA reach above median, (3) exposure growth
+    # above median, (4) BLS 2025–34 employment projection negative.
+    df["gate_pct"]    = (df["pct"] > PCT_ABS_THRESHOLD).astype(int)
+    df["gate_ska"]    = df["flag2_ska"]
+    df["gate_growth"] = df["flag3_pct_trend"]
+    df["gate_emp"]    = (df["emp_proj"] < 0).astype(int)
+    df["gates_count"] = df[["gate_pct", "gate_ska", "gate_growth", "gate_emp"]].sum(axis=1)
 
     def _tier(score: int, pct_val: float) -> str:
         if score >= 8:
@@ -834,6 +856,20 @@ def _build_headline(title: str, geo: str) -> dict:
     else:
         risk_payload = {"score": 0, "tier": "low", "flags": {k: 0 for k in FLAG_WEIGHTS}}
 
+    # Focused-set exposure gates (the 4-signal tier shown on the page)
+    if not risk_row.empty:
+        rr = risk_row.iloc[0]
+        gates_payload = {
+            "pct":         int(rr["gate_pct"]),
+            "ska":         int(rr["gate_ska"]),
+            "growth":      int(rr["gate_growth"]),
+            "emp_decline": int(rr["gate_emp"]),
+            "count":       int(rr["gates_count"]),
+            "emp_proj":    _round_or_none(_safe_num(rr.get("emp_proj")), 1),
+        }
+    else:
+        gates_payload = {"pct": 0, "ska": 0, "growth": 0, "emp_decline": 0, "count": 0, "emp_proj": None}
+
     # Intensity
     intensity = _intensity_rank_table().get(title, {})
 
@@ -852,13 +888,63 @@ def _build_headline(title: str, geo: str) -> dict:
         "workers_affected":   _round_or_none(workers.get(title), 0),
         "wages_affected":     _round_or_none(wages.get(title), 0),
         "risk":               risk_payload,
+        "gates":              gates_payload,
         "intensity":          intensity,
     }
 
 
+# ── All-confirmed per-(task, occ) lookup + interpretive auto label ────────────
+
+_primary_pairs_cache: Optional[dict] = None
+
+
+def _primary_pairs_lookup() -> dict:
+    """{(title_current, task_normalized): {auto_aug, pct_norm, freq}} from the
+    PRIMARY (All Confirmed) dataset — the single source for a task's headline
+    auto value, color bucket, and usage multiplier on the occupation page."""
+    global _primary_pairs_cache
+    if _primary_pairs_cache is not None:
+        return _primary_pairs_cache
+    out: dict = {}
+    fpath = DATASETS.get(PRIMARY_DATASET, {}).get("file", "")
+    if Path(fpath).exists():
+        df = pd.read_csv(fpath, low_memory=False)
+        for c in ("auto_aug_mean", "pct_normalized", "freq_mean"):
+            if c in df.columns:
+                df[c] = pd.to_numeric(df[c], errors="coerce")
+        if {"title_current", "task_normalized"} <= set(df.columns):
+            sub = df.drop_duplicates(subset=["title_current", "task_normalized"])
+            for _, r in sub.iterrows():
+                out[(r["title_current"], r["task_normalized"])] = {
+                    "auto_aug": _safe_num(r.get("auto_aug_mean")),
+                    "pct_norm": _safe_num(r.get("pct_normalized")),
+                    "freq":     _safe_num(r.get("freq_mean")),
+                }
+    _primary_pairs_cache = out
+    return out
+
+
+def _auto_label(score: Optional[float]) -> str:
+    """Interpretive label for a 0–5 auto-aug value, so the number reads in place."""
+    if score is None or (isinstance(score, float) and math.isnan(score)):
+        return "no usage seen"
+    if score >= 4.5:
+        return "most automated usage seen"
+    if score >= 3.5:
+        return "automated usage seen"
+    if score >= 2.5:
+        return "mixed usage seen"
+    if score >= 1.5:
+        return "augmentative usage seen"
+    return "low automation usage seen"
+
+
 def _build_tasks(title: str) -> list[dict]:
-    """Per-task rows for the occ. Each row: rank within the occ by max-auto,
-    importance, AEI Conv max, AEI API max, MS, MCP, color bucket, top-5 MCPs."""
+    """Per-task rows for the occ. Each row carries: the All-Confirmed auto value
+    (single source) + interpretive label + color bucket, centrality (freq×imp×rel,
+    ranked client-side), a usage-vs-median multiplier (pct/freq ÷ occ median over
+    rated tasks), the task's GWA/IWA/DWA with each activity's auto + tasks-exposed
+    rank, and the top-5 MCP servers."""
     eco = load_eco_raw()
     if eco is None:
         return []
@@ -866,9 +952,31 @@ def _build_tasks(title: str) -> list[dict]:
     if occ_tasks.empty:
         return []
     occ_tasks = occ_tasks.sort_values("task")
-    lookup = _build_explorer_task_lookup()
+    pairs = _primary_pairs_lookup()           # (title, tn) → all-confirmed auto/pct/freq
     top_mcps_lookup = _build_top_mcps_lookup()
     desc_lookup = _mcp_titles_desc_lookup()
+    wa_stats = _eco_wa_stats("nat")           # auto + tasks-exposed rank per WA (geo-independent)
+
+    # usage-vs-median denominator: median of (pct / freq) across this occ's rated tasks
+    usage_vals: list[float] = []
+    for _, row in occ_tasks.drop_duplicates(subset=["task_normalized"]).iterrows():
+        pp = pairs.get((title, row["task_normalized"]))
+        if pp and pp.get("pct_norm") and pp.get("freq") and pp["freq"] > 0:
+            usage_vals.append(pp["pct_norm"] / pp["freq"])
+    usage_median = float(np.median(usage_vals)) if usage_vals else 0.0
+
+    def _wa_detail(level: str, name) -> Optional[dict]:
+        if not name:
+            return None
+        rec = wa_stats.get(level, {}).get(str(name))
+        if not rec:
+            return {"name": str(name), "auto": None, "rank_pct": None, "total": None}
+        return {
+            "name": str(name),
+            "auto": rec.get("auto_aug_mean"),
+            "rank_pct": rec.get("rank_pct"),
+            "total": rec.get("total"),
+        }
 
     rows: list[dict] = []
     seen_tn: set = set()
@@ -877,28 +985,20 @@ def _build_tasks(title: str) -> list[dict]:
         if tn in seen_tn:
             continue
         seen_tn.add(tn)
-        sources = lookup.get(tn, {})
 
-        # Per-source maxes
-        aei_conv_vals = [s.get("auto_aug") for k, s in sources.items() if k.startswith("AEI Conv.")]
-        aei_api_vals  = [s.get("auto_aug") for k, s in sources.items() if k.startswith("AEI API")]
-        ms_val   = sources.get("Microsoft", {}).get("auto_aug")
-        mcp_val  = sources.get("MCP", {}).get("auto_aug")
+        pp = pairs.get((title, tn), {})
+        auto = pp.get("auto_aug")               # All-Confirmed auto value (the single source)
+        pct_norm = pp.get("pct_norm")
+        freq = pp.get("freq") or _safe_num(row.get("freq_mean"))
 
-        aei_conv_max = _max_or_none(aei_conv_vals)
-        aei_api_max  = _max_or_none(aei_api_vals)
-        # Color driven by max(AEI conv, AEI api, Microsoft) — MCP is informational only
-        color_driver = _max_or_none([aei_conv_max, aei_api_max, ms_val])
+        imp = _safe_num(row.get("importance")) or 0.0
+        rel = _safe_num(row.get("relevance")) or 0.0
+        fq  = _safe_num(row.get("freq_mean")) or 0.0
+        centrality = fq * imp * rel             # freq×imp×rel; ranked client-side
 
-        # pct_norm rank: per-task max pct across the same color drivers
-        pct_vals = []
-        for k, s in sources.items():
-            if k == "MCP":  # exclude MCP from pct color/rank, same as color logic
-                continue
-            v = s.get("pct_norm")
-            if v is not None and not (isinstance(v, float) and math.isnan(v)):
-                pct_vals.append(v)
-        pct_max = max(pct_vals) if pct_vals else None
+        usage_mult = None
+        if pct_norm and freq and freq > 0 and usage_median > 0:
+            usage_mult = (pct_norm / freq) / usage_median
 
         mcps_raw = top_mcps_lookup.get(tn, [])
         mcps: list[dict] = []
@@ -914,25 +1014,22 @@ def _build_tasks(title: str) -> list[dict]:
         rows.append({
             "task":             row["task"],
             "task_normalized":  tn,
-            "importance":       _safe_num(row.get("importance")),
-            "freq_mean":        _safe_num(row.get("freq_mean")),
-            "relevance":        _safe_num(row.get("relevance")),
+            "importance":       imp,
+            "freq_mean":        fq,
+            "relevance":        rel,
+            "centrality":       _round_or_none(centrality, 1),
             "physical":         bool(row["physical"]) if pd.notna(row.get("physical")) else False,
-            "gwa_title":        row.get("gwa_title"),
-            "iwa_title":        row.get("iwa_title"),
-            "dwa_title":        row.get("dwa_title"),
-            "aei_conv_max":     _round_or_none(aei_conv_max, 2),
-            "aei_api_max":      _round_or_none(aei_api_max, 2),
-            "microsoft":        _round_or_none(ms_val, 2),
-            "mcp":              _round_or_none(mcp_val, 2),
-            "color_driver":     _round_or_none(color_driver, 2),
-            "color_bucket":     _color_bucket_auto(color_driver),
-            "pct_max":          _round_or_none(pct_max, 4),
+            "auto":             _round_or_none(auto, 1),     # All-Confirmed auto-aug
+            "auto_label":       _auto_label(auto),
+            "color_bucket":     _color_bucket_auto(auto),
+            "usage_mult":       _round_or_none(usage_mult, 1),
+            "gwa":              _wa_detail("gwa", row.get("gwa_title")),
+            "iwa":              _wa_detail("iwa", row.get("iwa_title")),
+            "dwa":              _wa_detail("dwa", row.get("dwa_title")),
             "top_mcps":         mcps,
         })
-    # Sort by color_driver desc (most-automated first)
-    rows.sort(key=lambda r: (r["color_driver"] is None, -(r["color_driver"] or 0.0)))
-    # Add rank within the occ
+    # Sort by All-Confirmed auto desc (most-automated first); rank within the occ
+    rows.sort(key=lambda r: (r["auto"] is None, -(r["auto"] or 0.0)))
     for i, r in enumerate(rows, start=1):
         r["rank"] = i
     return rows
@@ -1306,6 +1403,45 @@ def get_occupation_hierarchy() -> list[dict]:
     return out
 
 
+def _build_major_ranking(title: str, window: int = 5) -> dict:
+    """The occupation's place within its MAJOR category, on two metrics:
+    % tasks exposed and AI adoption (intensity). Returns a ±`window` slice of
+    neighbours around the occ for each, so the page can show two small ranked
+    charts with the occ centred."""
+    occ_idx = _occ_index()
+    meta = occ_idx.get(title, {})
+    major = meta.get("major")
+    if not major:
+        return {}
+
+    same_major = [t for t, m in occ_idx.items() if m.get("major") == major]
+
+    pct_map = _pct_for(PRIMARY_DATASET)
+    intens = _intensity_rank_table()
+
+    def _window(value_of) -> dict:
+        ranked = sorted(same_major, key=lambda t: value_of(t), reverse=True)
+        try:
+            i = ranked.index(title)
+        except ValueError:
+            return {"rank": None, "total": len(ranked), "window": []}
+        lo = max(0, i - window)
+        hi = min(len(ranked), i + window + 1)
+        win = [{
+            "title": t,
+            "value": _round_or_none(float(value_of(t)), 2),
+            "rank":  j + 1,
+            "is_occ": t == title,
+        } for j, t in list(enumerate(ranked))[lo:hi]]
+        return {"rank": i + 1, "total": len(ranked), "window": win}
+
+    return {
+        "major": major,
+        "pct":      _window(lambda t: float(pct_map.get(t, 0.0) or 0.0)),
+        "adoption": _window(lambda t: float((intens.get(t, {}) or {}).get("occ_intensity_pct", 0.0) or 0.0)),
+    }
+
+
 def get_occupation_report(title: str, geo: str = "nat") -> Optional[dict]:
     """Build the full per-occupation report payload."""
     occ_idx = _occ_index()
@@ -1320,6 +1456,7 @@ def get_occupation_report(title: str, geo: str = "nat") -> Optional[dict]:
     group_ranks = _build_group_ranks(title, geo)
     trend    = _build_trend(title, geo)
     ska      = _build_ska(title)
+    major_ranking = _build_major_ranking(title)
     sector   = _build_sector_stats(title, geo)
     sector_chain = _build_sector_chain(title, geo)
     similar  = _similar_occs(title, n=N_SIMILAR_OCCS)
@@ -1335,6 +1472,7 @@ def get_occupation_report(title: str, geo: str = "nat") -> Optional[dict]:
         "group_ranks":     group_ranks,
         "trend":     trend,
         "ska":       ska,
+        "major_ranking": major_ranking,
         "sector":    sector,
         "sector_chain": sector_chain,
         "similar":   similar,

@@ -264,11 +264,24 @@ export default function DataPage() {
         </div>
       )}
 
-      {/* Footnote */}
-      <p style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 26, lineHeight: 1.6, maxWidth: 720 }}>
-        Exposure is task-level overlap with current AI capability (an upper bound), not a job-loss forecast.
-        All views use frequency weighting with the auto-augmentation multiplier on.
-        {tab === "usage" && " Actual usage shows debiased AI-usage intensity (÷ frequency×employment), × the median reference — AEI Conv+API on eco-2025, no Microsoft."}
+      {/* Footnote — caption per tab */}
+      <p style={{ fontSize: 11.5, color: "var(--text-muted)", marginTop: 26, lineHeight: 1.65, maxWidth: 760 }}>
+        {tab === "usage" ? (
+          <>
+            Relative ranking of where AI is currently being used. Read each bar as <strong>X× the
+            median</strong> usage relative to task need at this level — e.g. a major whose
+            task-completion need is being reached by AI usage at X× the rate of the median major.
+            We correct as best we can for AI user-base bias, and divide by task frequency and
+            employment so that more-common work doesn&rsquo;t simply show up more. Absolute reach
+            can&rsquo;t be inferred — only the relative ordering of who is seeing more vs. less use.
+          </>
+        ) : (
+          <>
+            Ranking of what current AI capability exposes in the workforce, as informed by actual AI
+            usage — where we most expect to see transformation or change going forward. This is
+            agnostic to what that change looks like: high exposure does not mean these jobs go away.
+          </>
+        )}
       </p>
     </div>
   );

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 const NAV_LINKS = [
   { href: "/occupation", label: "My Occupation" },
   { href: "/data",       label: "Explore the Data" },
+  { href: "/guide",      label: "Guide" },
 ];
 
 export default function Navigation() {
@@ -23,26 +24,26 @@ export default function Navigation() {
         borderBottom: "1px solid var(--border)",
         display: "flex",
         alignItems: "center",
-        padding: "0 20px",
+        padding: "0 32px",
       }}
     >
-      {/* Brand */}
-      <Link href="/occupation" style={{ textDecoration: "none" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginRight: 28, flexShrink: 0 }}>
-          <div style={{ width: 3, height: 28, borderRadius: 2, backgroundColor: "var(--brand)", opacity: 0.7 }} />
+      {/* Brand — full paper title */}
+      <Link href="/occupation" style={{ textDecoration: "none", flexShrink: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ width: 3, height: 34, borderRadius: 2, backgroundColor: "var(--brand)", opacity: 0.75 }} />
           <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <span style={{ fontSize: 15, fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.02em", lineHeight: 1.25 }}>
-              AI Workforce Exposure
+            <span style={{ fontSize: 16, fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
+              Mapping AI Exposure Across the U.S. Workforce
             </span>
-            <span style={{ fontSize: 10, fontWeight: 500, color: "var(--text-muted)", letterSpacing: "0.05em", textTransform: "uppercase", lineHeight: 1.3 }}>
-              Mapping AI Across the U.S. Workforce
+            <span style={{ fontSize: 11, fontWeight: 500, color: "var(--text-muted)", letterSpacing: "0.02em", lineHeight: 1.3 }}>
+              Evidence from Millions of AI Conversations
             </span>
           </div>
         </div>
       </Link>
 
-      {/* Links */}
-      <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+      {/* Links — pushed to the right, spaced out for a site feel */}
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: "auto" }}>
         {NAV_LINKS.map(({ href, label }) => {
           const active = pathname === href || pathname.startsWith(href);
           return (
@@ -50,10 +51,10 @@ export default function Navigation() {
               key={href}
               href={href}
               style={{
-                padding: "6px 14px",
-                borderRadius: 6,
-                fontSize: 13,
-                fontWeight: active ? 600 : 400,
+                padding: "8px 18px",
+                borderRadius: 7,
+                fontSize: 14,
+                fontWeight: active ? 600 : 450,
                 color: active ? "var(--brand)" : "var(--text-secondary)",
                 backgroundColor: active ? "var(--brand-light)" : "transparent",
                 textDecoration: "none",
