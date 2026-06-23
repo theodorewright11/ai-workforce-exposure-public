@@ -56,7 +56,7 @@ export default function Footer() {
           rel="noopener noreferrer"
           style={LINK_STYLE}
         >
-          {GITHUB_ICON} Data Construction GitHub
+          {GITHUB_ICON} Dataset Construction GitHub
         </a>
         <a href="mailto:theodorewrightwork@gmail.com" style={LINK_STYLE}>
           <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor">
