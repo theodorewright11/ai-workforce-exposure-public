@@ -60,8 +60,12 @@ export default function DataPage() {
   const [rankBy, setRankBy] = useState<RankBy>("current");
   const [sortMetric, setSortMetric] = useState<MetricKey>("pct_tasks_affected");
   const [topN, setTopN] = useState(20);
+  const [showMode, setShowMode] = useState<"topn" | "range">("topn");
+  const [range, setRange] = useState<[number, number]>([1, 25]);
   const [search, setSearch] = useState("");
   const [jumpToOcc, setJumpToOcc] = useState(false);
+
+  const sliceShow = <T,>(rows: T[]): T[] => showMode === "range" ? rows.slice(range[0] - 1, range[1]) : rows.slice(0, topN);
 
   const [path, setPath] = useState<PathEntry[]>([]);
   const [expData, setExpData] = useState<ExposureResponse | null>(null);
@@ -77,7 +81,10 @@ export default function DataPage() {
   const lastEntry = path.length ? path[path.length - 1] : null;
   const curLevel = lastEntry ? (lastEntry.jumped ? "occupation" : (childMap[lastEntry.level] ?? baseLevel)) : baseLevel;
   const kind: ExposureKind = tab === "wa" ? "wa" : "occ";
-  const canDrillCur = lastEntry?.jumped ? false : (childMap[curLevel] != null) || (tab === "wa" && curLevel === "dwa") || (tab === "occ" && jumpToOcc && curLevel !== "occupation");
+  const canJump = jumpToOcc && (tab === "occ" || tab === "usage") && curLevel !== "occupation" && curLevel !== "task";
+  const canDrillCur = lastEntry?.jumped ? false : (
+    (tab === "wa" && curLevel === "dwa") || canJump || (childMap[curLevel] != null)
+  );
 
   useEffect(() => { setPath([]); setWaTasks(null); }, [tab, occLevel, waLevel, usageLevel, configKey, geo]);
   useEffect(() => { if (tab === "usage") setTrend(false); }, [tab]);
@@ -114,17 +121,17 @@ export default function DataPage() {
     if (!expData) return [];
     let rows = expData.rows.slice();
     if (search.trim()) { const q = search.toLowerCase(); rows = rows.filter((r) => r.category.toLowerCase().includes(q)); }
-    else rows = rows.sort((a, b) => mVal(b, sortMetric) - mVal(a, sortMetric)).slice(0, topN);
+    else rows = sliceShow(rows.sort((a, b) => mVal(b, sortMetric) - mVal(a, sortMetric)));
     return rows;
-  }, [expData, search, sortMetric, topN]);
+  }, [expData, search, sortMetric, topN, showMode, range]); // eslint-disable-line
 
   const usageRows = useMemo(() => {
     if (!usageData) return [];
     let rows = usageData.rows.slice();
     if (search.trim()) { const q = search.toLowerCase(); rows = rows.filter((r) => r.category.toLowerCase().includes(q)); }
-    else rows = rows.slice(0, topN);
+    else rows = sliceShow(rows);
     return rows;
-  }, [usageData, search, topN]);
+  }, [usageData, search, topN, showMode, range]); // eslint-disable-line
 
   // ── trend: per-category start/end/Δ/proj, ranked by rankBy ──────────────────
   const trendTable = useMemo(() => {
@@ -144,8 +151,8 @@ export default function DataPage() {
     });
     const key = rankBy === "abs" ? (r: typeof rows[0]) => r.abs : rankBy === "pct" ? (r: typeof rows[0]) => r.pctChg : (r: typeof rows[0]) => r.end;
     rows.sort((a, b) => key(b) - key(a));
-    return rows.slice(0, topN);
-  }, [trendData, sortMetric, rankBy, topN]);
+    return sliceShow(rows);
+  }, [trendData, sortMetric, rankBy, topN, showMode, range]); // eslint-disable-line
 
   const trendSeries: TrendSeries[] = useMemo(
     () => trendTable.map((r, i) => ({ category: r.category, points: r.pts, color: CATEGORY_PALETTE[i % CATEGORY_PALETTE.length] })),
@@ -158,6 +165,7 @@ export default function DataPage() {
 
   const levelOptions = tab === "occ" ? config.occ_levels : tab === "wa" ? config.wa_levels : config.usage_levels;
   const setBaseLevel = tab === "occ" ? setOccLevel : tab === "wa" ? setWaLevel : setUsageLevel;
+  const showMax = expData?.total_categories ?? usageData?.rows.length ?? 0;
   const total = expData
     ? { workers_affected: expData.total_workers, wages_affected: expData.total_wages, pct_tasks_affected: 0 }
     : { workers_affected: 0, wages_affected: 0, pct_tasks_affected: 0 };
@@ -168,7 +176,7 @@ export default function DataPage() {
       fetchWaTasks("dwa", category).then((d) => setWaTasks({ name: category, tasks: d.tasks })).finally(() => setLoading(false));
       return;
     }
-    if (tab === "occ" && jumpToOcc && curLevel !== "occupation") { setPath((p) => [...p, { level: curLevel, category, jumped: true }]); return; }
+    if (canJump) { setPath((p) => [...p, { level: curLevel, category, jumped: true }]); return; }
     if (childMap[curLevel]) setPath((p) => [...p, { level: curLevel, category }]);
   };
   const mFmt = metricFmt(sortMetric);
@@ -184,12 +192,12 @@ export default function DataPage() {
         {tab !== "usage" && <Field label="Data configuration"><Select value={configKey} onChange={setConfigKey} options={config.configs.map((c) => ({ value: c.key, label: c.label }))} /></Field>}
         <Field label={tab === "usage" ? "Hierarchy level" : "Level"}><Select value={baseLevel} onChange={setBaseLevel} options={Object.entries(levelOptions).map(([label, value]) => ({ value, label }))} /></Field>
         {tab !== "usage" && <Field label="Geography"><Select value={geo} onChange={setGeo} options={Object.entries(config.geo_options).map(([value, label]) => ({ value, label }))} /></Field>}
-        <Field label="Sort / metric"><Select value={sortMetric} onChange={(v) => setSortMetric(v as MetricKey)} options={METRICS.map((m) => ({ value: m.key, label: m.title }))} /></Field>
-        <Field label={`Show${expData ? ` (of ${expData.total_categories})` : ""}`}>
-          <ShowControl value={topN} onChange={setTopN} max={expData?.total_categories ?? 999} />
+        {tab !== "usage" && <Field label="Sort / metric"><Select value={sortMetric} onChange={(v) => setSortMetric(v as MetricKey)} options={METRICS.map((m) => ({ value: m.key, label: m.title }))} /></Field>}
+        <Field label={`Show${showMax ? ` (of ${showMax})` : ""}`}>
+          <ShowControl topN={topN} setTopN={(n) => { setTopN(n); setShowMode("topn"); }} mode={showMode} setMode={setShowMode} range={range} setRange={setRange} max={showMax} />
         </Field>
         <Field label="Search"><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="filter…" style={{ ...inputStyle, width: 140 }} /></Field>
-        {tab === "occ" && !trend && <Toggle on={jumpToOcc} onClick={() => setJumpToOcc((v) => !v)}>Jump to occupations</Toggle>}
+        {(tab === "occ" || tab === "usage") && !trend && <Toggle on={jumpToOcc} onClick={() => setJumpToOcc((v) => !v)}>Drill-down → occupations</Toggle>}
         {tab !== "usage" && <Toggle on={trend} onClick={() => setTrend((v) => !v)} disabled={path.length > 0}>Trend over time</Toggle>}
         {tab !== "usage" && trend && <Toggle on={ols} onClick={() => setOls((v) => !v)}>2-yr projection</Toggle>}
         {tab !== "usage" && trend && (
@@ -227,7 +235,7 @@ export default function DataPage() {
         trendSeries.length ? (
           <div>
             <TrendChart series={trendSeries} yLabel={METRICS.find((m) => m.key === sortMetric)!.title} format={mFmt} ols={ols} activeCat={activeLine} onHover={setActiveLine} />
-            <TrendTable rows={trendTable} colors={CATEGORY_PALETTE} fmt={mFmt} ols={ols} active={activeLine} onHover={setActiveLine} />
+            <TrendTable rows={trendTable} colors={CATEGORY_PALETTE} fmt={mFmt} ols={ols} active={activeLine} onHover={setActiveLine} rankBy={rankBy} />
           </div>
         ) : <Empty />
       ) : (
@@ -266,7 +274,8 @@ function WaTaskList({ tasks }: { tasks: WaTask[] }) {
     <div style={{ maxWidth: 900 }}>
       <div style={{ display: "flex", padding: "6px", fontSize: 10.5, color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase" }}>
         <span style={{ flex: 1 }}>Task</span><span style={{ width: 90, textAlign: "right" }}>Centrality</span>
-        <span style={{ width: 80, textAlign: "right" }}>Usage</span><span style={{ width: 110, textAlign: "right" }}>Automation level</span>
+        <span style={{ width: 80, textAlign: "right" }}>Usage</span>
+        <span style={{ width: 110, textAlign: "right", lineHeight: 1.15 }}>Automation<br />level</span>
       </div>
       {tasks.map((t) => <WaTaskItem key={t.task_normalized} t={t} n={tasks.length} />)}
     </div>
@@ -313,16 +322,20 @@ function WaTaskItem({ t, n }: { t: WaTask; n: number }) {
 
 /* ── trend table ────────────────────────────────────────────────────────────── */
 interface TRow { category: string; start: number; end: number; abs: number; pctChg: number; proj: number | null; }
-function TrendTable({ rows, colors, fmt, ols, active, onHover }: {
-  rows: TRow[]; colors: string[]; fmt: (v: number) => string; ols: boolean; active: string | null; onHover: (c: string | null) => void;
+function TrendTable({ rows, colors, fmt, ols, active, onHover, rankBy }: {
+  rows: TRow[]; colors: string[]; fmt: (v: number) => string; ols: boolean; active: string | null; onHover: (c: string | null) => void; rankBy: RankBy;
 }) {
+  const bold = (col: "end" | "abs" | "pct"): React.CSSProperties =>
+    (rankBy === "current" && col === "end") || (rankBy === "abs" && col === "abs") || (rankBy === "pct" && col === "pct")
+      ? { fontWeight: 700, color: "var(--text-primary)" } : {};
   return (
     <div style={{ marginTop: 18, overflowX: "auto" }}>
       <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
         <thead>
           <tr style={{ color: "var(--text-muted)", textAlign: "right" }}>
             <th style={{ textAlign: "left", padding: "6px 8px" }}>Category</th>
-            <th style={thR}>Start</th><th style={thR}>End</th><th style={thR}>Abs Δ</th><th style={thR}>% Δ</th>
+            <th style={thR}>Start</th><th style={{ ...thR, ...bold("end") }}>End</th>
+            <th style={{ ...thR, ...bold("abs") }}>Abs Δ</th><th style={{ ...thR, ...bold("pct") }}>% Δ</th>
             {ols && <th style={thR}>2-yr proj.</th>}
           </tr>
         </thead>
@@ -333,9 +346,9 @@ function TrendTable({ rows, colors, fmt, ols, active, onHover }: {
               <td style={{ padding: "6px 8px", display: "flex", alignItems: "center", gap: 7 }}>
                 <span style={{ width: 10, height: 10, borderRadius: 2, background: colors[i % colors.length], flexShrink: 0 }} />{r.category}
               </td>
-              <td style={tdR}>{fmt(r.start)}</td><td style={tdR}>{fmt(r.end)}</td>
-              <td style={{ ...tdR, color: r.abs >= 0 ? "#2f6f4f" : "#a33" }}>{r.abs >= 0 ? "+" : ""}{fmt(r.abs)}</td>
-              <td style={{ ...tdR, color: r.pctChg >= 0 ? "#2f6f4f" : "#a33" }}>{r.pctChg >= 0 ? "+" : ""}{r.pctChg.toFixed(0)}%</td>
+              <td style={tdR}>{fmt(r.start)}</td><td style={{ ...tdR, ...bold("end") }}>{fmt(r.end)}</td>
+              <td style={{ ...tdR, ...bold("abs"), color: r.abs >= 0 ? "#2f6f4f" : "#a33" }}>{r.abs >= 0 ? "+" : ""}{fmt(r.abs)}</td>
+              <td style={{ ...tdR, ...bold("pct"), color: r.pctChg >= 0 ? "#2f6f4f" : "#a33" }}>{r.pctChg >= 0 ? "+" : ""}{r.pctChg.toFixed(0)}%</td>
               {ols && <td style={tdR}>{r.proj != null ? fmt(r.proj) : "—"}</td>}
             </tr>
           ))}
@@ -350,14 +363,14 @@ function UsagePanel({ rows, canDrill, onDrill }: { rows: UsageResponse["rows"]; 
   if (!rows.length) return <Empty />;
   const max = Math.max(1, ...rows.map((r) => r.intensity));
   return (
-    <div style={{ maxWidth: 720 }}>
+    <div>
       <div style={{ fontSize: 12, fontWeight: 600, color: "var(--text-secondary)", marginBottom: 10, textTransform: "uppercase", letterSpacing: "0.04em" }}>AI Usage Intensity (× median reference)</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
         {rows.map((r) => (
           <div key={r.category} onClick={() => canDrill && onDrill(r.category)} style={{ cursor: canDrill ? "pointer" : "default" }}>
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11.5, marginBottom: 2, color: "var(--text-secondary)" }}>
               <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "62%" }} title={r.category}>{canDrill && <span style={{ opacity: 0.5, marginRight: 4 }}>▸</span>}{r.category}</span>
-              <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>{fmtIntensity(r.intensity)}<span style={{ color: "var(--text-muted)", fontWeight: 400, marginLeft: 6 }}>{r.raw_pct.toFixed(3)}% raw</span></span>
+              <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>{fmtIntensity(r.intensity)}<span style={{ color: "var(--text-muted)", fontWeight: 400, marginLeft: 22 }}>{r.raw_pct.toFixed(3)}% raw</span></span>
             </div>
             <div style={{ height: 11, background: "var(--bg-sidebar)", borderRadius: 3, overflow: "hidden" }}>
               <div style={{ width: `${(r.intensity / max) * 100}%`, height: "100%", background: INTENSITY_COLOR, opacity: 0.85 }} />
@@ -370,15 +383,32 @@ function UsagePanel({ rows, canDrill, onDrill }: { rows: UsageResponse["rows"]; 
 }
 
 /* ── controls ───────────────────────────────────────────────────────────────── */
-function ShowControl({ value, onChange, max }: { value: number; onChange: (n: number) => void; max: number }) {
+function ShowControl({ topN, setTopN, mode, setMode, range, setRange, max }: {
+  topN: number; setTopN: (n: number) => void; mode: "topn" | "range";
+  setMode: (m: "topn" | "range") => void; range: [number, number]; setRange: (r: [number, number]) => void; max: number;
+}) {
   const presets = [10, 25, 50];
-  const isPreset = presets.includes(value);
+  const hi = Math.max(2, max || 100);
   return (
-    <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
-      {presets.map((p) => <button key={p} onClick={() => onChange(p)} style={segBtn(value === p)}>{p}</button>)}
-      <input type="number" min={1} max={max} value={isPreset ? "" : value} placeholder="custom"
-        onChange={(e) => onChange(Math.min(max, Math.max(1, Number(e.target.value) || 1)))}
-        style={{ ...inputStyle, width: 72 }} />
+    <div style={{ display: "flex", gap: 6, alignItems: "center", flexWrap: "wrap" }}>
+      {presets.map((p) => <button key={p} onClick={() => setTopN(p)} style={segBtn(mode === "topn" && topN === p)}>{p}</button>)}
+      <button onClick={() => setMode("range")} style={segBtn(mode === "range")}>Range</button>
+      {mode === "range" && <DualRange min={1} max={hi} lo={Math.min(range[0], hi)} hiVal={Math.min(range[1], hi)} onChange={setRange} />}
+    </div>
+  );
+}
+function DualRange({ min, max, lo, hiVal, onChange }: { min: number; max: number; lo: number; hiVal: number; onChange: (r: [number, number]) => void }) {
+  const pctL = ((lo - min) / (max - min || 1)) * 100;
+  const pctH = ((hiVal - min) / (max - min || 1)) * 100;
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      <div style={{ position: "relative", width: 180, height: 22 }}>
+        <div style={{ position: "absolute", top: 10, left: 0, right: 0, height: 3, background: "var(--border)", borderRadius: 2 }} />
+        <div style={{ position: "absolute", top: 10, height: 3, background: "var(--brand)", borderRadius: 2, left: `${pctL}%`, right: `${100 - pctH}%` }} />
+        <input className="dual-range" type="range" min={min} max={max} value={lo} onChange={(e) => onChange([Math.min(Number(e.target.value), hiVal - 1), hiVal])} />
+        <input className="dual-range" type="range" min={min} max={max} value={hiVal} onChange={(e) => onChange([lo, Math.max(Number(e.target.value), lo + 1)])} />
+      </div>
+      <span style={{ fontSize: 10, color: "var(--text-muted)" }}>ranks {lo}–{hiVal}</span>
     </div>
   );
 }

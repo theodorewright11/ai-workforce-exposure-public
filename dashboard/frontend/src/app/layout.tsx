@@ -19,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navigation />
         {/* Content sits below the fixed nav */}
         <div style={{ paddingTop: "var(--nav-height)", minHeight: "calc(100vh - 60px)" }}>
+          <div className="wip-banner">Work in progress, might be some minor bugs. Best viewed on a computer.</div>
           {children}
         </div>
         <Footer />
