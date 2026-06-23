@@ -48,7 +48,7 @@ export default function Footer() {
           rel="noopener noreferrer"
           style={LINK_STYLE}
         >
-          {GITHUB_ICON} MCP Classification GitHub
+          {GITHUB_ICON} MCP Data GitHub
         </a>
         <a
           href="https://github.com/theodorewright11/ai-workforce-exposure-dataset-construction-public"
