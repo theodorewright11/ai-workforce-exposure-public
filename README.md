@@ -49,17 +49,11 @@ rest still proceed.
 
 ## Data
 
-The underlying datasets are **not committed to this repository**. They total
-several hundred MB and are derived from public sources. The committed PNGs in
-`paper_figures/figures/` are the rendered results; the raw data is only needed to
-regenerate them or to run the dashboard backend.
-
-> **Data access:** _[TBD before public release. Raw datasets will be hosted
-> externally, with a download step here.]_ Source links and the construction
-> pipeline are described in the paper's Supplementary Materials.
-
-Once obtained, datasets go in `./data/` (raw `final_*.csv`) and `./data/reference/`
-(O*NET SKA and external-index reference files).
+The datasets live in `./data/` (raw `final_*.csv`) and `./data/reference/` (O*NET
+SKA and external-index reference files). They are derived from public sources;
+source links and the construction pipeline are described in the paper's
+Supplementary Materials. They are included in the repository so the figure scripts
+and the dashboard backend have everything they need at build time.
 
 ---
 
