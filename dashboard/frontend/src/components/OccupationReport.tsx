@@ -6,7 +6,7 @@ import { fetchOccupationReport, fetchOccupationReportTitles } from "@/lib/api";
 import { fmtPct, fmtCount, fmtWages, ordinal } from "@/lib/format";
 
 /* ── Types ──────────────────────────────────────────────────────────────────── */
-interface Gates { pct: number; ska: number; growth: number; emp_decline: number; count: number; emp_proj: number | null; }
+interface Gates { pct: number; ska: number; growth: number; emp_decline: number; count: number; emp_proj: number | null; growth_rank: number | null; ska_rank: number | null; total: number; }
 interface Intensity { occ_intensity_rank?: number; occ_intensity_total?: number; occ_intensity_x_median?: number; }
 interface Headline {
   title: string; major: string | null; minor: string | null; broad: string | null;
@@ -183,18 +183,16 @@ function Overview({ report }: { report: Report }) {
 
   const workersFirst = pctFirst != null && h.emp != null ? (pctFirst / 100) * h.emp : null;
   const wagesFirst = workersFirst != null && h.wage != null ? workersFirst * h.wage : null;
-  const skaOverall = report.ska.summary.overall_pct;
-  const growthDelta = pctFirst != null ? pct - pctFirst : null;
 
   const signals = [
-    { on: g.pct, label: "Tasks exposed", val: fmtPct(pct) },
-    { on: g.growth, label: "Exposure growth", val: growthDelta != null ? `+${growthDelta.toFixed(1)} pp` : "—" },
-    { on: g.ska, label: "AI reach into skills", val: skaOverall != null ? fmtPct(skaOverall) : "—" },
-    { on: g.emp_decline, label: "Employment outlook", val: g.emp_proj != null ? `${g.emp_proj}%` : "—" },
+    { on: g.pct, label: "Tasks exposed", val: fmtPct(pct), need: "needs > 50%" },
+    { on: g.growth, label: "Exposure growth", val: g.growth_rank != null ? `#${g.growth_rank} of ${g.total}` : "—", need: "needs above median" },
+    { on: g.ska, label: "AI reach into skills, knowledge & abilities", val: g.ska_rank != null ? `#${g.ska_rank} of ${g.total}` : "—", need: "needs above median" },
+    { on: g.emp_decline, label: "Employment outlook", val: g.emp_proj != null ? `${g.emp_proj}%` : "—", need: "needs projected decline" },
   ];
 
   return (
-    <div style={cardStyle}>
+    <div className="report-card" style={cardStyle}>
       <div style={{ fontSize: 22, fontWeight: 700, color: "var(--text-primary)", lineHeight: 1.2 }}>{h.title}</div>
       {/* line 1: hierarchy */}
       <div style={{ fontSize: 12, color: "var(--text-muted)", marginTop: 5 }}>
@@ -207,17 +205,19 @@ function Overview({ report }: { report: Report }) {
         {h.wage != null && <Chip>Median wage {fmtWages(h.wage)}</Chip>}
         {h.emp != null && <Chip>{fmtCount(h.emp)} employed</Chip>}
       </div>
-      {/* line 3: 4-signal strip, full width */}
-      <div style={{ display: "flex", gap: 0, marginTop: 16, border: "1px solid var(--border)", borderRadius: 9, overflow: "hidden" }}>
-        <div style={{ display: "flex", alignItems: "center", padding: "10px 14px", background: GATE_BLUES[g.count], color: g.count >= 3 ? "#fff" : "var(--text-primary)", fontWeight: 700, fontSize: 14, whiteSpace: "nowrap" }}>
-          {g.count} of 4
+      {/* line 3: exposure-flag strip — wraps on narrow screens */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 16, alignItems: "stretch" }}>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "8px 18px", background: GATE_BLUES[g.count], color: g.count >= 3 ? "#fff" : "var(--text-primary)", borderRadius: 9, minWidth: 92 }}>
+          <span style={{ fontWeight: 800, fontSize: 19, lineHeight: 1 }}>{g.count} of 4</span>
+          <span style={{ fontSize: 9.5, opacity: 0.9, textTransform: "uppercase", letterSpacing: "0.05em", marginTop: 3 }}>Exposure flags</span>
         </div>
         {signals.map((s, i) => (
-          <div key={i} style={{ flex: 1, padding: "8px 12px", borderLeft: "1px solid var(--border)", display: "flex", flexDirection: "column", gap: 1 }}>
-            <span style={{ fontSize: 11, color: s.on ? "var(--text-primary)" : "var(--text-muted)", fontWeight: s.on ? 600 : 400 }}>
+          <div key={i} style={{ flex: "1 1 160px", minWidth: 150, padding: "8px 12px", border: "1px solid var(--border)", borderRadius: 9, display: "flex", flexDirection: "column", gap: 2 }}>
+            <span style={{ fontSize: 11, color: s.on ? "var(--text-primary)" : "var(--text-muted)", fontWeight: s.on ? 600 : 400, lineHeight: 1.3 }}>
               <span style={{ color: s.on ? "#2f5f86" : "var(--text-muted)", marginRight: 5 }}>{s.on ? "●" : "○"}</span>{s.label}
             </span>
-            <span style={{ fontSize: 12.5, fontWeight: 700, color: s.on ? "#2f5f86" : "var(--text-muted)" }}>{s.val}</span>
+            <span style={{ fontSize: 13, fontWeight: 700, color: s.on ? "#2f5f86" : "var(--text-muted)" }}>{s.val}</span>
+            <span style={{ fontSize: 10, color: "var(--text-muted)" }}>{s.need}</span>
           </div>
         ))}
       </div>
@@ -287,7 +287,7 @@ function TasksSection({ tasks }: { tasks: Task[] }) {
     .map((k) => ({ key: k, items: tasks.filter((t) => bucketKey(t.color_bucket) === k) })).filter((g) => g.items.length);
   return (
     <Section title="Tasks"
-      subtitle="Every task in this occupation, grouped by its automation level from All Confirmed usage — 1 = little or no automation, 5 = full or near-full automation seen. Centrality ranks how core the task is to the job (frequency × importance × relevance); Usage is how much AI is used on it vs. the occupation's median task. Expand a row for its work activities and the AI tools (MCP) that target it.">
+      subtitle="Every task in this occupation, grouped by its automation level — 1 = little or no automation, 5 = full or near-full automation seen. Centrality ranks how core the task is to the job (frequency × importance × relevance); Usage is how much AI is used on it as a multiple of the occupation's median task usage. Expand a row for its work activities and the AI tools (MCP) that target it.">
       {groups.map((g) => <TaskBucket key={g.key} bucket={g.key} items={g.items} centralityRank={centralityRank} total={tasks.length} />)}
     </Section>
   );
@@ -304,10 +304,10 @@ function TaskBucket({ bucket, items, centralityRank, total }: { bucket: BucketKe
       {open && (
         <div>
           <div style={{ ...taskRow, cursor: "default", fontSize: 10.5, color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.03em" }}>
-            <span style={{ flex: 1 }}>Task</span>
+            <span style={{ flex: 1, minWidth: 0 }}>Task</span>
             <span style={taskCol}>Centrality</span>
             <span style={taskCol}>Usage</span>
-            <span style={{ ...taskCol, width: 110 }}>Automation level</span>
+            <span style={{ ...taskCol, width: 92, lineHeight: 1.15 }}>Automation<br />level</span>
           </div>
           {items.map((t) => <TaskItem key={t.task_normalized} t={t} centrality={centralityRank.get(t.task_normalized)} total={total} />)}
         </div>
@@ -321,10 +321,10 @@ function TaskItem({ t, centrality, total }: { t: Task; centrality?: number; tota
   return (
     <div style={{ borderBottom: "1px solid var(--border)" }}>
       <div style={taskRow} onClick={() => setOpen((v) => !v)}>
-        <span style={{ flex: 1, fontSize: 12.5 }}><span style={{ opacity: 0.4, marginRight: 6 }}>{open ? "▾" : "▸"}</span>{t.task}</span>
+        <span style={{ flex: 1, minWidth: 0, fontSize: 12.5, wordBreak: "break-word" }}><span style={{ opacity: 0.4, marginRight: 6 }}>{open ? "▾" : "▸"}</span>{t.task}</span>
         <span style={taskCol}>{centrality ? `#${centrality}` : "—"}<span style={{ color: "var(--text-muted)" }}>/{total}</span></span>
         <span style={taskCol}>{t.usage_mult != null ? `${t.usage_mult}×` : "—"}</span>
-        <span style={{ ...taskCol, width: 110, fontSize: 15, fontWeight: 700, color: meta.color }}>{t.auto != null ? `${t.auto}/5` : "—"}</span>
+        <span style={{ ...taskCol, width: 92, fontSize: 15, fontWeight: 700, color: meta.color }}>{t.auto != null ? `${t.auto}/5` : "—"}</span>
       </div>
       {open && (
         <div style={{ padding: "10px 14px 14px 26px", background: "var(--bg-sidebar)", fontSize: 12 }}>
@@ -335,7 +335,7 @@ function TaskItem({ t, centrality, total }: { t: Task; centrality?: number; tota
                 <div style={{ fontSize: 10, fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>{lvl}</div>
                 <div style={{ fontWeight: 700, color: "var(--text-primary)" }}>{w.name}</div>
                 <div style={{ color: "var(--text-muted)", fontSize: 11 }}>
-                  Automation {w.auto != null ? `${w.auto}/5` : "—"} (avg over AI-exposed tasks) · Ranks #{w.rank_pct ?? "—"} of {w.total ?? "—"} by tasks exposed
+                  Automation level {w.auto != null ? `${w.auto}/5` : "—"} (avg over AI-exposed tasks) · Ranks #{w.rank_pct ?? "—"} of {w.total ?? "—"} by tasks exposed
                 </div>
               </div>
             ) : null)}
@@ -345,7 +345,7 @@ function TaskItem({ t, centrality, total }: { t: Task; centrality?: number; tota
               {t.top_mcps.map((m, i) => (
                 <div key={i} style={{ marginBottom: 5 }}>
                   <a href={m.url ?? "#"} target="_blank" rel="noreferrer" style={{ color: "var(--brand)", fontWeight: 600, fontSize: 12 }}>{m.title}</a>
-                  {m.rating != null && <span style={{ color: "var(--text-muted)", marginLeft: 6 }}>{m.rating}/5</span>}
+                  {m.rating != null && <span style={{ color: "var(--text-muted)", marginLeft: 6 }}>{m.rating}/5 automation level</span>}
                   {m.description && <div style={{ color: "var(--text-muted)", fontSize: 11, lineHeight: 1.4 }}>{m.description.length > 160 ? m.description.slice(0, 160) + "…" : m.description}</div>}
                 </div>
               ))}
@@ -361,7 +361,7 @@ function TaskItem({ t, centrality, total }: { t: Task; centrality?: number; tota
 function SkaSection({ ska }: { ska: Ska }) {
   return (
     <Section title="Skills, Knowledge & Abilities"
-      subtitle="The skills, knowledge, and abilities that matter to this job (importance ≥ 3). AI capability is the average of the top-10 AI-capability scores among the occupations most exposed on that element — shown as a multiple of this occupation's need, where 1.0× means AI matches what the job requires and above that means AI already reaches further. Centrality ranks how core each one is to the occupation.">
+      subtitle="The skills, knowledge, and abilities that matter to this job (importance ≥ 3). AI capability is the average of the top-10 AI-capability scores among the occupations most exposed on that element — shown as a multiple of this occupation's need, where 1.0× means AI matches what the job requires and above that means AI already reaches further. Centrality ranks how core each one is to the occupation. This maps task-level exposure onto skills/knowledge/abilities, so read it as directional rather than exact.">
       <SkaType label="Skills" rows={ska.rows.skills} />
       <SkaType label="Knowledge" rows={ska.rows.knowledge} />
       <SkaType label="Abilities" rows={ska.rows.abilities} />
@@ -388,7 +388,7 @@ function SkaType({ label, rows }: { label: string; rows: SkaRow[] }) {
   );
 }
 function SkaQuadrant({ label, rows, good }: { label: string; rows: (SkaRow & { centrality: number; mult: number })[]; good?: boolean }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   if (!rows.length) return null;
   return (
     <div style={{ marginBottom: 8 }}>
@@ -396,11 +396,18 @@ function SkaQuadrant({ label, rows, good }: { label: string; rows: (SkaRow & { c
         <span style={{ fontWeight: 600, fontSize: 12.5 }}>{label}</span>
         <span style={{ fontSize: 12, color: "var(--text-muted)" }}>{rows.length} · {open ? "−" : "+"}</span>
       </button>
+      {open && (
+        <div style={{ ...taskRow, cursor: "default", fontSize: 10.5, color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.03em" }}>
+          <span style={{ flex: 1, minWidth: 0 }}>Element</span>
+          <span style={taskCol}>Centrality</span>
+          <span style={{ ...taskCol, width: 92, lineHeight: 1.15 }}>AI<br />capability</span>
+        </div>
+      )}
       {open && rows.map((r) => (
         <div key={r.element} style={{ ...taskRow, cursor: "default", borderBottom: "1px solid var(--border)" }}>
-          <span style={{ flex: 1, fontSize: 12.5 }}>{r.element}</span>
+          <span style={{ flex: 1, minWidth: 0, fontSize: 12.5, wordBreak: "break-word" }}>{r.element}</span>
           <span style={taskCol}>#{r.centrality}</span>
-          <span style={{ ...taskCol, width: 110, fontWeight: 700, color: r.mult >= 1 ? "#3a5f83" : "#8a6f5a" }}>{r.mult.toFixed(1)}×</span>
+          <span style={{ ...taskCol, width: 92, fontWeight: 700, color: r.mult >= 1 ? "#3a5f83" : "#8a6f5a" }}>{r.mult.toFixed(1)}×</span>
         </div>
       ))}
     </div>
@@ -421,13 +428,13 @@ function SoftwareSection({ tech }: { tech: Tech[] }) {
   return (
     <Section title="Software & tools"
       subtitle="The software categories this occupation relies on, ranked by how exposed that category is economy-wide (average % of tasks exposed across occupations that use it). Tools is how many of this job's tools fall in that category.">
-      <SoftTier label="AI shows strong capability here (≥ 50% exposed)" rows={commodities.filter((c) => c.pct >= 50)} good />
-      <SoftTier label="Lower exposure (< 50%)" rows={commodities.filter((c) => c.pct < 50)} />
+      <SoftTier label="AI shows strong capability (≥ 50% exposed)" rows={commodities.filter((c) => c.pct >= 50)} good />
+      <SoftTier label="Lower capability (< 50%)" rows={commodities.filter((c) => c.pct < 50)} />
     </Section>
   );
 }
 function SoftTier({ label, rows, good }: { label: string; rows: { commodity: string; count: number; pct: number }[]; good?: boolean }) {
-  const [open, setOpen] = useState(!!good);
+  const [open, setOpen] = useState(false);
   if (!rows.length) return null;
   const max = Math.max(1, ...rows.map((r) => r.pct));
   return (
@@ -440,9 +447,9 @@ function SoftTier({ label, rows, good }: { label: string; rows: { commodity: str
         <div style={{ display: "flex", flexDirection: "column", gap: 5, padding: "6px 0" }}>
           {rows.map((r) => (
             <div key={r.commodity}>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 1 }}>
-                <span style={{ color: "var(--text-secondary)" }}>{r.commodity} <span style={{ color: "var(--text-muted)", fontSize: 10.5 }}>· {r.count} tool{r.count > 1 ? "s" : ""}</span></span>
-                <span style={{ fontWeight: 600, color: "var(--text-primary)" }}>{fmtPct(r.pct)}</span>
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 10, fontSize: 12, marginBottom: 1 }}>
+                <span style={{ color: "var(--text-secondary)", minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.commodity} <span style={{ color: "var(--text-muted)", fontSize: 10.5 }}>· {r.count} tool{r.count > 1 ? "s" : ""}</span></span>
+                <span style={{ fontWeight: 600, color: "var(--text-primary)", flexShrink: 0 }}>{fmtPct(r.pct)}</span>
               </div>
               <div style={{ height: 9, background: "var(--bg-sidebar)", borderRadius: 3, overflow: "hidden" }}>
                 <div style={{ width: `${(r.pct / max) * 100}%`, height: "100%", background: good ? "#3a5f83" : "#8ea9bf", opacity: 0.8 }} />
@@ -459,7 +466,7 @@ function SoftTier({ label, rows, good }: { label: string; rows: { commodity: str
 function Section({ title, subtitle, children }: { title: string; subtitle: string; children: React.ReactNode }) {
   const [open, setOpen] = useState(false);   // panels default collapsed
   return (
-    <div style={cardStyle}>
+    <div className="report-card" style={cardStyle}>
       <button onClick={() => setOpen((v) => !v)} style={{ width: "100%", background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: 0 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span style={{ fontSize: 17, fontWeight: 700, color: "var(--text-primary)" }}>{title}</span>
@@ -495,7 +502,7 @@ const lblStyle: React.CSSProperties = { fontSize: 10.5, fontWeight: 600, color: 
 const inputStyle: React.CSSProperties = { padding: "8px 11px", fontSize: 13, borderRadius: 7, border: "1px solid var(--border)", background: "var(--bg-surface)", color: "var(--text-primary)" };
 const bucketHeader: React.CSSProperties = { width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 12px", background: "var(--bg-sidebar)", border: "1px solid var(--border)", borderRadius: 7, cursor: "pointer" };
 const taskRow: React.CSSProperties = { display: "flex", alignItems: "center", gap: 10, padding: "8px 6px", cursor: "pointer" };
-const taskCol: React.CSSProperties = { width: 80, textAlign: "right", fontSize: 12, flexShrink: 0 };
+const taskCol: React.CSSProperties = { width: 64, textAlign: "right", fontSize: 12, flexShrink: 0 };
 const dropdown: React.CSSProperties = { position: "absolute", top: "100%", left: 0, right: 0, zIndex: 30, marginTop: 3, background: "var(--bg-surface)", border: "1px solid var(--border)", borderRadius: 8, boxShadow: "0 6px 20px rgba(0,0,0,0.12)", maxHeight: 320, overflowY: "auto" };
 const dropItem: React.CSSProperties = { padding: "8px 12px", fontSize: 13, cursor: "pointer", color: "var(--text-secondary)" };
 function miniTab(active: boolean): React.CSSProperties {

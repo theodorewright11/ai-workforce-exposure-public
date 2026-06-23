@@ -630,6 +630,10 @@ def _risk_table() -> pd.DataFrame:
     df["gate_emp"]    = (df["emp_proj"] < 0).astype(int)
     df["gates_count"] = df[["gate_pct", "gate_ska", "gate_growth", "gate_emp"]].sum(axis=1)
 
+    # Ranks across all occupations for the flags shown as a rank (1 = highest)
+    df["growth_rank"] = df["pct_delta"].rank(ascending=False, method="min", na_option="bottom").astype(int)
+    df["ska_rank"]    = df["ska_pct"].rank(ascending=False, method="min", na_option="bottom").astype(int)
+
     def _tier(score: int, pct_val: float) -> str:
         if score >= 8:
             return "high" if pct_val >= EXPOSURE_GATE else "mod_high"
@@ -874,9 +878,13 @@ def _build_headline(title: str, geo: str) -> dict:
             "emp_decline": int(rr["gate_emp"]),
             "count":       int(rr["gates_count"]),
             "emp_proj":    _round_or_none(_safe_num(rr.get("emp_proj")), 1),
+            "growth_rank": int(rr["growth_rank"]),
+            "ska_rank":    int(rr["ska_rank"]),
+            "total":       int(len(risk_df)),
         }
     else:
-        gates_payload = {"pct": 0, "ska": 0, "growth": 0, "emp_decline": 0, "count": 0, "emp_proj": None}
+        gates_payload = {"pct": 0, "ska": 0, "growth": 0, "emp_decline": 0, "count": 0,
+                         "emp_proj": None, "growth_rank": None, "ska_rank": None, "total": 0}
 
     # Intensity
     intensity = _intensity_rank_table().get(title, {})
