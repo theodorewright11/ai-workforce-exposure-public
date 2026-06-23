@@ -11,8 +11,10 @@ import type {
   OccReportTitlesResponse,
 } from "./types";
 
+// Strip any trailing slash(es) so a value like "https://host/" doesn't produce
+// a double-slash path ("//api/config") that the backend 404s on.
 export const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(/\/+$/, "");
 
 async function postJSON<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
