@@ -41,6 +41,7 @@ from dashboard.api.occupation_report import (
     get_occupation_titles,
     get_occupation_hierarchy,
     get_occupation_report,
+    get_wa_task_list,
 )
 from dashboard.api.usage_intensity import compute_intensity
 
@@ -131,6 +132,9 @@ def _hierarchy_parent_maps() -> dict:
     maps["occupation"] = _pmap("title_current", "broad_occ")
     maps["iwa"] = _pmap("iwa_title", "gwa_title")
     maps["dwa"] = _pmap("dwa_title", "iwa_title")
+    # occupation → any ancestor level (for "jump straight to occupations" drill)
+    maps["occ_major"] = _pmap("title_current", "major_occ_category")
+    maps["occ_minor"] = _pmap("title_current", "minor_occ_category")
     _parent_maps = maps
     return maps
 
@@ -268,12 +272,22 @@ def exposure(req: ExposureRequest):
 
 
 class ChildrenRequest(ExposureRequest):
-    parent: str = ""   # category whose children to return
+    parent: str = ""               # category whose children to return
+    to_level: Optional[str] = None  # "occupation" → jump straight to occupations
 
 
 @app.post("/api/exposure/children", response_model=ExposureResponse)
 def exposure_children(req: ChildrenRequest):
     maps = _hierarchy_parent_maps()
+    # Jump straight to occupations from any SOC level (occ kind only)
+    if req.kind != "wa" and req.to_level == "occupation" and req.level in ("major", "minor", "broad"):
+        full = _occ_rows(req.config, "occupation", req.geo)
+        amap = {"major": maps["occ_major"], "minor": maps["occ_minor"], "broad": maps["occupation"]}[req.level]
+        kept = [r for r in full.rows if amap.get(r.category) == req.parent]
+        return ExposureResponse(
+            rows=kept, total_categories=full.total_categories,
+            total_workers=full.total_workers, total_wages=full.total_wages,
+        )
     if req.kind == "wa":
         child = _WA_CHILD.get(req.level)
         if child is None:
@@ -356,6 +370,17 @@ class UsageRequest(BaseModel):
     level: str = "major"
     parent_level: Optional[str] = None   # for drill-down: the parent's level
     parent: Optional[str] = None         # the parent category value
+
+
+class WaTasksRequest(BaseModel):
+    level: str = "dwa"   # gwa | iwa | dwa
+    name: str
+
+
+@app.post("/api/wa-tasks")
+def wa_tasks(req: WaTasksRequest):
+    """Tasks under one work activity (for the DWA drill-down task list)."""
+    return {"tasks": get_wa_task_list(req.level, req.name)}
 
 
 @app.post("/api/usage")

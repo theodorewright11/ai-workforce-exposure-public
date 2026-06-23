@@ -19,12 +19,13 @@ interface MetricBarsProps {
   canDrill: boolean;
   onDrill?: (category: string) => void;
   searchMatch?: string;   // category to highlight
+  showShare?: boolean;    // show "% of economy" in tooltip (meaningless for a ratio metric)
 }
 
 /** One metric column: horizontal bars with hover tooltip (rank + economy share)
  *  and optional click-to-drill. Bars scale to the max value shown. */
 export default function MetricBars({
-  title, rows, color, totalCategories, canDrill, onDrill, searchMatch,
+  title, rows, color, totalCategories, canDrill, onDrill, searchMatch, showShare = true,
 }: MetricBarsProps) {
   const [hover, setHover] = useState<string | null>(null);
   const max = Math.max(1, ...rows.map((r) => r.value));
@@ -90,7 +91,7 @@ export default function MetricBars({
                 }}>
                   <div style={{ fontWeight: 600, color: "var(--text-primary)" }}>{r.display}</div>
                   <div>Rank {ordinal(r.rank)} of {totalCategories}</div>
-                  <div>{share.toFixed(1)}% of economy total</div>
+                  {showShare && <div>{share.toFixed(1)}% of economy total</div>}
                   {canDrill && <div style={{ color: "var(--brand)", marginTop: 2 }}>click to drill down →</div>}
                 </div>
               )}

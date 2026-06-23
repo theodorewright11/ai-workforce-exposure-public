@@ -62,6 +62,26 @@ export function fetchUsage(
   });
 }
 
+// Drill straight to occupations from a SOC level (occ kind).
+export function fetchExposureToOcc(
+  config: string, level: string, geo: string, parent: string,
+): Promise<ExposureResponse> {
+  return postJSON("/api/exposure/children", { config, level, geo, kind: "occ", parent, to_level: "occupation" });
+}
+
+// Tasks under one work activity (for the DWA drill-down task list).
+export interface WaTask {
+  task: string; task_normalized: string; centrality: number | null; centrality_rank: number;
+  auto: number | null; auto_label: string; color_bucket: string; usage_mult: number | null;
+  gwa: { name: string; auto: number | null; rank_pct: number | null; total: number | null } | null;
+  iwa: { name: string; auto: number | null; rank_pct: number | null; total: number | null } | null;
+  dwa: { name: string; auto: number | null; rank_pct: number | null; total: number | null } | null;
+  top_mcps: { title: string; rating: number | null; url: string | null; description: string | null }[];
+}
+export function fetchWaTasks(level: string, name: string): Promise<{ tasks: WaTask[] }> {
+  return postJSON("/api/wa-tasks", { level, name });
+}
+
 // ── Occupation page (copied report) ───────────────────────────────────────────
 
 export async function fetchOccupationReportTitles(): Promise<OccReportTitlesResponse> {
