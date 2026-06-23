@@ -1,0 +1,5 @@
+# Public dashboard backend dependencies (in addition to the repo-root
+# requirements.txt, which already provides pandas + numpy used by backend/compute).
+fastapi
+uvicorn[standard]
+pydantic

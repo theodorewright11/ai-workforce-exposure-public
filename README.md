@@ -23,7 +23,7 @@ paper_figures/                 Regenerate every figure in the paper + supplement
 ├── figures/                   Committed PNGs (the rendered output)
 └── lib/                       Supporting code (figure builders + helpers)
 backend/                       Shared compute engine (also powers the dashboard)
-dashboard/                     Interactive dashboard — coming in a later release
+dashboard/                     Interactive dashboard (FastAPI + Next.js) — see dashboard/README.md
 data/                          Datasets (NOT committed — see "Data" below)
 requirements.txt
 ```
