@@ -1,7 +1,9 @@
 # ---- Data: NEVER committed ----
 # All raw + reference CSVs live locally for figure regeneration only.
 # Hosting/fetch is decided before first push (see README).
-data/
+# Anchored to repo root (leading slash) so it does NOT swallow source dirs
+# named "data" elsewhere — e.g. dashboard/frontend/src/app/data/.
+/data/
 
 # ---- Generated figure outputs + run logs (regenerable) ----
 paper_figures/results/
@@ -15,6 +17,19 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.egg-info/
+.pytest_cache/
+
+# ---- Node / Next.js (dashboard frontend) ----
+node_modules/
+.next/
+next-env.d.ts
+*.tsbuildinfo
+
+# ---- Internal agent/working docs: NEVER committed ----
+# Planning + agent-instruction docs are local-only (kept off GitHub).
+dashboard/PRD.md
+dashboard/ARCHITECTURE.md
+dashboard/CLAUDE.md
 
 # ---- OS / editor ----
 .DS_Store
