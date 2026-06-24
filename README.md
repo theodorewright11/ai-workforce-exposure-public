@@ -1,4 +1,4 @@
-# *****Dashboard Link**: https://ai-workforce-exposure-public.vercel.app/
+# **Dashboard Link**: https://ai-workforce-exposure-public.vercel.app/
 
 # AI Workforce Exposure — Public Release
 
@@ -17,6 +17,16 @@ work activities, and more.
 
 A project of Utah's Office of AI Policy (OAIP), supported by the BYU Department of
 Mathematics.
+
+## Links
+
+- Paper: TBA
+- Dashboard: https://ai-workforce-exposure-public.vercel.app/
+- Main paper and dashboard repository (this repo): https://github.com/theodorewright11/ai-workforce-exposure-public
+- Dataset-construction repository : https://github.com/theodorewright11/ai-workforce-exposure-dataset-construction-public
+- Final datasets (HuggingFace): https://huggingface.co/datasets/theodorewright11/ai-workforce-exposure-datasets-public
+- MCP → O\*NET classification repository: https://github.com/theodorewright11/mcp-onet-task-classification-public
+- MPC datasets (HuggingFace): https://huggingface.co/datasets/theodorewright11/mcp-onet-task-classification-public
 
 ---
 
