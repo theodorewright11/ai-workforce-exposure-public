@@ -1,3 +1,5 @@
+# *****Dashboard Link**: https://ai-workforce-exposure-public.vercel.app/
+
 # AI Workforce Exposure — Interactive Dashboard
 
 The interactive companion to the paper *Mapping AI Exposure Across the U.S.
