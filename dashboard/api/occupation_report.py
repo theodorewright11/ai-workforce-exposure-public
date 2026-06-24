@@ -54,9 +54,9 @@ TREND_SERIES: list[str] = [
 ]
 
 # Color thresholds (auto_aug 0–5 scale)
-# Color-bucket cutoffs on the 0–5 auto-aug scale. high = rounds to 5 (≥4.5),
-# mid = rounds to 3–4 (2.5–4.5), low = rounds to 1–2 (<2.5).
-AUTO_HIGH: float = 4.5
+# Color-bucket cutoffs on the 0–5 auto-aug scale (strict on the upper edge):
+# high = score > 4, mid = 2.5 < score <= 4, low = score <= 2.5.
+AUTO_HIGH: float = 4.0
 AUTO_MID: float = 2.5
 # SKA color thresholds (AI as % of occ need; > 100 means AI exceeds need)
 SKA_PCT_HIGH: float = 100.0
@@ -398,11 +398,11 @@ def _color_bucket_auto(score: Optional[float]) -> str:
     """Map auto_aug score → color bucket. Three neutral framings."""
     if score is None or (isinstance(score, float) and math.isnan(score)):
         return "none"
-    if score >= AUTO_HIGH:
-        return "high"     # "more automated usage seen"
-    if score >= AUTO_MID:
-        return "mid"      # "more augmentative"
-    return "low"          # "not much usage seen"
+    if score > AUTO_HIGH:
+        return "high"     # automation level > 4
+    if score > AUTO_MID:
+        return "mid"      # 2.5 < level <= 4
+    return "low"          # level <= 2.5
 
 
 def _color_bucket_ska(pct_of_need: Optional[float]) -> str:
