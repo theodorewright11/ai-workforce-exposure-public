@@ -1,4 +1,4 @@
-# **Dashboard Link**: https://aiworkforceexposure.com/occupation
+# **Dashboard Link**: https://aiworkforceexposure.com
 
 # AI Workforce Exposure — Public Release
 
