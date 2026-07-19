@@ -1,4 +1,4 @@
-# **Dashboard Link**: https://ai-workforce-exposure-public.vercel.app/
+# **Dashboard Link**: https://aiworkforceexposure.com/occupation
 
 # AI Workforce Exposure — Public Release
 
