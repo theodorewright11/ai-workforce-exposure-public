@@ -70,8 +70,8 @@ DATA_DIR = ROOT / "data"
 
 V3_CONFIGS: dict[str, dict[str, str]] = {
     "all_confirmed": {
-        "file": "final_all_confirmed_usage_2026-02-12.csv",
-        "label": "All Confirmed (AEI Both + Micro 2026-02-12)",
+        "file": "final_all_confirmed_usage_2026-05-31.csv",
+        "label": "All Confirmed (AEI Both + Micro 2026-05-31)",
         "occ_col": "title_current",
     },
     "microsoft_only": {
@@ -90,8 +90,8 @@ V3_CONFIGS: dict[str, dict[str, str]] = {
         # paper's intensity figures so the numerator drops Microsoft while
         # still keeping the equal 3-source bias correction (the bias prior
         # is GWA-level and applies regardless of which dataset is measured).
-        "file": "final_aei_all_usage_2025_2026-02-12.csv",
-        "label": "AEI All Usage — eco_2025 baseline (Conv + API 2026-02-12, no Microsoft)",
+        "file": "final_aei_all_usage_2025_2026-05-31.csv",
+        "label": "AEI All Usage — eco_2025 baseline (Conv + API 2026-05-31, no Microsoft)",
         "occ_col": "title_current",
     },
     "aei_conv": {
@@ -563,7 +563,7 @@ def main() -> None:
         fig = ranking_chart(
             df,
             chart_title,
-            f"All Confirmed (AEI Both + Micro 2026-02-12) · equal 3-source consensus "
+            f"All Confirmed (AEI Both + Micro 2026-05-31) · equal 3-source consensus "
             f"· {method_label}. Anchor: {anchor_major} = 1.00×. Dashed line = "
             f"median lift across the 22 majors ({median_lift:.2f}×).{color_note}",
             value_col="lift",

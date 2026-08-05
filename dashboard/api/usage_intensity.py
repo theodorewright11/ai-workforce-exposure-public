@@ -11,7 +11,7 @@ drill the hierarchy. Methodology is identical to the paper:
 where debias_pct = pct_normalized ÷ avg_bias, and avg_bias is the mean
 equal-3-source (Claude / ChatGPT / Copilot) GWA bias ratio across the GWAs each
 (task, occ) maps to. Fixed dataset: AEI Conv + API pooled onto eco_2025, no
-Microsoft (`final_aei_all_usage_2025_2026-02-12.csv`). No config selector, no
+Microsoft (`final_aei_all_usage_2025_2026-05-31.csv`). No config selector, no
 trend — this is the one view that does not use the five configs.
 
 The bias ratios + GWA rename are reused verbatim from lib.exploratory.intensity.
@@ -33,7 +33,7 @@ from lib.exploratory.intensity import (
 from config import DATA_DIR
 
 # Fixed intensity dataset — AEI Conv + API on eco_2025, no Microsoft.
-_INTENSITY_FILE = DATA_DIR / "final_aei_all_usage_2025_2026-02-12.csv"
+_INTENSITY_FILE = DATA_DIR / "final_aei_all_usage_2025_2026-05-31.csv"
 _OCC_COL = "title_current"
 _EMP_COL = "emp_tot_nat_2025"
 

@@ -3,10 +3,10 @@
 Run from the repo root:
     .venv/Scripts/python -m pytest dashboard/api/tests -q
 
-These pin the headline numbers to the paper so a refactor that silently changes a
-baseline (e.g. the agentic_confirmed eco_2025 rebasing, or the usage full-eco
-denominator) fails loudly. Tolerances are loose (±0.5) — we're guarding the wiring,
-not re-deriving the figures.
+These pin the headline numbers to the paper (2026-05-31 snapshot) so a refactor
+that silently changes a baseline (e.g. the agentic_confirmed eco_2025 rebasing, or
+the usage full-eco denominator) fails loudly. Tolerances are loose (±0.5) — we're
+guarding the wiring, not re-deriving the figures.
 """
 import dashboard.api  # noqa: F401  — sys.path bootstrap
 
@@ -35,7 +35,7 @@ def test_occ_exposure_matches_paper():
     assert len(r.rows) == 22
     top = _top(r.rows)
     assert top.category.startswith("Computer and Mathematical")
-    assert abs(top.pct_tasks_affected - 70.9) < 0.6   # paper Fig 11/12
+    assert abs(top.pct_tasks_affected - 83.4) < 0.6   # paper Fig 11/12
 
 
 def test_wa_exposure_matches_paper():
@@ -43,15 +43,15 @@ def test_wa_exposure_matches_paper():
     assert len(r.rows) == 37
     top = _top(r.rows)
     assert top.category.startswith("Working with Computers")
-    assert abs(top.pct_tasks_affected - 76.0) < 0.6   # paper Fig 13
+    assert abs(top.pct_tasks_affected - 84.4) < 0.6   # paper Fig 13
 
 
 def test_agentic_confirmed_uses_eco2025_baseline():
-    # paper_dataset_for() rebases agentic_confirmed onto eco_2025 → Comp&Math ~44.3
+    # paper_dataset_for() rebases agentic_confirmed onto eco_2025 → Comp&Math ~71.9
     r = exposure(ExposureRequest(config="agentic_confirmed", level="major", geo="nat", kind="occ"))
     top = _top(r.rows)
     assert top.category.startswith("Computer and Mathematical")
-    assert abs(top.pct_tasks_affected - 44.3) < 0.8   # paper Fig 17
+    assert abs(top.pct_tasks_affected - 71.9) < 0.8   # paper Fig 17
 
 
 def test_drilldown_children():
@@ -65,8 +65,9 @@ def test_drilldown_children():
 def test_trend_uses_paper_series_dates():
     t = trend(TrendRequest(config="all_confirmed", level="major", geo="nat", kind="occ"))
     dates = [d.date for d in t.data_points]
-    # paper all_confirmed series drops the 2024 anchor dates
-    assert dates == ["2025-03-06", "2025-08-11", "2025-11-13", "2026-02-12"]
+    # paper series window: v3 snapshot (2025-08-11) → latest
+    assert dates == ["2025-08-11", "2025-11-13", "2026-02-12",
+                     "2026-04-30", "2026-05-31"]
 
 
 def test_usage_intensity_matches_paper():
@@ -74,8 +75,10 @@ def test_usage_intensity_matches_paper():
     assert u["child_level"] == "minor"
     rows = u["rows"]
     top = rows[0]
-    assert top["category"].startswith("Life, Physical")
-    assert abs(top["intensity"] - 28.8) < 0.8         # paper Fig 23
+    # On the 2026-05-31 intensity dataset the top major shifted from
+    # Life/Phys/Soc Science to Computer & Mathematical.
+    assert top["category"].startswith("Computer and Mathematical")
+    assert abs(top["intensity"] - 21.3) < 0.8         # paper Fig 23
     office = [r for r in rows if r["category"].startswith("Office and Admin")][0]
     assert abs(office["intensity"] - 1.0) < 0.05      # anchor
 
@@ -85,6 +88,6 @@ def test_occupation_report():
     assert len(titles["titles"]) == 923
     rep = occupation_report(title="Computer Programmers", geo="nat")
     assert rep["title"] == "Computer Programmers"
-    assert abs(rep["headline"]["pct_tasks_affected"] - 78.0) < 1.0
+    assert abs(rep["headline"]["pct_tasks_affected"] - 86.7) < 1.0
     # per-source fields + MCP servers populated
     assert any(t.get("top_mcps") for t in rep["tasks"])

@@ -6,7 +6,7 @@ existing compute pipeline plus the SKA gap / intensity / tech / risk logic
 that the analysis folder uses for its tips-and-tricks worker_resilience runs.
 
 Everything is computed against the **all-confirmed** dataset
-(`AEI Both + Micro 2026-02-12`) to match the framing used in
+(`AEI Both + Micro 2026-05-31`) to match the framing used in
 worker_resilience. Per-task auto_aug values come from the explorer task
 lookup — same source breakdown shown in the explorers' task accordion.
 
@@ -42,15 +42,16 @@ from compute import (
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
-PRIMARY_DATASET: str = "AEI Both + Micro 2026-02-12"
+PRIMARY_DATASET: str = "AEI Both + Micro 2026-05-31"
 
 # Time series we walk for the trend sparkline. Mirrors all_confirmed in
-# analysis/config.py: ANALYSIS_CONFIG_SERIES["all_confirmed"].
+# paper_figures/lib/config.py: ANALYSIS_CONFIG_SERIES["all_confirmed"].
 TREND_SERIES: list[str] = [
-    "AEI Both + Micro 2025-03-06",
     "AEI Both + Micro 2025-08-11",
     "AEI Both + Micro 2025-11-13",
     "AEI Both + Micro 2026-02-12",
+    "AEI Both + Micro 2026-04-30",
+    "AEI Both + Micro 2026-05-31",
 ]
 
 # Color thresholds (auto_aug 0–5 scale)

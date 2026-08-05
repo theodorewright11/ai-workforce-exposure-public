@@ -15,7 +15,7 @@ from config import (
     AGG_LEVEL_COL, DATASETS, DATASET_SERIES, SORT_COL_MAP,
 )
 
-AEI_EXPLORER_DATASETS = ["AEI Conv. v1", "AEI Conv. v2", "AEI Conv. v3", "AEI Conv. v4", "AEI Conv. v5", "AEI API v3", "AEI API v4", "AEI API v5"]
+AEI_EXPLORER_DATASETS = ["AEI Conv. v1", "AEI Conv. v2", "AEI Conv. v3", "AEI Conv. v4", "AEI Conv. v5", "AEI Conv. v6.1", "AEI Conv. v6.2", "AEI API v3", "AEI API v4", "AEI API v5", "AEI API v6.1", "AEI API v6.2"]
 EXPLORER_SOURCE_NAMES: list[str] = AEI_EXPLORER_DATASETS + ["MCP", "Microsoft"]
 
 

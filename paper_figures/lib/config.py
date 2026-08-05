@@ -138,11 +138,11 @@ def ensure_results_dir(question_dir: Path) -> Path:
 # All use method="freq" (time-weighted), use_auto_aug=True, geo="nat".
 # These are the canonical configs for job_exposure and subsequent analyses.
 ANALYSIS_CONFIGS: dict[str, str] = {
-    "all_ceiling":        "All 2026-02-18",               # AEI Both + MCP + Microsoft — ceiling
-    "human_conversation": "AEI Conv + Micro 2026-02-12",  # confirmed human conversation usage
-    "agentic_confirmed":  "AEI API 2026-02-12",           # confirmed agentic tool-use (AEI API only, natural eco_2015 / 2010 SOC file matching the trend series below). Paper static charts that need an eco_2025-baselined comparison use the override in analysis/paper/paper_config.py (PAPER_CONFIG_DATASET_OVERRIDES).
-    "all_confirmed":      "AEI Both + Micro 2026-02-12",  # all confirmed usage (conv + API + Microsoft)
-    "agentic_ceiling":    "MCP + API 2026-02-18",         # agentic ceiling (most recent)
+    "all_ceiling":        "All 2026-05-31",               # AEI Both + MCP + Microsoft — ceiling
+    "human_conversation": "AEI Conv + Micro 2026-05-31",  # confirmed human conversation usage
+    "agentic_confirmed":  "AEI API 2026-02-12",           # confirmed agentic tool-use (AEI API only, natural eco_2015 / 2010 SOC file matching the trend series below — this family has no post-Feb-2026 file). Paper static charts that need an eco_2025-baselined comparison use the override in lib/paper_config.py (PAPER_CONFIG_DATASET_OVERRIDES), which IS on the latest snapshot.
+    "all_confirmed":      "AEI Both + Micro 2026-05-31",  # all confirmed usage (conv + API + Microsoft)
+    "agentic_ceiling":    "MCP + API 2026-05-31",         # agentic ceiling (most recent)
 }
 
 # Config labels for charts/reports
@@ -154,28 +154,32 @@ ANALYSIS_CONFIG_LABELS: dict[str, str] = {
     "agentic_ceiling":    "Agentic Ceiling",
 }
 
-# Full time series for each config (for trend analysis)
+# Full time series for each config (for trend analysis).
+# Window: every series starts at the 2025-08-11 snapshot (the AEI v3 release)
+# and includes every family date after it. Pre-Aug-2025 dates appear only as
+# historical rows in the temporal tables (see part1.HISTORICAL_DATASETS).
 ANALYSIS_CONFIG_SERIES: dict[str, list[str]] = {
     "all_ceiling": [
-        "All 2025-03-06", "All 2025-04-24",
-        "All 2025-05-24", "All 2025-07-23", "All 2025-08-11", "All 2025-11-13",
-        "All 2026-02-12", "All 2026-02-18",
+        "All 2025-08-11", "All 2025-11-13",
+        "All 2026-02-12", "All 2026-02-18", "All 2026-04-30", "All 2026-05-31",
     ],
     "human_conversation": [
-        "AEI Conv + Micro 2025-03-06", "AEI Conv + Micro 2025-08-11",
-        "AEI Conv + Micro 2025-11-13", "AEI Conv + Micro 2026-02-12",
+        "AEI Conv + Micro 2025-08-11", "AEI Conv + Micro 2025-11-13",
+        "AEI Conv + Micro 2026-02-12", "AEI Conv + Micro 2026-04-30",
+        "AEI Conv + Micro 2026-05-31",
     ],
     "agentic_confirmed": [
+        # eco_2015 AEI API family — no file exists past 2026-02-12.
         "AEI API 2025-08-11", "AEI API 2025-11-13", "AEI API 2026-02-12",
     ],
     "all_confirmed": [
-        "AEI Both + Micro 2025-03-06", "AEI Both + Micro 2025-08-11",
-        "AEI Both + Micro 2025-11-13", "AEI Both + Micro 2026-02-12",
+        "AEI Both + Micro 2025-08-11", "AEI Both + Micro 2025-11-13",
+        "AEI Both + Micro 2026-02-12", "AEI Both + Micro 2026-04-30",
+        "AEI Both + Micro 2026-05-31",
     ],
     "agentic_ceiling": [
-        "MCP + API 2025-04-24", "MCP + API 2025-05-24", "MCP + API 2025-07-23",
         "MCP + API 2025-08-11", "MCP + API 2025-11-13", "MCP + API 2026-02-12",
-        "MCP + API 2026-02-18",
+        "MCP + API 2026-02-18", "MCP + API 2026-04-30", "MCP + API 2026-05-31",
     ],
 }
 
@@ -227,7 +231,7 @@ def get_pct_tasks_affected(
 
     Parameters
     ----------
-    dataset_name : exact key from backend config, e.g. "All 2026-02-18"
+    dataset_name : exact key from backend config, e.g. "All 2026-05-31"
     method       : "freq" (time-weighted) or "imp" (value-weighted)
     use_auto_aug : whether to apply the auto-aug multiplier
 

@@ -6,3 +6,5 @@ plotly
 kaleido          # static PNG export for plotly (pio.write_image)
 scipy            # hierarchical clustering (state clusters figure)
 scikit-learn     # k-means robustness check (state clusters figure)
+matplotlib       # state clusters map figure
+geopandas        # state clusters map figure (US state geometries)

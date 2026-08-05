@@ -51,7 +51,7 @@ PRIMARY_LABEL = ANALYSIS_CONFIG_LABELS[PRIMARY_KEY]
 # and underadoption_gap in the appendix) use an AEI-only, eco_2025-rebased
 # pool instead of PRIMARY_DATASET. Equal 3-source debias (Claude/Copilot/
 # ChatGPT GWA priors) still applies — the bias prior is dataset-agnostic.
-_INTENSITY_DATASET = "AEI Both 2025 2026-02-12"
+_INTENSITY_DATASET = "AEI Both 2025 2026-05-31"
 
 # Tasks blue + workers green blend, light → dark (used by tech_commodities)
 BLEND_LIGHT = "#cdd9d4"
@@ -628,7 +628,7 @@ def build_intensity_anchor_fulleco(results: Path, figures: Path) -> None:
         return
 
     # Intensity-figure dataset: AEI Conv + AEI API pooled onto eco_2025
-    # (final_aei_all_usage_2025_2026-02-12.csv). Drops Microsoft from the
+    # (final_aei_all_usage_2025_2026-05-31.csv). Drops Microsoft from the
     # numerator while keeping the equal 3-source bias correction below
     # (the bias prior is GWA-level and applies regardless of dataset).
     base = compute_v3_intensity(

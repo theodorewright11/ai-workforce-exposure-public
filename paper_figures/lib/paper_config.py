@@ -114,7 +114,7 @@ CONFIG_COLORS: dict[str, str] = {
 # Used by paper builders that iterate CONFIG_ORDER / OVERVIEW_CONFIG_ORDER
 # and by direct lookups (e.g. part_3 _agentic_ceiling_top10).
 PAPER_CONFIG_DATASET_OVERRIDES: dict[str, str] = {
-    "agentic_confirmed": "AEI API 2025 2026-02-12",
+    "agentic_confirmed": "AEI API 2025 2026-05-31",
 }
 
 

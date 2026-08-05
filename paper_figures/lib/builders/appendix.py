@@ -97,7 +97,7 @@ PRIMARY_DATASET = ANALYSIS_CONFIGS[PRIMARY_KEY]
 # AEI Conv + AEI API pooled onto eco_2025, no Microsoft. Equal 3-source debias
 # (Claude/Copilot/ChatGPT GWA priors) still applies. Mirrors the constant in
 # part_3/run.py — kept here to avoid a paper-internal import.
-_INTENSITY_DATASET = "AEI Both 2025 2026-02-12"
+_INTENSITY_DATASET = "AEI Both 2025 2026-05-31"
 _INTENSITY_V3_KEY = "aei_all_eco2025"
 
 PHYS_LOWER = 33.0
@@ -1356,7 +1356,10 @@ def build_temporal_trend_nonphys(results: Path, figures: Path) -> None:
         )
         future_ts, future_ys = _linear_fit_project(xvals, yvals, horizon_days)
         if future_ts:
-            proj_x = [pd.Timestamp(xvals[-1])] + future_ts
+            # Serialize projection dates as ISO strings — kaleido's JSON
+            # encoder rejects raw pd.Timestamp objects at export time.
+            future_dates = [ts.strftime("%Y-%m-%d") for ts in future_ts]
+            proj_x = [xvals[-1]] + future_dates
             proj_y = [yvals[-1]] + future_ys
             fig.add_trace(go.Scatter(
                 x=proj_x, y=proj_y,
@@ -1373,7 +1376,7 @@ def build_temporal_trend_nonphys(results: Path, figures: Path) -> None:
             panel_vals.extend(future_ys)
             hz_label, _ = EXTRAP_HORIZONS_DAYS[twoyr_idx]
             fig.add_annotation(
-                x=future_ts[twoyr_idx], y=future_ys[twoyr_idx],
+                x=future_dates[twoyr_idx], y=future_ys[twoyr_idx],
                 text=f"{hz_label}: {future_ys[twoyr_idx]:.1f}%",
                 showarrow=False,
                 yshift=yshift,

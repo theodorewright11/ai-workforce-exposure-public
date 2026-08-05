@@ -54,8 +54,8 @@ CONFIG_ORDER: list[str] = [
 
 # ── Correlation sources ──────────────────────────────────────────────────
 CORR_SOURCES: dict[str, dict[str, str]] = {
-    "claude":     {"dataset": "AEI Conv 2026-02-12",  "label": "Claude Browser"},
-    "claude_api": {"dataset": "AEI API 2025 2026-02-12", "label": "Claude API"},
+    "claude":     {"dataset": "AEI Conv 2026-02-12",  "label": "Claude Browser"},  # eco_2015 AEI Conv family has no post-Feb-2026 file
+    "claude_api": {"dataset": "AEI API 2025 2026-05-31", "label": "Claude API"},
     "copilot":    {"dataset": "Microsoft",             "label": "Copilot"},
     "mcp":        {"dataset": "MCP Cumul. v4",         "label": "MCP"},
 }
@@ -934,22 +934,28 @@ def build_convergence(results: Path, figures: Path) -> None:
 # Chart 3: Temporal
 # ─────────────────────────────────────────────────────────────────────────
 
-# Earlier dates added to the table (cream rows). AI Capability is barred
-# because the all_confirmed / all_ceiling combined series doesn't have
-# enough source coverage on these dates to compute a stable score, but the
-# combined "tasks rated" count is still meaningful — we draw it from the
-# date-matched all_confirmed / all_ceiling files (`AEI Both + Micro` /
-# `All` respectively), which mirror the line-chart series.
-HISTORICAL_DATES: list[str] = ["2024-09-30", "2024-12-23"]
-# Per-config dataset names for the historical task counts.
+# Earlier dates added to the table (cream rows) — every family date that
+# pre-dates the line-chart window (series start = 2025-08-11, the AEI v3
+# release). AI Capability is barred because the all_confirmed / all_ceiling
+# combined series doesn't have enough source coverage on these dates to
+# compute a stable score, but the combined "tasks rated" count is still
+# meaningful — we draw it from the date-matched all_confirmed / all_ceiling
+# files (`AEI Both + Micro` / `All` respectively), which mirror the
+# line-chart series. Per-config: the ceiling family has more pre-window
+# dates (the MCP-only releases) than the confirmed family.
 HISTORICAL_DATASETS: dict[str, dict[str, str]] = {
     "all_confirmed": {
         "2024-09-30": "AEI Both + Micro 2024-09-30",
         "2024-12-23": "AEI Both + Micro 2024-12-23",
+        "2025-03-06": "AEI Both + Micro 2025-03-06",
     },
     "all_ceiling": {
         "2024-09-30": "All 2024-09-30",
         "2024-12-23": "All 2024-12-23",
+        "2025-03-06": "All 2025-03-06",
+        "2025-04-24": "All 2025-04-24",
+        "2025-05-24": "All 2025-05-24",
+        "2025-07-23": "All 2025-07-23",
     },
 }
 
@@ -968,6 +974,8 @@ SOURCE_RELEASE_LABELS: dict[str, str] = {
     "2025-11-13": "AEI Browser v4 + AEI API v4",
     "2026-02-12": "AEI Browser v5 + AEI API v5",
     "2026-02-18": "MCP v4",
+    "2026-04-30": "AEI Browser v6.1 + AEI API v6.1",
+    "2026-05-31": "AEI Browser v6.2 + AEI API v6.2",
 }
 
 # Light → deep green gradient for the two Δ columns. Lightest end is
@@ -1059,8 +1067,7 @@ def _build_historical_rows(config_key: str) -> list[dict]:
     set; Dec 2024 has Microsoft + AEI Conv v1, and the AEI Both + Micro /
     All files contain the union."""
     rows: list[dict] = []
-    for date_str in HISTORICAL_DATES:
-        ds_name = HISTORICAL_DATASETS[config_key][date_str]
+    for date_str, ds_name in sorted(HISTORICAL_DATASETS[config_key].items()):
         n_tasks = _count_tasks(ds_name)
         rows.append({"date": date_str, "n_tasks": n_tasks})
         print(f"  historical {date_str} ({config_key}, {ds_name}): {n_tasks} tasks rated")
@@ -1072,9 +1079,10 @@ def _build_combined_table(trend_df: pd.DataFrame, results: Path, figures: Path) 
     place each table independently without the wasted inter-table
     whitespace of a stacked subplot figure.
 
-    Each table includes Sep 2024 and Dec 2024 historical rows pulled from
-    that config's own dataset family (AEI Both + Micro for confirmed, All
-    for ceiling). AI Capability cell is barred for those rows because the
+    Each table includes historical rows for every family date before the
+    line-chart window (see HISTORICAL_DATASETS), pulled from that config's
+    own dataset family (AEI Both + Micro for confirmed, All for ceiling).
+    AI Capability cell is barred for those rows because the
     confirmed/ceiling AI-capability metric isn't well-defined that early
     in the series (only one or two sources contributing)."""
     highlight = PAPER_PALETTE["row_highlight"]
@@ -1192,7 +1200,7 @@ def _build_combined_table(trend_df: pd.DataFrame, results: Path, figures: Path) 
             date_fills.append(highlight if (is_start_combined or is_end) else white)
 
         n_rows = len(col_date)
-        n_hist = len(HISTORICAL_DATES)
+        n_hist = len(historical_rows)
         cell_fills = [historical_fill] * n_hist + [white] * (n_rows - n_hist)
 
         # Gradient fills for the two Δ columns (positive only; historical

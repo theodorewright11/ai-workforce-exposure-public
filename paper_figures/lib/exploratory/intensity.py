@@ -44,8 +44,8 @@ DATA_DIR = ROOT / "data"
 
 CONFIGS = {
     "all_confirmed": {
-        "file": "final_all_confirmed_usage_2026-02-12.csv",
-        "label": "All Confirmed (AEI Both + Micro 2026-02-12)",
+        "file": "final_all_confirmed_usage_2026-05-31.csv",
+        "label": "All Confirmed (AEI Both + Micro 2026-05-31)",
         "occ_col": "title_current",
     },
     "aei_all_usage": {

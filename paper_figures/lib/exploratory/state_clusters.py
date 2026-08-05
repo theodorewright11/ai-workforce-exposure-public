@@ -26,7 +26,7 @@ extreme that including it in the z-scoring distorts the rest of the
 structure. So we cluster on 50 states and visualize DC separately.
 
 All features come from `deepdive_state_signal.compute_state_metrics()`
-under the `all_confirmed` config (AEI Both + Micro 2026-02-12).
+under the `all_confirmed` config (AEI Both + Micro 2026-05-31).
 
 Method:
   - Z-score the 2 clustering features so distances are scale-free.
