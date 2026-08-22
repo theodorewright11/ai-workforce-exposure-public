@@ -37,12 +37,12 @@ from compute import (
 from lib.config import ANALYSIS_CONFIG_LABELS, ANALYSIS_CONFIG_SERIES
 from lib.paper_config import paper_dataset_for
 
-from dashboard.api.occupation_report import (
+from dashboard.api.occupation import (
     get_occupation_titles,
     get_occupation_hierarchy,
-    get_occupation_report,
-    get_wa_task_list,
+    get_occupation_card,
 )
+from dashboard.api.occupation_report import get_wa_task_list
 from dashboard.api.usage_intensity import compute_intensity
 
 # ── Config metadata ─────────────────────────────────────────────────────────────
@@ -404,9 +404,11 @@ def occupation_report(
     title: str = Query(..., description="Occupation title (title_current)"),
     geo: str = Query("nat", description="Geography code"),
 ):
+    """The v2 occupation card (PRD §3.1) — four headline stats and the verb
+    families. Route name kept so the frontend fetch path is unchanged."""
     if geo not in GEO_OPTIONS:
         raise HTTPException(status_code=400, detail=f"Unknown geo: {geo}")
-    payload = get_occupation_report(title, geo)
+    payload = get_occupation_card(title, geo)
     if payload is None:
         raise HTTPException(status_code=404, detail=f"Occupation not found: {title}")
     return payload
