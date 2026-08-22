@@ -34,7 +34,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from lib import figure_data
+from lib import families, figure_data
 from lib.figure_data import (
     FAMILY_COLORS, FAMILY_LABELS,
 )
@@ -85,23 +85,6 @@ def _tint(hex_color: str, alpha: float) -> str:
 # Shared data prep
 # ─────────────────────────────────────────────────────────────────────────
 
-def _dwa_task_rows(dataset: str, nonphys: bool = False) -> pd.DataFrame:
-    """Eco (title_current, task_normalized, dwa_title) rows with family, the
-    /n-split hours weight, and the dataset's exposed hours (0 where the
-    dataset didn't rate the pair).
-
-    Hours are /n-split across the pair's DWAs, so summing them by family is a
-    decomposition of the workday rather than a triple count of tasks that sit
-    in several DWAs.
-    """
-    rows = figure_data.act_exposure_rows(
-        dataset, "dwa_title", physical_mode="exclude" if nonphys else "all"
-    )
-    rows["family"] = figure_data.assign_family(rows["dwa_title"])
-    rows["exposed"] = rows["auto_aug_mean"].notna()
-    return rows
-
-
 def _dwa_units(rows: pd.DataFrame, extra_group: list[str] | None = None) -> pd.DataFrame:
     """Aggregate task rows to DWA units: work time exposed as a ratio of
     totals over the DWA's hours, plus the activity's physical share.
@@ -135,22 +118,15 @@ def _dwa_units(rows: pd.DataFrame, extra_group: list[str] | None = None) -> pd.D
     return units
 
 
-def _usage_rows(nonphys: bool) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """(numerator rows, denominator rows) at DWA grain, family-tagged."""
-    num = figure_data.intensity_act_rows("dwa_title")
-    den = figure_data.eco_act_split_rows("dwa_title")
-    if nonphys:
-        num = num[~num["physical"]].copy()
-        den = den[~den["physical"]].copy()
-    num["family"] = figure_data.assign_family(num["dwa_title"])
-    den["family"] = figure_data.assign_family(den["dwa_title"])
-    return num, den
+def _family_usage_anchored(nonphys: bool) -> pd.Series:
+    """Per-family usage rate, anchored so the lower-middle family = 1.00x.
 
-
-def _family_usage(nonphys: bool) -> pd.Series:
-    """Per-family usage rate, anchored so the lower-middle family = 1.00×."""
-    num, den = _usage_rows(nonphys)
-    return figure_data.anchor_lower_median(figure_data.usage_rate(num, den, ["family"]))
+    Delegates to lib/families.py — the dashboard renders the same numbers
+    from the same call, so the chart and the site cannot drift.
+    """
+    mode = "exclude" if nonphys else "all"
+    rate = families.family_usage_rate(["family"], mode)
+    return rate / families.family_usage_anchor(mode)
 
 
 def _family_autoaug(rows: pd.DataFrame) -> pd.DataFrame:
@@ -199,7 +175,7 @@ def _build_verb_family_overview(
     nonphys: bool,
 ) -> None:
     dataset = figure_data.CONFIG_DATASETS[config_key]
-    rows = _dwa_task_rows(dataset, nonphys=nonphys)
+    rows = families.dwa_task_rows(dataset, "exclude" if nonphys else "all")
     units = _dwa_units(rows)
     min_units = 1400 if nonphys else 2000
     assert units["dwa_title"].nunique() >= min_units, (
@@ -208,7 +184,7 @@ def _build_verb_family_overview(
     )
 
     aug = _family_autoaug(rows)
-    fam_usage = _family_usage(nonphys)
+    fam_usage = _family_usage_anchored(nonphys)
     units["phys_tier"] = figure_data.phys_tier(units["phys_share"] * 100.0)
     tier_mix = (
         units.groupby(["family", "phys_tier"], observed=False)["dwa_title"].count()
@@ -567,7 +543,7 @@ def _family_major_cells(dataset: str) -> tuple[pd.DataFrame, pd.DataFrame,
     """Task rows, (major, family) cells, and (major, family, DWA) units — all
     plain ratios of totals over hours, the same statistic every other chart in
     the set reports."""
-    rows = _dwa_task_rows(dataset)
+    rows = families.dwa_task_rows(dataset)
     pool = (
         figure_data.major_exposure(dataset)
         .sort_values("pct", ascending=False)["category"].tolist()[:TOP_MAJORS_POOL]

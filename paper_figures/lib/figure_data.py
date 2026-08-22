@@ -60,6 +60,48 @@ OCC_DAY_HOURS = 7.0
 # column is its median-annual-wage counterpart for the same geography.
 WAGE_COL = "a_med_nat_2025"
 
+# ── Geography ─────────────────────────────────────────────────────────────
+# The figures are national and pass nothing; the dashboard passes a state
+# code. Every loader below takes `geo` and adds canonical `emp` / `wage`
+# columns resolved for it, so downstream math never names a geography.
+#
+# Group exposure percentages are employment-weighted (see major_exposure),
+# so a state's number is not the national one relabelled — it re-weights
+# that state's occupational mix. Read it as "the exposure of this state's
+# job mix"; a single occupation's exposure is identical everywhere.
+#
+# When geo == "nat" the raw national columns are left on the frame as well,
+# so existing figure code that reaches for EMP_COL directly keeps working.
+
+DEFAULT_GEO = "nat"
+
+
+def emp_col(geo: str = DEFAULT_GEO) -> str:
+    """Employment column for a geography ("nat", "ut", "ia", …)."""
+    return f"emp_tot_{geo}_2025"
+
+
+def wage_col(geo: str = DEFAULT_GEO) -> str:
+    """Median-annual-wage column for a geography."""
+    return f"a_med_{geo}_2025"
+
+
+def _add_geo_cols(df: pd.DataFrame, geo: str, *, wage: bool = True) -> pd.DataFrame:
+    """Attach canonical `emp` (and `wage`) columns for `geo`, in place.
+
+    Asserts the geography actually exists in the file rather than letting a
+    typo silently produce an all-NaN employment column — which would sail
+    through every downstream sum as a zero.
+    """
+    ec = emp_col(geo)
+    assert ec in df.columns, f"Unknown geography {geo!r}: {ec} not in frame"
+    df["emp"] = pd.to_numeric(df[ec], errors="coerce").fillna(0.0)
+    if wage:
+        wc = wage_col(geo)
+        assert wc in df.columns, f"Unknown geography {geo!r}: {wc} not in frame"
+        df["wage"] = pd.to_numeric(df[wc], errors="coerce")
+    return df
+
 # The five canonical ANALYSIS_CONFIGS keys pinned to the May 2026 vintage.
 # Every eco_2025-based (is_aei=False) so pair/act-row helpers below apply to
 # all of them uniformly.
@@ -473,7 +515,8 @@ def occ_phys_hours_share() -> pd.Series:
 
 # ── ECO universe (deduped views of final_eco_2025.csv) ────────────────────
 
-def eco_pairs(extra_cols: tuple[str, ...] = ()) -> pd.DataFrame:
+def eco_pairs(extra_cols: tuple[str, ...] = (),
+              geo: str = DEFAULT_GEO) -> pd.DataFrame:
     """Full eco_2025 universe deduped to one row per (title_current,
     task_normalized), with time/emp/physical/major + extras.
 
@@ -491,8 +534,8 @@ def eco_pairs(extra_cols: tuple[str, ...] = ()) -> pd.DataFrame:
     assert eco is not None and not eco.empty, "final_eco_2025.csv missing"
     keep = [
         "title_current", "task_normalized", "freq_mean", TIME_COL,
-        "auto_aug_mean", "physical", "major_occ_category", EMP_COL,
-        WAGE_COL, *extra_cols,
+        "auto_aug_mean", "physical", "major_occ_category",
+        EMP_COL, WAGE_COL, emp_col(geo), wage_col(geo), *extra_cols,
     ]
     keep = [c for c in dict.fromkeys(keep) if c in eco.columns]
     pairs = (
@@ -503,12 +546,13 @@ def eco_pairs(extra_cols: tuple[str, ...] = ()) -> pd.DataFrame:
     )
     assert TIME_COL in pairs.columns, f"{TIME_COL} missing from final_eco_2025.csv"
     pairs["physical"] = coerce_phys_bool(pairs["physical"])
-    pairs["hours"] = pairs[TIME_COL].fillna(0.0) * pairs[EMP_COL].fillna(0.0)
-    pairs["eco_weight"] = pairs[EMP_COL].fillna(0.0)
+    _add_geo_cols(pairs, geo)
+    pairs["hours"] = pairs[TIME_COL].fillna(0.0) * pairs["emp"]
+    pairs["eco_weight"] = pairs["emp"]
     return pairs
 
 
-def eco_act_rows(act_col: str) -> pd.DataFrame:
+def eco_act_rows(act_col: str, geo: str = DEFAULT_GEO) -> pd.DataFrame:
     """Eco universe deduped to (title_current, task_normalized, act_col) —
     the WA pipeline's denominator grain. Unsplit; see eco_act_split_rows for
     the /n-split version."""
@@ -516,8 +560,10 @@ def eco_act_rows(act_col: str) -> pd.DataFrame:
     assert eco is not None and not eco.empty
     keep = [
         "title_current", "task_normalized", act_col, "freq_mean", TIME_COL,
-        "physical", "major_occ_category", EMP_COL, WAGE_COL,
+        "physical", "major_occ_category",
+        EMP_COL, WAGE_COL, emp_col(geo), wage_col(geo),
     ]
+    keep = [c for c in dict.fromkeys(keep) if c in eco.columns]
     rows = (
         eco[keep]
         .dropna(subset=[act_col])
@@ -526,6 +572,7 @@ def eco_act_rows(act_col: str) -> pd.DataFrame:
         .reset_index()
     )
     rows["physical"] = coerce_phys_bool(rows["physical"])
+    _add_geo_cols(rows, geo)
     return rows
 
 
@@ -576,10 +623,10 @@ def dataset_act_rows(dataset_name: str, act_col: str) -> pd.DataFrame:
 
 INTENSITY_FILE = DATA_DIR / "final_aei_all_usage_eco2025_2026-05-31.csv"
 
-_intensity_pairs_cache: Optional[pd.DataFrame] = None
+_intensity_pairs_cache: dict[str, pd.DataFrame] = {}
 
 
-def intensity_pairs() -> pd.DataFrame:
+def intensity_pairs(geo: str = DEFAULT_GEO) -> pd.DataFrame:
     """Rated (task, occ) pairs of the paper's intensity dataset (AEI Conv +
     API pooled on eco_2025, no Microsoft; 2026-05-31), debiased with the
     equal 3-source consensus GWA ratios:
@@ -596,18 +643,19 @@ def intensity_pairs() -> pd.DataFrame:
     One row per (title_current, task_normalized) with: adj_pct, raw pct,
     eco_weight (= emp), intensity, major, job_zone, physical.
     """
-    global _intensity_pairs_cache
-    if _intensity_pairs_cache is not None:
-        return _intensity_pairs_cache
+    if geo in _intensity_pairs_cache:
+        return _intensity_pairs_cache[geo]
 
     usecols = [
         "task_normalized", "title_current", "major_occ_category", "gwa_title",
         "pct_normalized", "auto_aug_mean", "freq_mean", "physical",
-        "job_zone", EMP_COL,
+        "job_zone", EMP_COL, emp_col(geo),
     ]
+    usecols = list(dict.fromkeys(usecols))
     df = pd.read_csv(INTENSITY_FILE, usecols=usecols, low_memory=False)
     assert not df.empty, f"Empty: {INTENSITY_FILE}"
-    for c in ("pct_normalized", "auto_aug_mean", "freq_mean", "job_zone", EMP_COL):
+    for c in dict.fromkeys(("pct_normalized", "auto_aug_mean", "freq_mean",
+                            "job_zone", EMP_COL, emp_col(geo))):
         df[c] = pd.to_numeric(df[c], errors="coerce")
 
     ai = df[df["pct_normalized"].notna()].copy()
@@ -629,21 +677,23 @@ def intensity_pairs() -> pd.DataFrame:
     pairs = ai.drop_duplicates(["task_normalized", "title_current"])[
         ["task_normalized", "title_current", "major_occ_category",
          "pct_normalized", "auto_aug_mean", "freq_mean", "physical",
-         "job_zone", EMP_COL]
+         "job_zone", *dict.fromkeys((EMP_COL, emp_col(geo)))]
     ].copy()
     pairs = pairs.merge(avg_bias, on=["task_normalized", "title_current"], how="left")
     pairs["avg_bias"] = pairs["avg_bias"].fillna(1.0).replace(0.0, 1.0)
     pairs["adj_pct"] = pairs["pct_normalized"] / pairs["avg_bias"]
-    pairs["eco_weight"] = pairs[EMP_COL].fillna(0.0)
+    _add_geo_cols(pairs, geo, wage=False)
+    pairs["eco_weight"] = pairs["emp"]
     pairs["intensity"] = np.where(
         pairs["eco_weight"] > 0, pairs["adj_pct"] / pairs["eco_weight"], np.nan
     )
     pairs["physical"] = coerce_phys_bool(pairs["physical"])
-    _intensity_pairs_cache = pairs
+    _intensity_pairs_cache[geo] = pairs
     return pairs
 
 
-def intensity_act_rows(act_col: str = "gwa_title") -> pd.DataFrame:
+def intensity_act_rows(act_col: str = "gwa_title",
+                       geo: str = DEFAULT_GEO) -> pd.DataFrame:
     """Rated (task, occ, act) rows of the intensity dataset with each pair's
     adj_pct, raw pct, and eco_weight split /n across its distinct values of
     `act_col`, so per-activity sums stay a true decomposition (Σ = the pair
@@ -663,7 +713,7 @@ def intensity_act_rows(act_col: str = "gwa_title") -> pd.DataFrame:
         ]
         .copy()
     )
-    pairs = intensity_pairs()
+    pairs = intensity_pairs(geo=geo)
     rows = rows.merge(
         pairs[["task_normalized", "title_current", "adj_pct", "pct_normalized",
                "eco_weight", "physical", "major_occ_category"]],
@@ -677,12 +727,13 @@ def intensity_act_rows(act_col: str = "gwa_title") -> pd.DataFrame:
     return rows
 
 
-def intensity_gwa_rows() -> pd.DataFrame:
+def intensity_gwa_rows(geo: str = DEFAULT_GEO) -> pd.DataFrame:
     """GWA-grain intensity rows (back-compat alias for the adoption chart)."""
-    return intensity_act_rows("gwa_title")
+    return intensity_act_rows("gwa_title", geo=geo)
 
 
-def eco_act_split_rows(act_col: str = "gwa_title") -> pd.DataFrame:
+def eco_act_split_rows(act_col: str = "gwa_title",
+                       geo: str = DEFAULT_GEO) -> pd.DataFrame:
     """FULL eco_2025 universe at (task, occ, act) grain, /n-split across the
     pair's distinct activities.
 
@@ -698,17 +749,21 @@ def eco_act_split_rows(act_col: str = "gwa_title") -> pd.DataFrame:
     """
     eco = load_eco_raw()
     assert eco is not None and not eco.empty, "final_eco_2025.csv missing"
+    keep = [
+        "task_normalized", "title_current", act_col, "freq_mean", TIME_COL,
+        "physical", "major_occ_category",
+        EMP_COL, WAGE_COL, emp_col(geo), wage_col(geo),
+    ]
+    keep = [c for c in dict.fromkeys(keep) if c in eco.columns]
     rows = (
         eco.dropna(subset=[act_col])
-        .drop_duplicates(["task_normalized", "title_current", act_col])[
-            ["task_normalized", "title_current", act_col, "freq_mean", TIME_COL,
-             "physical", "major_occ_category", EMP_COL, WAGE_COL]
-        ]
+        .drop_duplicates(["task_normalized", "title_current", act_col])[keep]
         .copy()
     )
     rows["physical"] = coerce_phys_bool(rows["physical"])
-    rows["eco_weight"] = rows[EMP_COL].fillna(0.0)
-    rows["hours"] = rows[TIME_COL].fillna(0.0) * rows[EMP_COL].fillna(0.0)
+    _add_geo_cols(rows, geo)
+    rows["eco_weight"] = rows["emp"]
+    rows["hours"] = rows[TIME_COL].fillna(0.0) * rows["emp"]
     # ~88 of 18.8k pairs carry two freq_mean/time values (one normalized task
     # text mapping to two raw tasks). Collapse to one weight per pair, the way
     # eco_pairs() and the intensity numerator already do — otherwise the /n
@@ -723,11 +778,11 @@ def eco_act_split_rows(act_col: str = "gwa_title") -> pd.DataFrame:
     return rows
 
 
-def eco_gwa_weight_split() -> pd.Series:
+def eco_gwa_weight_split(geo: str = DEFAULT_GEO) -> pd.Series:
     """Σ emp/n_gwas per GWA over the FULL eco_2025 universe — the
     full-economy denominator for the GWA adoption chart, /n-split so the
     GWA denominators sum to the economy total."""
-    rows = eco_act_split_rows("gwa_title")
+    rows = eco_act_split_rows("gwa_title", geo=geo)
     return rows.groupby("gwa_title")["eco_weight_split"].sum().rename("den_full")
 
 
@@ -753,7 +808,8 @@ def usage_rate(
     return rate.rename("usage_rate")
 
 
-def pair_level_emp(group_col: str, extra_cols: tuple[str, ...] = ()) -> pd.Series:
+def pair_level_emp(group_col: str, extra_cols: tuple[str, ...] = (),
+                   geo: str = DEFAULT_GEO) -> pd.Series:
     """Σ emp per group over (task, occupation) pairs.
 
     The usage denominator for groupings that are occupation attributes
@@ -763,8 +819,8 @@ def pair_level_emp(group_col: str, extra_cols: tuple[str, ...] = ()) -> pd.Serie
     appears exactly once, so there is nothing to split. Stating it as one
     rule is why this counts pairs rather than deduplicating to occupations.
     """
-    pairs = eco_pairs(extra_cols)
-    return pairs.groupby(group_col)[EMP_COL].sum().rename("emp_den")
+    pairs = eco_pairs(extra_cols, geo=geo)
+    return pairs.groupby(group_col)["emp"].sum().rename("emp_den")
 
 
 def lower_median(vals: pd.Series) -> float:
@@ -802,10 +858,11 @@ def anchor_lower_median(vals: pd.Series) -> pd.Series:
 # wages. Nothing is allocated to anybody, so there is no split to defend:
 # hours are hours.
 
-_occ_exposure_cache: dict[tuple[str, str], pd.DataFrame] = {}
+_occ_exposure_cache: dict[tuple[str, str, str], pd.DataFrame] = {}
 
 
-def occ_exposure(dataset_name: str, physical_mode: str = "all") -> pd.DataFrame:
+def occ_exposure(dataset_name: str, physical_mode: str = "all",
+                 geo: str = DEFAULT_GEO) -> pd.DataFrame:
     """One row per occupation: `p` (exposed share of work time, 0-1), emp,
     wage, major.
 
@@ -816,7 +873,9 @@ def occ_exposure(dataset_name: str, physical_mode: str = "all") -> pd.DataFrame:
     rather than asking the pipeline for them.
     """
     assert physical_mode in {"all", "exclude", "only"}, physical_mode
-    key = (dataset_name, physical_mode)
+    # geo belongs in the key: `p` is geo-invariant inside one occupation, but
+    # the emp/wage merged on below is not.
+    key = (dataset_name, physical_mode, geo)
     if key in _occ_exposure_cache:
         return _occ_exposure_cache[key]
 
@@ -825,7 +884,7 @@ def occ_exposure(dataset_name: str, physical_mode: str = "all") -> pd.DataFrame:
     data = get_group_data({
         "selected_datasets": [dataset_name], "combine_method": "Average",
         "method": "time_day", "use_auto_aug": True,
-        "physical_mode": physical_mode, "geo": "nat",
+        "physical_mode": physical_mode, "geo": geo,
         "agg_level": "occupation", "sort_by": "% Tasks Affected",
         "top_n": 9999, "search_query": "", "context_size": 3,
     })
@@ -835,10 +894,10 @@ def occ_exposure(dataset_name: str, physical_mode: str = "all") -> pd.DataFrame:
     out["p"] = out["pct_tasks_affected"] / 100.0
 
     struct = (
-        eco_pairs()
+        eco_pairs(geo=geo)
         .groupby("title_current")
         .agg(major_occ_category=("major_occ_category", "first"),
-             emp=(EMP_COL, "first"), wage=(WAGE_COL, "first"))
+             emp=("emp", "first"), wage=("wage", "first"))
         .reset_index()
     )
     out = out.merge(struct, on="title_current", how="inner")
@@ -847,7 +906,8 @@ def occ_exposure(dataset_name: str, physical_mode: str = "all") -> pd.DataFrame:
     return out
 
 
-def major_exposure(dataset_name: str, physical_mode: str = "all") -> pd.DataFrame:
+def major_exposure(dataset_name: str, physical_mode: str = "all",
+                   geo: str = DEFAULT_GEO) -> pd.DataFrame:
     """Per major: work time exposed (%), FTE workers exposed, wages exposed.
 
     The percentage is employment-weighted — "of all the hours worked in this
@@ -856,7 +916,7 @@ def major_exposure(dataset_name: str, physical_mode: str = "all") -> pd.DataFram
     derived by multiplying a category percentage back out: wages would be
     wrong, because exposure and pay are correlated across occupations.
     """
-    occ = occ_exposure(dataset_name, physical_mode)
+    occ = occ_exposure(dataset_name, physical_mode, geo=geo)
     g = (
         occ.assign(
             hours=lambda d: d["emp"] * OCC_DAY_HOURS,
@@ -880,13 +940,14 @@ def major_exposure(dataset_name: str, physical_mode: str = "all") -> pd.DataFram
 def pair_exposure_rows(
     dataset_name: str,
     physical_mode: str = "all",
+    geo: str = DEFAULT_GEO,
 ) -> pd.DataFrame:
     """(task, occupation) rows with hours and exposed hours — the pair-grain
     counterpart of act_exposure_rows, used wherever a chart cuts the economy
     by something other than a work activity (majors, physicality, job zone).
     """
     assert physical_mode in {"all", "exclude", "only"}, physical_mode
-    rows = eco_pairs()
+    rows = eco_pairs(geo=geo)
     if physical_mode == "exclude":
         rows = rows[~rows["physical"]].copy()
     elif physical_mode == "only":
@@ -906,6 +967,7 @@ def act_exposure_rows(
     dataset_name: str,
     act_col: str = "gwa_title",
     physical_mode: str = "all",
+    geo: str = DEFAULT_GEO,
 ) -> pd.DataFrame:
     """(task, occ, activity) rows with /n-split hours and exposed hours.
 
@@ -916,7 +978,7 @@ def act_exposure_rows(
     never exceed total hours.
     """
     assert physical_mode in {"all", "exclude", "only"}, physical_mode
-    rows = eco_act_split_rows(act_col)
+    rows = eco_act_split_rows(act_col, geo=geo)
     if physical_mode == "exclude":
         rows = rows[~rows["physical"]].copy()
     elif physical_mode == "only":
@@ -929,7 +991,7 @@ def act_exposure_rows(
     rows["exposed_frac"] = rows["auto_aug_mean"].fillna(0.0) / 5.0
     rows["hours_exposed_split"] = rows["hours_split"] * rows["exposed_frac"]
     rows["wages_exposed_split"] = (
-        rows["hours_exposed_split"] / OCC_DAY_HOURS * rows[WAGE_COL].fillna(0.0)
+        rows["hours_exposed_split"] / OCC_DAY_HOURS * rows["wage"].fillna(0.0)
     )
     return rows
 
@@ -938,6 +1000,7 @@ def act_exposure(
     dataset_name: str,
     act_col: str = "gwa_title",
     physical_mode: str = "all",
+    geo: str = DEFAULT_GEO,
 ) -> pd.DataFrame:
     """Per activity: work time exposed (%), exposed hours/day, FTE workers.
 
@@ -945,7 +1008,7 @@ def act_exposure(
     to the whole economy's daily hours and `hours_exposed` sums to the
     national exposed total — the same number major_exposure() reports.
     """
-    rows = act_exposure_rows(dataset_name, act_col, physical_mode)
+    rows = act_exposure_rows(dataset_name, act_col, physical_mode, geo=geo)
     g = (
         rows.groupby(act_col)
         .agg(hours=("hours_split", "sum"),

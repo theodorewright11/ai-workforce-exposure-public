@@ -24,7 +24,7 @@ for _p in (str(ROOT), str(PKG_DIR)):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 
-from lib import figure_data  # noqa: E402
+from lib import families, figure_data  # noqa: E402
 
 
 # ── anchor_lower_median ───────────────────────────────────────────────────
@@ -319,8 +319,8 @@ def test_gwa_denominator_sums_to_the_full_economy():
 def test_nonphys_filter_shrinks_both_sides_of_the_ratio():
     from lib.builders import verbs
 
-    num_all, den_all = verbs._usage_rows(nonphys=False)
-    num_np, den_np = verbs._usage_rows(nonphys=True)
+    num_all, den_all = families._usage_frames("all")
+    num_np, den_np = families._usage_frames("exclude")
     assert len(num_np) < len(num_all)
     assert len(den_np) < len(den_all)
     assert not num_np["physical"].any()
@@ -330,7 +330,7 @@ def test_nonphys_filter_shrinks_both_sides_of_the_ratio():
 def test_family_usage_anchors_one_family_at_one():
     from lib.builders import verbs
 
-    usage = verbs._family_usage(nonphys=False)
+    usage = verbs._family_usage_anchored(False)
     assert len(usage) == len(figure_data.FAMILY_ORDER)
     assert (usage.round(6) == 1.0).sum() == 1
 
@@ -437,7 +437,7 @@ def test_family_total_matches_the_hours_ratio_of_totals():
     family's DWA rows."""
     from lib.builders import verbs
 
-    rows = verbs._dwa_task_rows(figure_data.PRIMARY_DATASET)
+    rows = families.dwa_task_rows(figure_data.PRIMARY_DATASET)
     aug = verbs._family_autoaug(rows)
     direct = (
         rows.groupby("family")["hours_exposed_split"].sum()
@@ -452,7 +452,7 @@ def test_automation_level_is_an_unweighted_task_mean():
     is AI on these tasks", not "how much of the work is reached"."""
     from lib.builders import verbs
 
-    rows = verbs._dwa_task_rows(figure_data.PRIMARY_DATASET)
+    rows = families.dwa_task_rows(figure_data.PRIMARY_DATASET)
     aug = verbs._family_autoaug(rows)
     plain_all = rows.groupby("family")["auto_aug_mean"].apply(
         lambda s: float(s.fillna(0.0).mean())
