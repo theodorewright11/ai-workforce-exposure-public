@@ -1,0 +1,2084 @@
+dwa_title,bucket,bucket_key,lead_verb
+Analyze impact of legal or regulatory changes.,Analyze,analyze_compute,analyze
+Advise others on legal or regulatory compliance matters.,Communicate,communicate_teach,advise
+Direct financial operations.,Manage,direct_manage,direct
+Confer with organizational members to accomplish work activities.,Communicate,communicate_teach,confer
+Analyze data to assess operational or project effectiveness.,Analyze,analyze_compute,analyze
+Implement organizational process or policy changes.,Manage,direct_manage,implement
+Develop organizational policies or programs.,Create,produce_create,develop
+"Direct organizational operations, projects, or services.",Manage,direct_manage,direct
+Prepare operational budgets.,Create,produce_create,prepare
+"Direct sales, marketing, or customer service activities.",Manage,direct_manage,direct
+"Negotiate contracts for transportation, distribution, or logistics services.",Communicate,communicate_teach,negotiate
+Analyze data to inform operational decisions or activities.,Analyze,analyze_compute,analyze
+Prepare staff schedules or work assignments.,Create,produce_create,prepare
+Manage human resources activities.,Manage,direct_manage,manage
+Serve on institutional or departmental committees.,Communicate,communicate_teach,serve
+"Prepare financial documents, reports, or budgets.",Create,produce_create,prepare
+Prepare operational progress or status reports.,Create,produce_create,prepare
+Establish organizational guidelines or policies.,Create,produce_create,establish
+Liaise between departments or other groups to improve function or communication.,Communicate,communicate_teach,liaise
+Resolve employee or contractor problems.,Communicate,communicate_teach,resolve
+Direct administrative or support services.,Manage,direct_manage,direct
+Present information to the public.,Communicate,communicate_teach,present
+"Select staff, team members, or performers.",Manage,direct_manage,select
+Communicate organizational policies and procedures.,Communicate,communicate_teach,communicate
+Coordinate with external parties to exchange information.,Manage,direct_manage,coordinate
+Recommend organizational process or policy changes.,Communicate,communicate_teach,recommend
+Manage construction activities.,Manage,direct_manage,manage
+Conduct research on social issues.,Acquire,info_acquisition,conduct
+Conduct research to gain information about products or processes.,Acquire,info_acquisition,conduct
+Represent the organization in external relations.,Communicate,communicate_teach,represent
+Coordinate special events or programs.,Manage,direct_manage,coordinate
+Conduct hearings to investigate legal issues.,Evaluate,evaluate_inspect,conduct
+Testify at legal or legislative proceedings.,Communicate,communicate_teach,testify
+"Promote products, services, or programs.",Communicate,communicate_teach,promote
+Draft legislation or regulations.,Create,produce_create,draft
+Evaluate capabilities or training needs.,Evaluate,evaluate_inspect,evaluate
+Support the professional development of others.,Communicate,communicate_teach,support
+Identify opportunities for green initiatives.,Analyze,analyze_compute,identify
+Evaluate program effectiveness.,Evaluate,evaluate_inspect,evaluate
+Analyze risks related to investments in green technology.,Analyze,analyze_compute,analyze
+Evaluate environmental or sustainability projects.,Evaluate,evaluate_inspect,evaluate
+Schedule activities or facility use.,Manage,direct_manage,schedule
+Maintain operational records for green energy processes or other environmentally-sustainable activities.,Document,record_document,maintain
+Prepare proposals or grant applications to obtain project funding.,Create,produce_create,prepare
+Supervise workers performing environmentally sustainable activities.,Manage,direct_manage,supervise
+Evaluate green operations or programs for compliance with standards or regulations.,Evaluate,evaluate_inspect,evaluate
+Develop marketing plans or strategies for environmental initiatives.,Create,produce_create,develop
+Identify environmental concerns.,Analyze,analyze_compute,identify
+Analyze data to determine project feasibility.,Analyze,analyze_compute,analyze
+Present sustainable products or services information to the public.,Communicate,communicate_teach,present
+Develop sustainable organizational policies or practices.,Create,produce_create,develop
+Manage control system activities in organizations.,Manage,direct_manage,manage
+Manage outreach activities.,Manage,direct_manage,manage
+Develop procedures to evaluate organizational activities.,Create,produce_create,develop
+Manage environmental sustainability projects.,Manage,direct_manage,manage
+Analyze financial records to improve efficiency.,Analyze,analyze_compute,analyze
+Monitor performance of organizational members or partners.,Evaluate,evaluate_inspect,monitor
+Develop organizational goals or objectives.,Create,produce_create,develop
+Conduct employee training programs.,Communicate,communicate_teach,conduct
+Hire personnel.,Manage,direct_manage,hire
+Develop marketing plans or strategies.,Create,produce_create,develop
+Determine pricing or monetary policies.,Analyze,analyze_compute,determine
+"Provide basic information to guests, visitors, or clients.",Communicate,communicate_teach,provide
+Determine resource needs.,Analyze,analyze_compute,determine
+Plan facility layouts or designs.,Create,produce_create,plan
+Maintain knowledge of current developments in area of expertise.,Acquire,info_acquisition,maintain
+Gather customer or product information to determine customer needs.,Acquire,info_acquisition,gather
+Collect data about customer needs.,Acquire,info_acquisition,collect
+Implement design or process improvements.,Create,produce_create,implement
+Coordinate operational activities with external stakeholders.,Manage,direct_manage,coordinate
+Resolve customer complaints or problems.,Communicate,communicate_teach,resolve
+Establish interpersonal business relationships to facilitate work activities.,Communicate,communicate_teach,establish
+Compile data or documentation.,Document,record_document,compile
+Supervise employees.,Manage,direct_manage,supervise
+Approve expenditures.,Manage,direct_manage,approve
+Evaluate employee performance.,Evaluate,evaluate_inspect,evaluate
+Analyze forecasting data to improve business decisions.,Analyze,analyze_compute,analyze
+Analyze market research data.,Analyze,analyze_compute,analyze
+Attend training sessions or professional meetings to develop or maintain professional knowledge.,Acquire,info_acquisition,attend
+Conduct market research.,Acquire,info_acquisition,conduct
+Develop promotional materials.,Create,produce_create,develop
+Examine marketing materials to ensure compliance with policies or regulations.,Evaluate,evaluate_inspect,examine
+Negotiate sales or lease agreements for products or services.,Communicate,communicate_teach,negotiate
+Advise customers on technical or procedural issues.,Communicate,communicate_teach,advise
+Manage organizational or project budgets.,Manage,direct_manage,manage
+"Manage operations, research, or logistics projects.",Manage,direct_manage,manage
+Estimate cost or material requirements.,Analyze,analyze_compute,estimate
+Compile operational data.,Document,record_document,compile
+Monitor external affairs or events affecting business operations.,Evaluate,evaluate_inspect,monitor
+Advise others on business or operational matters.,Communicate,communicate_teach,advise
+Conduct opinion surveys or needs assessments.,Acquire,info_acquisition,conduct
+"Evaluate potential of products, technologies, or resources.",Evaluate,evaluate_inspect,evaluate
+Analyze financial records or reports to determine state of operations.,Analyze,analyze_compute,analyze
+Edit documents.,Create,produce_create,edit
+Develop contingency plans to deal with organizational emergencies.,Create,produce_create,develop
+"Develop operating strategies, plans, or procedures.",Create,produce_create,develop
+Maintain operational records.,Document,record_document,maintain
+Direct employee training programs.,Manage,direct_manage,direct
+Develop library or archival databases.,Create,produce_create,develop
+Operate still or video cameras or related equipment.,Operate,operate_physical,operate
+Distribute instructional or library materials.,Operate,operate_physical,distribute
+Prepare proposal documents.,Create,produce_create,prepare
+Examine financial records.,Evaluate,evaluate_inspect,examine
+"Inform the public about policies, services or procedures.",Communicate,communicate_teach,inform
+Develop financial or business plans.,Create,produce_create,develop
+Develop business or market strategies.,Create,produce_create,develop
+Organize special events.,Manage,direct_manage,organize
+"Communicate technical information to suppliers, contractors, or regulatory agencies.",Communicate,communicate_teach,communicate
+"Establish standards for products, processes, or procedures.",Create,produce_create,establish
+Prepare employee work schedules.,Create,produce_create,prepare
+Maintain current knowledge related to work activities.,Acquire,info_acquisition,maintain
+Select resources needed to accomplish tasks.,Manage,direct_manage,select
+"Maintain records, documents, or other files.",Document,record_document,maintain
+Confer with managers to make operational decisions.,Communicate,communicate_teach,confer
+Read documents to gather technical information.,Acquire,info_acquisition,read
+Evaluate information related to legal matters in public or personal records.,Evaluate,evaluate_inspect,evaluate
+Respond to customer problems or complaints.,Communicate,communicate_teach,respond
+Supervise clerical or administrative personnel.,Manage,direct_manage,supervise
+Manage inventories of products or organizational resources.,Manage,direct_manage,manage
+"Purchase materials, equipment, or other resources.",Manage,direct_manage,purchase
+Allocate physical resources within organizations.,Manage,direct_manage,allocate
+Monitor facilities or operational systems.,Evaluate,evaluate_inspect,monitor
+Direct facility maintenance or repair activities.,Manage,direct_manage,direct
+Analyze risks to minimize losses or damages.,Analyze,analyze_compute,analyze
+"Develop safety standards, policies, or procedures.",Create,produce_create,develop
+Communicate with government agencies.,Communicate,communicate_teach,communicate
+Manage organizational security activities.,Manage,direct_manage,manage
+Develop emergency response plans or procedures.,Create,produce_create,develop
+Maintain surveillance of individuals or establishments.,Operate,operate_physical,maintain
+Monitor organizational compliance with regulations.,Evaluate,evaluate_inspect,monitor
+Prepare reports related to compliance matters.,Create,produce_create,prepare
+Respond to emergencies to provide assistance.,Communicate,communicate_teach,respond
+Perform human resources activities.,Manage,direct_manage,perform
+"Train employees on environmental awareness, conservation, or safety topics.",Communicate,communicate_teach,train
+Develop computer or information systems.,Create,produce_create,develop
+Review technical documents to plan work.,Evaluate,evaluate_inspect,review
+Evaluate project designs to determine adequacy or feasibility.,Evaluate,evaluate_inspect,evaluate
+Recruit personnel.,Manage,direct_manage,recruit
+Analyze financial records to improve budgeting or planning.,Analyze,analyze_compute,analyze
+Monitor flow of cash or other resources.,Evaluate,evaluate_inspect,monitor
+Maintain regulatory or compliance documentation.,Document,record_document,maintain
+Communicate organizational information to customers or other stakeholders.,Communicate,communicate_teach,communicate
+Administer compensation or benefits programs.,Manage,direct_manage,administer
+Conduct financial or regulatory audits.,Evaluate,evaluate_inspect,conduct
+Collect payments for goods or services.,Acquire,info_acquisition,collect
+Calculate financial data.,Analyze,analyze_compute,calculate
+Examine financial records to ensure compliance with policies or regulations.,Evaluate,evaluate_inspect,examine
+Monitor organizational procedures to ensure proper functioning.,Evaluate,evaluate_inspect,monitor
+Monitor financial activities.,Evaluate,evaluate_inspect,monitor
+Monitor financial indicators.,Evaluate,evaluate_inspect,monitor
+Identify potential customers.,Analyze,analyze_compute,identify
+Determine operational compliance with regulations or standards.,Evaluate,evaluate_inspect,determine
+Conduct environmental audits.,Evaluate,evaluate_inspect,conduct
+Design industrial processing systems.,Create,produce_create,design
+Direct operational or production activities.,Manage,direct_manage,direct
+Prepare operational reports.,Create,produce_create,prepare
+Maintain personnel records.,Document,record_document,maintain
+Evaluate quality of materials or products.,Evaluate,evaluate_inspect,evaluate
+Develop organizational methods or procedures.,Create,produce_create,develop
+Develop specifications for new products or processes.,Create,produce_create,develop
+Inspect condition or functioning of facilities or equipment.,Evaluate,evaluate_inspect,inspect
+Review details of technical drawings or specifications.,Evaluate,evaluate_inspect,review
+Evaluate new technologies or methods.,Evaluate,evaluate_inspect,evaluate
+Review documents or materials for compliance with policies or regulations.,Evaluate,evaluate_inspect,review
+Document organizational or operational procedures.,Document,record_document,document
+Direct green energy production operations.,Manage,direct_manage,direct
+Communicate green energy production information.,Communicate,communicate_teach,communicate
+Maintain green energy production plant equipment.,Operate,operate_physical,maintain
+Prepare forms or applications.,Create,produce_create,prepare
+"Negotiate contracts for environmental remediation, green energy, or renewable resources.",Communicate,communicate_teach,negotiate
+"Monitor green energy equipment, systems, or facilities.",Evaluate,evaluate_inspect,monitor
+Identify opportunities to improve operational efficiency.,Analyze,analyze_compute,identify
+"Develop operating strategies, plans, or procedures for green or sustainable operations.",Create,produce_create,develop
+Prepare operational budgets for green energy or other green operations.,Create,produce_create,prepare
+Direct maintenance and repair activities in green energy production facilities.,Manage,direct_manage,direct
+Inspect operations of green energy facilities.,Evaluate,evaluate_inspect,inspect
+Operate green energy production equipment.,Operate,operate_physical,operate
+Evaluate energy production data.,Evaluate,evaluate_inspect,evaluate
+Test green technologies or processes.,Evaluate,evaluate_inspect,test
+Perform manual service or maintenance tasks.,Operate,operate_physical,perform
+Monitor equipment operation to ensure proper functioning.,Evaluate,evaluate_inspect,monitor
+Operate communications equipment or systems.,Operate,operate_physical,operate
+Schedule product or material transportation.,Manage,direct_manage,schedule
+Monitor environment to ensure safety.,Evaluate,evaluate_inspect,monitor
+Enforce rules or regulations.,Manage,direct_manage,enforce
+Advise others on green energy or related technologies.,Communicate,communicate_teach,advise
+"Interview employees, customers, or others to collect information.",Acquire,info_acquisition,interview
+Implement transportation changes to reduce environmental impact.,Create,produce_create,implement
+Verify information or specifications.,Evaluate,evaluate_inspect,verify
+Monitor activities of individuals to ensure safety or compliance with rules.,Evaluate,evaluate_inspect,monitor
+Monitor inventories of products or materials.,Evaluate,evaluate_inspect,monitor
+Evaluate environmental impact of operational or development activities.,Evaluate,evaluate_inspect,evaluate
+Estimate labor requirements.,Analyze,analyze_compute,estimate
+Analyze data to inform personnel decisions.,Analyze,analyze_compute,analyze
+Negotiate labor disputes.,Communicate,communicate_teach,negotiate
+Administer standardized physical or psychological tests.,Manage,direct_manage,administer
+Advise others on career or personal development.,Communicate,communicate_teach,advise
+Investigate industrial or transportation accidents.,Evaluate,evaluate_inspect,investigate
+"Evaluate training programs, instructors, or materials.",Evaluate,evaluate_inspect,evaluate
+Prepare graphics or other visual representations of information.,Create,produce_create,prepare
+Develop training materials.,Create,produce_create,develop
+Manage agricultural or forestry operations.,Manage,direct_manage,manage
+Develop agricultural methods.,Create,produce_create,develop
+"Perform manual agricultural, aquacultural, or horticultural tasks.",Operate,operate_physical,perform
+"Test materials, solutions, or samples.",Evaluate,evaluate_inspect,test
+Evaluate quality of plants or crops.,Evaluate,evaluate_inspect,evaluate
+"Examine animals to detect illness, injury or other problems.",Evaluate,evaluate_inspect,examine
+"Direct activities of agricultural, forestry, or fishery employees.",Manage,direct_manage,direct
+"Estimate labor or resource requirements for forestry, fishing, or agricultural operations.",Analyze,analyze_compute,estimate
+Monitor operational quality or safety.,Evaluate,evaluate_inspect,monitor
+Submit financial applications.,Document,record_document,submit
+Develop environmental remediation or protection plans.,Create,produce_create,develop
+Estimate green project costs.,Analyze,analyze_compute,estimate
+Negotiate project specifications.,Communicate,communicate_teach,negotiate
+Model operational processes.,Analyze,analyze_compute,model
+Review blueprints or other instructions to determine operational methods or sequences.,Evaluate,evaluate_inspect,review
+"Develop educational goals, standards, policies, or procedures.",Create,produce_create,develop
+Teach classes in area of specialization.,Communicate,communicate_teach,teach
+Evaluate student work.,Evaluate,evaluate_inspect,evaluate
+Collaborate with other professionals to develop education or assistance programs.,Communicate,communicate_teach,collaborate
+Administer tests to assess educational needs or progress.,Manage,direct_manage,administer
+Prepare tests.,Create,produce_create,prepare
+Prepare operational reports or records.,Create,produce_create,prepare
+Prepare reports detailing student activities or performance.,Create,produce_create,prepare
+Monitor student performance.,Evaluate,evaluate_inspect,monitor
+Advise students on academic or career matters.,Communicate,communicate_teach,advise
+Estimate demand for products or services.,Analyze,analyze_compute,estimate
+Develop technical processes to improve the efficiency of biofuel production.,Create,produce_create,develop
+Manage guest services.,Manage,direct_manage,manage
+Advise communities or institutions regarding health or safety issues.,Communicate,communicate_teach,advise
+Create new recipes or food presentations.,Create,produce_create,create
+Plan menu options.,Create,produce_create,plan
+Schedule dining reservations.,Manage,direct_manage,schedule
+Arrange services or reservations for patrons.,Manage,direct_manage,arrange
+Coordinate enforcement of laws or regulations.,Manage,direct_manage,coordinate
+Monitor resources.,Evaluate,evaluate_inspect,monitor
+Signal others to coordinate work activities.,Communicate,communicate_teach,signal
+"Apply bandages, dressings, or splints.",Operate,operate_physical,apply
+Assign duties or work schedules to employees.,Manage,direct_manage,assign
+Reconcile records of sales or other financial transactions.,Document,record_document,reconcile
+Clean equipment or supplies.,Operate,operate_physical,clean
+Clean facilities or sites.,Operate,operate_physical,clean
+"Explain regulations, policies, or procedures.",Communicate,communicate_teach,explain
+Provide attraction or event information to patrons.,Communicate,communicate_teach,provide
+Conduct eligibility or selection interviews.,Manage,direct_manage,conduct
+Operate vehicles or material-moving equipment.,Operate,operate_physical,operate
+Explain use of products or services.,Communicate,communicate_teach,explain
+"Plan conferences, programs, or special events.",Manage,direct_manage,plan
+Plan community programs or activities for the general public.,Manage,direct_manage,plan
+Lead classes or community events.,Manage,direct_manage,lead
+Maintain supply or equipment inventories.,Document,record_document,maintain
+Exchange information with colleagues.,Communicate,communicate_teach,exchange
+Train service staff.,Manage,direct_manage,train
+Confer with personnel to coordinate business operations.,Communicate,communicate_teach,confer
+Guide patrons on tours.,Communicate,communicate_teach,guide
+Assign resources or facilities to patrons or employees.,Manage,direct_manage,assign
+Monitor animal behavior or condition.,Evaluate,evaluate_inspect,monitor
+Advise others about land management or conservation.,Communicate,communicate_teach,advise
+Conduct research of processes in natural or industrial ecosystems.,Acquire,info_acquisition,conduct
+Perform clerical work in medical settings.,Document,record_document,perform
+Analyze data to identify or resolve operational problems.,Analyze,analyze_compute,analyze
+Calculate numerical data for medical activities.,Analyze,analyze_compute,calculate
+Prepare medications or medical solutions.,Create,produce_create,prepare
+Instruct patients in the use of assistive equipment.,Communicate,communicate_teach,instruct
+Interpret research or operational data.,Analyze,analyze_compute,interpret
+Code data or other information.,Document,record_document,code
+Evaluate characteristics of individuals to determine needs or eligibility.,Evaluate,evaluate_inspect,evaluate
+Teach safety standards or environmental compliance methods.,Communicate,communicate_teach,teach
+"Provide counsel, comfort, or encouragement to individuals or families.",Communicate,communicate_teach,provide
+Deliver items.,Operate,operate_physical,deliver
+Complete documentation required by programs or regulations.,Document,record_document,complete
+Coordinate regulatory documentation activities.,Manage,direct_manage,coordinate
+"Provide health and wellness advice to patients, program participants, or caregivers.",Communicate,communicate_teach,provide
+Develop plans for programs or services.,Create,produce_create,develop
+Inspect equipment to ensure proper functioning.,Evaluate,evaluate_inspect,inspect
+Arrange facility schedules.,Manage,direct_manage,arrange
+Supervise service workers.,Manage,direct_manage,supervise
+Manage budgets for personal services operations.,Manage,direct_manage,manage
+"Order materials, supplies, or equipment.",Manage,direct_manage,order
+Maintain financial or account records.,Document,record_document,maintain
+Verify patron or staff credentials.,Evaluate,evaluate_inspect,verify
+Maintain client information or service records.,Document,record_document,maintain
+Maintain professional knowledge or certifications.,Acquire,info_acquisition,maintain
+Schedule appointments.,Manage,direct_manage,schedule
+Sell products or services.,Communicate,communicate_teach,sell
+Manage documentation to ensure organization or accuracy.,Manage,direct_manage,manage
+Collaborate on research activities with scientists or technical specialists.,Communicate,communicate_teach,collaborate
+Identify actions needed to bring properties or facilities into compliance with regulations.,Analyze,analyze_compute,identify
+Verify accuracy of records.,Evaluate,evaluate_inspect,verify
+Stay informed about current developments in field of specialization.,Acquire,info_acquisition,stay
+Update knowledge about emerging industry or technology trends.,Document,record_document,update
+Coordinate reporting or editing activities.,Manage,direct_manage,coordinate
+Investigate crimes committed within organizations.,Evaluate,evaluate_inspect,investigate
+Investigate illegal or suspicious activities.,Evaluate,evaluate_inspect,investigate
+Plan environmental research.,Acquire,info_acquisition,plan
+Dispose of hazardous materials.,Operate,operate_physical,dispose
+Coordinate operational activities.,Manage,direct_manage,coordinate
+Correspond with customers to answer questions or resolve complaints.,Communicate,communicate_teach,correspond
+Develop business relationships.,Create,produce_create,develop
+Arrange collective bargaining agreements.,Communicate,communicate_teach,arrange
+Update professional knowledge.,Document,record_document,update
+Implement financial decisions.,Manage,direct_manage,implement
+"Market products, services, or events.",Communicate,communicate_teach,market
+Prepare financial documents.,Create,produce_create,prepare
+Recommend investments to clients.,Communicate,communicate_teach,recommend
+Inspect facilities or equipment to ensure specifications are met.,Evaluate,evaluate_inspect,inspect
+Administer personnel recruitment or hiring activities.,Manage,direct_manage,administer
+Perform marketing activities.,Communicate,communicate_teach,perform
+Distribute promotional literature or samples to customers.,Operate,operate_physical,distribute
+Purchase products or services.,Manage,direct_manage,purchase
+Negotiate contracts with clients or service providers.,Communicate,communicate_teach,negotiate
+Execute sales or other financial transactions.,Document,record_document,execute
+Coordinate logistics or other business operations.,Manage,direct_manage,coordinate
+Calculate data to inform organizational operations.,Analyze,analyze_compute,calculate
+Maintain data in information systems or databases.,Document,record_document,maintain
+Determine the value of goods or services.,Analyze,analyze_compute,determine
+Evaluate condition of properties.,Evaluate,evaluate_inspect,evaluate
+Research issues related to the environment or sustainable business practices.,Acquire,info_acquisition,research
+Evaluate logistics methods to reduce environmental impact.,Evaluate,evaluate_inspect,evaluate
+Identify strategic business investment opportunities.,Analyze,analyze_compute,identify
+Analyze consumer trends.,Analyze,analyze_compute,analyze
+Purchase stocks of merchandise or supplies.,Manage,direct_manage,purchase
+Obtain information about goods or services.,Acquire,info_acquisition,obtain
+Analyze market conditions or trends.,Analyze,analyze_compute,analyze
+Authorize financial actions.,Manage,direct_manage,authorize
+Disburse funds from clients accounts to creditors.,Manage,direct_manage,disburse
+"Discuss business strategies, practices, or policies with managers.",Communicate,communicate_teach,discuss
+Train personnel to enhance job skills.,Communicate,communicate_teach,train
+Provide information to coworkers.,Communicate,communicate_teach,provide
+Create marketing materials.,Create,produce_create,create
+Analyze business or financial data.,Analyze,analyze_compute,analyze
+Evaluate applicable laws and regulations to determine impact on organizational activities.,Evaluate,evaluate_inspect,evaluate
+Monitor organizational processes.,Evaluate,evaluate_inspect,monitor
+"Pay charges, fees, or taxes.",Manage,direct_manage,pay
+Develop technical specifications for systems or equipment.,Create,produce_create,develop
+Investigate legal issues.,Acquire,info_acquisition,investigate
+Prepare legal or investigatory documentation.,Create,produce_create,prepare
+Estimate costs of goods or services.,Analyze,analyze_compute,estimate
+Appraise property values.,Evaluate,evaluate_inspect,appraise
+"Interview witnesses, suspects, or claimants.",Acquire,info_acquisition,interview
+Negotiate agreements to resolve disputes.,Communicate,communicate_teach,negotiate
+Advise others on financial matters.,Communicate,communicate_teach,advise
+Apply information technology to solve business or other applied problems.,Create,produce_create,apply
+Report information to managers or other personnel.,Communicate,communicate_teach,report
+Collect evidence for legal proceedings.,Acquire,info_acquisition,collect
+Meet with individuals involved in legal processes to provide information and clarify issues.,Communicate,communicate_teach,meet
+Present business-related information to audiences.,Communicate,communicate_teach,present
+Confer with others about financial matters.,Communicate,communicate_teach,confer
+Gather financial records.,Acquire,info_acquisition,gather
+Verify application data to determine program eligibility.,Evaluate,evaluate_inspect,verify
+Inspect motor vehicles.,Evaluate,evaluate_inspect,inspect
+Inspect mechanical components of vehicles to identify problems.,Evaluate,evaluate_inspect,inspect
+Inspect structural components of vehicles to identify problems.,Evaluate,evaluate_inspect,inspect
+Prepare contracts or other transaction documents.,Create,produce_create,prepare
+Communicate with management or other staff to resolve problems.,Communicate,communicate_teach,communicate
+Inform individuals or organizations of status or findings.,Communicate,communicate_teach,inform
+Review license or permit applications.,Evaluate,evaluate_inspect,review
+Prepare research reports.,Create,produce_create,prepare
+"Inspect facilities, equipment or supplies to ensure conformance to standards.",Evaluate,evaluate_inspect,inspect
+Prepare regulatory or compliance documentation.,Create,produce_create,prepare
+Monitor the handling of hazardous materials or medical wastes.,Evaluate,evaluate_inspect,monitor
+Update knowledge of legal or regulatory environments.,Document,record_document,update
+Gather physical survey data.,Acquire,info_acquisition,gather
+Compile technical information or documentation.,Document,record_document,compile
+Examine product information to ensure compliance with regulations.,Evaluate,evaluate_inspect,examine
+Communicate with the public on environmental issues.,Communicate,communicate_teach,communicate
+Communicate results of environmental research.,Communicate,communicate_teach,communicate
+Analyze environmental regulations to ensure organizational compliance.,Analyze,analyze_compute,analyze
+Test chemical or physical characteristics of materials or products.,Evaluate,evaluate_inspect,test
+Test fluids to identify contamination or other problems.,Evaluate,evaluate_inspect,test
+Maintain facilities.,Operate,operate_physical,maintain
+Maintain mechanical equipment.,Operate,operate_physical,maintain
+Maintain electronic equipment.,Operate,operate_physical,maintain
+Evaluate personnel practices to ensure adherence to regulations.,Evaluate,evaluate_inspect,evaluate
+Conduct surveys in organizations.,Acquire,info_acquisition,conduct
+Advise others on human resources topics.,Communicate,communicate_teach,advise
+Train personnel on managerial topics.,Manage,direct_manage,train
+Coordinate personnel recruitment activities.,Manage,direct_manage,coordinate
+Verify accuracy of financial information.,Evaluate,evaluate_inspect,verify
+Document information related to legal proceedings.,Document,record_document,document
+Obtain documentation to authorize activities.,Acquire,info_acquisition,obtain
+Train personnel in organizational or compliance procedures.,Manage,direct_manage,train
+Examine financial records or processes.,Evaluate,evaluate_inspect,examine
+Oversee business processes.,Manage,direct_manage,oversee
+Monitor business indicators.,Evaluate,evaluate_inspect,monitor
+"Investigate system, equipment, or product failures.",Evaluate,evaluate_inspect,investigate
+Recommend changes or corrective procedures.,Communicate,communicate_teach,recommend
+"Prepare documentation for contracts, transactions, or regulatory compliance.",Create,produce_create,prepare
+Advise others on logistics topics.,Communicate,communicate_teach,advise
+"Assess the cost effectiveness of products, projects, or services.",Evaluate,evaluate_inspect,assess
+Develop business or financial information systems.,Create,produce_create,develop
+Establish business management methods.,Create,produce_create,establish
+Collect data about project sites.,Acquire,info_acquisition,collect
+Inspect work sites to determine condition or necessary repairs.,Evaluate,evaluate_inspect,inspect
+Evaluate effectiveness of personnel policies or practices.,Evaluate,evaluate_inspect,evaluate
+Assess risks to business operations.,Evaluate,evaluate_inspect,assess
+Measure effectiveness of business strategies or practices.,Evaluate,evaluate_inspect,measure
+Analyze logistics processes.,Analyze,analyze_compute,analyze
+Advise others on analytical techniques.,Communicate,communicate_teach,advise
+"Analyze jobs using observation, survey, or interview techniques.",Analyze,analyze_compute,analyze
+Apply mathematical models of financial or business conditions.,Analyze,analyze_compute,apply
+Develop sustainable business strategies or practices.,Create,produce_create,develop
+Analyze industry trends.,Analyze,analyze_compute,analyze
+"Calculate specific material, equipment, or labor requirements for production.",Analyze,analyze_compute,calculate
+Develop financial analysis methods.,Create,produce_create,develop
+Collaborate with others to resolve information technology issues.,Communicate,communicate_teach,collaborate
+Prepare scientific or technical reports or presentations.,Create,produce_create,prepare
+Develop detailed project plans.,Create,produce_create,develop
+Participate in staffing decisions.,Manage,direct_manage,participate
+Manage information technology projects or system activities.,Manage,direct_manage,manage
+Supervise information technology personnel.,Manage,direct_manage,supervise
+Coordinate resource procurement activities.,Manage,direct_manage,coordinate
+Gather organizational performance information.,Acquire,info_acquisition,gather
+Present work to clients for approval.,Communicate,communicate_teach,present
+Edit written materials.,Create,produce_create,edit
+Conduct scientific research of organizational behavior or processes.,Acquire,info_acquisition,conduct
+Promote educational institutions or programs.,Communicate,communicate_teach,promote
+Develop program goals or plans.,Create,produce_create,develop
+Interpret financial information for others.,Communicate,communicate_teach,interpret
+Direct fundraising or financing activities.,Manage,direct_manage,direct
+Prepare informational or reference materials.,Create,produce_create,prepare
+Coordinate training activities.,Manage,direct_manage,coordinate
+Provide customer service to clients or users.,Communicate,communicate_teach,provide
+Evaluate utility of software or hardware technologies.,Evaluate,evaluate_inspect,evaluate
+Maintain the inventory of equipment.,Document,record_document,maintain
+Develop guidelines for system implementation.,Create,produce_create,develop
+Collaborate with others to determine design specifications or details.,Communicate,communicate_teach,collaborate
+Collaborate with others to develop or implement marketing strategies.,Communicate,communicate_teach,collaborate
+Develop computer or information security policies or procedures.,Create,produce_create,develop
+Implement advertising or marketing initiatives.,Communicate,communicate_teach,implement
+Develop specifications or procedures for website development or maintenance.,Create,produce_create,develop
+Design websites or web applications.,Create,produce_create,design
+Write computer programming code.,Create,produce_create,write
+Coordinate project activities with other personnel or departments.,Manage,direct_manage,coordinate
+Analyze market or customer related data.,Analyze,analyze_compute,analyze
+Design computer modeling or simulation programs.,Create,produce_create,design
+Analyze website or related online data to track trends or usage.,Analyze,analyze_compute,analyze
+Recommend changes to improve computer or information systems.,Communicate,communicate_teach,recommend
+Develop performance metrics or standards related to information technology.,Create,produce_create,develop
+Analyze budgetary or accounting data.,Analyze,analyze_compute,analyze
+"Create images of data, locations, or products.",Create,produce_create,create
+"Inspect facilities to ensure compliance with safety, quality, or service standards.",Evaluate,evaluate_inspect,inspect
+Develop diagrams or flow charts of system operation.,Create,produce_create,develop
+Design electronic or computer equipment or instrumentation.,Create,produce_create,design
+Install instrumentation or electronic equipment or systems.,Operate,operate_physical,install
+Repair electronic equipment.,Operate,operate_physical,repair
+Monitor operations to ensure compliance with safety or security policies or regulations.,Evaluate,evaluate_inspect,monitor
+Analyze financial information.,Analyze,analyze_compute,analyze
+Assess financial status of clients.,Evaluate,evaluate_inspect,assess
+Calculate tax information.,Analyze,analyze_compute,calculate
+Create databases to store electronic data.,Create,produce_create,create
+Determine operational procedures.,Create,produce_create,determine
+Write reports or evaluations.,Create,produce_create,write
+"Forecast economic, political, or social trends.",Analyze,analyze_compute,forecast
+Inspect items for damage or defects.,Evaluate,evaluate_inspect,inspect
+Gather information in order to provide services to clients.,Acquire,info_acquisition,gather
+Enter information into databases or software programs.,Document,record_document,enter
+Record images needed to address work issues.,Document,record_document,record
+Update computer database information.,Document,record_document,update
+Write informational material.,Create,produce_create,write
+Explain financial information to customers.,Communicate,communicate_teach,explain
+Advise real estate clients.,Communicate,communicate_teach,advise
+Collaborate with others in marketing activities.,Communicate,communicate_teach,collaborate
+Interview clients to gather financial information.,Acquire,info_acquisition,interview
+Educate clients on financial planning topics.,Communicate,communicate_teach,educate
+Compute debt repayment schedules.,Analyze,analyze_compute,compute
+Analyze health-related data.,Analyze,analyze_compute,analyze
+Develop financial plans for clients.,Create,produce_create,develop
+Refer clients to community or social service programs.,Communicate,communicate_teach,refer
+Recommend products or services to customers.,Communicate,communicate_teach,recommend
+Detain suspects or witnesses.,Operate,operate_physical,detain
+Apprehend criminal suspects.,Operate,operate_physical,apprehend
+Troubleshoot issues with computer applications or systems.,Analyze,analyze_compute,troubleshoot
+Provide technical support for software maintenance or use.,Communicate,communicate_teach,provide
+Monitor computer system performance to ensure proper operation.,Evaluate,evaluate_inspect,monitor
+Test software performance.,Evaluate,evaluate_inspect,test
+Coordinate software or hardware installation.,Manage,direct_manage,coordinate
+Configure computer networks.,Create,produce_create,configure
+Modify software programs to improve performance.,Create,produce_create,modify
+Identify information technology project resource requirements.,Analyze,analyze_compute,identify
+Train others in computer interface or software use.,Communicate,communicate_teach,train
+Analyze project data to determine specifications or requirements.,Analyze,analyze_compute,analyze
+Design integrated computer systems.,Create,produce_create,design
+Develop testing routines or procedures.,Create,produce_create,develop
+Document design or development procedures.,Document,record_document,document
+Provide recommendations to others about computer hardware.,Communicate,communicate_teach,provide
+Estimate time or monetary resources needed to complete projects.,Analyze,analyze_compute,estimate
+Select production input materials.,Operate,operate_physical,select
+Test computer system operations to ensure proper functioning.,Evaluate,evaluate_inspect,test
+Design healthcare-related software applications.,Create,produce_create,design
+Provide technical information or assistance to public.,Communicate,communicate_teach,provide
+Communicate project information to others.,Communicate,communicate_teach,communicate
+Install computer software.,Operate,operate_physical,install
+Implement security measures for computer or information systems.,Create,produce_create,implement
+Design research studies to obtain scientific information.,Create,produce_create,design
+Document operational activities.,Document,record_document,document
+Monitor the security of digital information.,Evaluate,evaluate_inspect,monitor
+Document operational procedures.,Document,record_document,document
+Analyze data to identify trends or relationships among variables.,Analyze,analyze_compute,analyze
+Monitor the performance of computer networks.,Evaluate,evaluate_inspect,monitor
+Maintain computer hardware.,Operate,operate_physical,maintain
+Manage budgets for appropriate resource allocation.,Manage,direct_manage,manage
+Develop specifications for computer network operation.,Create,produce_create,develop
+Document network-related activities or tasks.,Document,record_document,document
+Resolve computer network problems.,Analyze,analyze_compute,resolve
+Install computer hardware.,Operate,operate_physical,install
+Test computer hardware performance.,Evaluate,evaluate_inspect,test
+"Analyze security of systems, network, or data.",Analyze,analyze_compute,analyze
+Create electronic data backup to prevent loss of information.,Create,produce_create,create
+Prepare instruction manuals.,Create,produce_create,prepare
+Provide technical support for computer network issues.,Communicate,communicate_teach,provide
+Resolve computer software problems.,Analyze,analyze_compute,resolve
+Teach others to use computer equipment or hardware.,Communicate,communicate_teach,teach
+Maintain computer networks to enhance performance and user access.,Operate,operate_physical,maintain
+Develop models of information or communications systems.,Create,produce_create,develop
+Maintain contingency plans for disaster recovery.,Operate,operate_physical,maintain
+Develop information communication procedures.,Create,produce_create,develop
+Manage financial activities of the organization.,Manage,direct_manage,manage
+Document technical specifications or requirements.,Document,record_document,document
+Assess database performance.,Evaluate,evaluate_inspect,assess
+Develop database parameters or specifications.,Create,produce_create,develop
+Develop procedures for data management.,Create,produce_create,develop
+Design software applications.,Create,produce_create,design
+Evaluate data quality.,Evaluate,evaluate_inspect,evaluate
+Apply new technologies to improve work processes.,Create,produce_create,apply
+Develop computer or online applications.,Create,produce_create,develop
+Apply mathematical principles or statistical approaches to solve problems in scientific or applied fields.,Analyze,analyze_compute,apply
+Prepare data for analysis.,Create,produce_create,prepare
+Report maintenance or equipment problems to appropriate personnel.,Communicate,communicate_teach,report
+Update website content.,Document,record_document,update
+"Analyze operational data to evaluate operations, processes or products.",Analyze,analyze_compute,analyze
+Create images or other visual displays.,Create,produce_create,create
+Design video game features or details.,Create,produce_create,design
+Prepare analytical reports.,Create,produce_create,prepare
+Develop scientific or mathematical models.,Create,produce_create,develop
+Analyze Geographic Information Systems (GIS) data for use in green applications.,Analyze,analyze_compute,analyze
+Monitor operational activities to ensure compliance with regulations or standard operating procedures.,Evaluate,evaluate_inspect,monitor
+Retrieve information from electronic sources.,Acquire,info_acquisition,retrieve
+Develop procedures for data entry or processing.,Create,produce_create,develop
+Analyze costs and benefits of proposed designs or projects.,Analyze,analyze_compute,analyze
+Evaluate characteristics of equipment or systems.,Evaluate,evaluate_inspect,evaluate
+"Test performance of electrical, electronic, mechanical, or integrated systems or equipment.",Evaluate,evaluate_inspect,test
+Discuss design or technical features of products or services with technical personnel.,Communicate,communicate_teach,discuss
+Prepare technical or operational reports.,Create,produce_create,prepare
+Interpret design or operational test results.,Analyze,analyze_compute,interpret
+"Search files, databases or reference materials to obtain needed information.",Acquire,info_acquisition,search
+Examine records or other types of data to investigate criminal activities.,Analyze,analyze_compute,examine
+Establish work standards.,Create,produce_create,establish
+Develop software or computer applications.,Create,produce_create,develop
+Provide technical guidance to other personnel.,Communicate,communicate_teach,provide
+Monitor processes for compliance with standards.,Evaluate,evaluate_inspect,monitor
+Train personnel in technical or scientific procedures.,Communicate,communicate_teach,train
+Plan production or operational procedures or sequences.,Create,produce_create,plan
+Establish operational policies.,Create,produce_create,establish
+Develop technical methods or processes.,Create,produce_create,develop
+Maintain computer equipment or software.,Operate,operate_physical,maintain
+Maintain knowledge of laws or regulations.,Acquire,info_acquisition,maintain
+Analyze traffic data.,Analyze,analyze_compute,analyze
+Translate information for others.,Communicate,communicate_teach,translate
+Enter codes or other information into computers.,Document,record_document,enter
+Inspect products or operations to ensure that standards are met.,Evaluate,evaluate_inspect,inspect
+Monitor financial information.,Evaluate,evaluate_inspect,monitor
+Present research results to others.,Communicate,communicate_teach,present
+Determine appropriate methods for data analysis.,Analyze,analyze_compute,determine
+Review professional literature to maintain professional knowledge.,Evaluate,evaluate_inspect,review
+Train others on work processes.,Communicate,communicate_teach,train
+Evaluate technical data to determine effect on designs or plans.,Evaluate,evaluate_inspect,evaluate
+Write grant proposals.,Create,produce_create,write
+"Collect information from people through observation, interviews, or surveys.",Acquire,info_acquisition,collect
+Update technical knowledge.,Document,record_document,update
+Collect archival data.,Acquire,info_acquisition,collect
+Analyze operational or research data.,Analyze,analyze_compute,analyze
+Confer with coworkers to coordinate work activities.,Communicate,communicate_teach,confer
+Develop data analysis or data management procedures.,Create,produce_create,develop
+Prepare research or technical reports.,Create,produce_create,prepare
+Train personnel.,Manage,direct_manage,train
+"Format digital documents, data, or images.",Document,record_document,format
+Document technical design details.,Document,record_document,document
+Discuss designs or plans with clients.,Communicate,communicate_teach,discuss
+"Prepare contracts, disclosures, or applications.",Create,produce_create,prepare
+Design structures or facilities.,Create,produce_create,design
+Prepare procedural documents.,Create,produce_create,prepare
+Design water conservation systems.,Create,produce_create,design
+Incorporate green features into the design of structures or facilities.,Create,produce_create,incorporate
+Investigate the environmental impact of projects.,Evaluate,evaluate_inspect,investigate
+Create graphical representations of structures or landscapes.,Create,produce_create,create
+Direct design or development activities.,Manage,direct_manage,direct
+Prepare detailed work plans.,Create,produce_create,prepare
+Inspect facilities or sites to determine if they meet specifications or standards.,Evaluate,evaluate_inspect,inspect
+Supervise engineering or other technical personnel.,Manage,direct_manage,supervise
+Confer with technical personnel to prepare designs or operational plans.,Communicate,communicate_teach,confer
+Select project materials.,Create,produce_create,select
+Create maps.,Create,produce_create,create
+"Analyze physical, survey, or geographic data.",Analyze,analyze_compute,analyze
+Explain project details to the general public.,Communicate,communicate_teach,explain
+Advise customers on the use of products or services.,Communicate,communicate_teach,advise
+Calculate geographic positions from survey data.,Analyze,analyze_compute,calculate
+Survey land or bodies of water to measure or determine features.,Evaluate,evaluate_inspect,survey
+Inspect finished products to locate flaws.,Evaluate,evaluate_inspect,inspect
+Determine operational methods.,Create,produce_create,determine
+"Select tools, equipment, or technologies for use in operations or projects.",Operate,operate_physical,select
+Operate computer systems.,Operate,operate_physical,operate
+Determine design criteria or specifications.,Create,produce_create,determine
+Verify mathematical calculations.,Evaluate,evaluate_inspect,verify
+Direct surveying activities.,Manage,direct_manage,direct
+"Coordinate activities with suppliers, contractors, clients, or other departments.",Manage,direct_manage,coordinate
+Calibrate scientific or technical equipment.,Operate,operate_physical,calibrate
+Train personnel on proper operational procedures.,Operate,operate_physical,train
+Determine operational criteria or specifications.,Evaluate,evaluate_inspect,determine
+Research topics in area of expertise.,Acquire,info_acquisition,research
+Evaluate designs or specifications to ensure quality.,Evaluate,evaluate_inspect,evaluate
+Maintain operational records or records systems.,Document,record_document,maintain
+Create models of engineering designs or methods.,Create,produce_create,create
+Analyze design or requirements information for mechanical equipment or systems.,Analyze,analyze_compute,analyze
+Direct quality control activities.,Manage,direct_manage,direct
+Design systems to reduce harmful emissions.,Create,produce_create,design
+Research design or application of green technologies.,Acquire,info_acquisition,research
+Design electromechanical equipment or systems.,Create,produce_create,design
+Inspect equipment or systems.,Evaluate,evaluate_inspect,inspect
+Confer with other personnel to resolve design or operational problems.,Communicate,communicate_teach,confer
+Create graphical representations of mechanical equipment.,Create,produce_create,create
+Direct construction activities.,Manage,direct_manage,direct
+Advise others regarding green practices or environmental concerns.,Communicate,communicate_teach,advise
+Direct industrial production activities.,Manage,direct_manage,direct
+Develop operational methods or processes that use green materials or emphasize sustainability.,Create,produce_create,develop
+Direct environmental development activities.,Manage,direct_manage,direct
+"Recommend technical design or process changes to improve efficiency, quality, or performance.",Communicate,communicate_teach,recommend
+Design medical devices or appliances.,Create,produce_create,design
+Research engineering aspects of biological or chemical processes.,Acquire,info_acquisition,research
+Devise research or testing protocols.,Create,produce_create,devise
+Estimate operational costs.,Analyze,analyze_compute,estimate
+Estimate time requirements for development or production projects.,Analyze,analyze_compute,estimate
+Prepare technical reports for internal use.,Create,produce_create,prepare
+Determine causes of operational problems or failures.,Evaluate,evaluate_inspect,determine
+Monitor the productivity or efficiency of industrial operations.,Evaluate,evaluate_inspect,monitor
+Conduct validation tests of equipment or processes.,Evaluate,evaluate_inspect,conduct
+Research industrial processes or operations.,Acquire,info_acquisition,research
+Design control systems for mechanical or other equipment.,Create,produce_create,design
+Estimate technical or resource requirements for development or production projects.,Analyze,analyze_compute,estimate
+Test characteristics of materials or structures.,Evaluate,evaluate_inspect,test
+Coordinate safety or regulatory compliance activities.,Manage,direct_manage,coordinate
+Create graphical representations of civil structures.,Create,produce_create,create
+Schedule operational activities.,Manage,direct_manage,schedule
+Prepare project budgets.,Create,produce_create,prepare
+Advise others on health and safety issues.,Communicate,communicate_teach,advise
+Direct equipment maintenance or repair activities.,Manage,direct_manage,direct
+Design civil structures or systems.,Create,produce_create,design
+Design environmental control systems.,Create,produce_create,design
+Evaluate plans or specifications to determine technological or environmental implications.,Evaluate,evaluate_inspect,evaluate
+Research advanced engineering designs or applications.,Acquire,info_acquisition,research
+Analyze design requirements for computer or electronics systems.,Analyze,analyze_compute,analyze
+Create physical models or prototypes.,Create,produce_create,create
+Assemble equipment or components.,Operate,operate_physical,assemble
+Design electrical equipment or systems.,Create,produce_create,design
+Direct installation activities.,Manage,direct_manage,direct
+Test products for functionality or quality.,Evaluate,evaluate_inspect,test
+Create electrical schematics.,Create,produce_create,create
+Design energy-efficient equipment or systems.,Create,produce_create,design
+Design alternative energy systems.,Create,produce_create,design
+Inspect operational processes.,Evaluate,evaluate_inspect,inspect
+Develop software or applications for scientific or technical use.,Create,produce_create,develop
+Create schematic drawings for electronics.,Create,produce_create,create
+Assess product or process usefulness.,Evaluate,evaluate_inspect,assess
+Monitor activities affecting environmental quality.,Evaluate,evaluate_inspect,monitor
+Package materials for transport.,Operate,operate_physical,package
+Assist engineers or scientists with research.,Acquire,info_acquisition,assist
+Prepare research or technical reports on environmental issues.,Create,produce_create,prepare
+Attend conferences or workshops to maintain professional knowledge.,Acquire,info_acquisition,attend
+Investigate safety of work environment.,Evaluate,evaluate_inspect,investigate
+Research product safety.,Acquire,info_acquisition,research
+Document design or operational test results.,Document,record_document,document
+"Explain engineering drawings, specifications, or other technical information.",Communicate,communicate_teach,explain
+Test facilities for environmental hazards.,Evaluate,evaluate_inspect,test
+Research human performance or health factors related to engineering or design activities.,Acquire,info_acquisition,research
+Design industrial equipment.,Create,produce_create,design
+Fabricate devices or components.,Operate,operate_physical,fabricate
+Monitor work environment to ensure safety or adherence to specifications.,Evaluate,evaluate_inspect,monitor
+Inspect safety equipment to ensure proper functioning.,Evaluate,evaluate_inspect,inspect
+Inspect equipment to ensure safety or proper functioning.,Evaluate,evaluate_inspect,inspect
+Install safety or support equipment.,Operate,operate_physical,install
+Evaluate construction projects to determine compliance with external standards or regulations.,Evaluate,evaluate_inspect,evaluate
+Examine documents to verify adherence to requirements.,Evaluate,evaluate_inspect,examine
+Develop fire safety or prevention programs or plans.,Create,produce_create,develop
+Examine debris to obtain information about causes of fires.,Evaluate,evaluate_inspect,examine
+"Conduct research to inform art, designs, or other work.",Acquire,info_acquisition,conduct
+Create graphical representations of industrial production systems.,Create,produce_create,create
+Analyze test or validation data.,Analyze,analyze_compute,analyze
+Resolve operational performance problems.,Analyze,analyze_compute,resolve
+Maintain test equipment.,Operate,operate_physical,maintain
+Collect samples of raw materials or finished products.,Acquire,info_acquisition,collect
+Install production equipment or systems.,Operate,operate_physical,install
+Supervise production or support personnel.,Manage,direct_manage,supervise
+Communicate with others to coordinate vehicle movement.,Communicate,communicate_teach,communicate
+Conduct quantitative failure analyses of operational data.,Analyze,analyze_compute,conduct
+Prepare materials for processing.,Create,produce_create,prepare
+"Write articles, books or other original materials in area of expertise.",Create,produce_create,write
+Teach social science courses at the college level.,Communicate,communicate_teach,teach
+Identify new applications for existing technologies.,Analyze,analyze_compute,identify
+"Research energy production, use, or conservation.",Acquire,info_acquisition,research
+Design energy-efficient vehicles or vehicle components.,Create,produce_create,design
+Analyze green technology design requirements.,Analyze,analyze_compute,analyze
+Design materials for industrial or commercial applications.,Create,produce_create,design
+Operate industrial equipment.,Operate,operate_physical,operate
+"Maintain inventories of materials, equipment, or products.",Document,record_document,maintain
+Evaluate the characteristics of green technologies.,Evaluate,evaluate_inspect,evaluate
+Direct energy production or management activities.,Manage,direct_manage,direct
+Design energy production or management equipment or systems.,Create,produce_create,design
+Monitor industrial energy consumption or management.,Evaluate,evaluate_inspect,monitor
+Analyze energy usage data.,Analyze,analyze_compute,analyze
+Research engineering applications of emerging technologies.,Acquire,info_acquisition,research
+"Design micro- or nano-scale materials, devices, or systems.",Create,produce_create,design
+Operate precision equipment to control microscopic or nanoscopic processes.,Operate,operate_physical,operate
+Program robotic equipment.,Create,produce_create,program
+Measure physical or chemical properties of materials or objects.,Evaluate,evaluate_inspect,measure
+Create graphical representations of energy production systems.,Create,produce_create,create
+Operate digital imaging equipment.,Operate,operate_physical,operate
+Test quality of materials or finished products.,Evaluate,evaluate_inspect,test
+Negotiate prices or other sales terms.,Communicate,communicate_teach,negotiate
+Fabricate products or components using machine tools.,Operate,operate_physical,fabricate
+Maintain electromechanical equipment.,Operate,operate_physical,maintain
+Maintain clean work areas.,Operate,operate_physical,maintain
+Monitor environmental conditions to detect hazards.,Evaluate,evaluate_inspect,monitor
+Prepare drawings or diagrams of products or services.,Create,produce_create,prepare
+Assemble mechanical components or machine parts.,Operate,operate_physical,assemble
+Collaborate with others to develop or refine designs.,Communicate,communicate_teach,collaborate
+Evaluate characteristics of products.,Evaluate,evaluate_inspect,evaluate
+Reassemble equipment after repair.,Operate,operate_physical,reassemble
+Disassemble equipment to inspect for deficiencies.,Operate,operate_physical,disassemble
+Draw detailed or technical illustrations.,Create,produce_create,draw
+Repair precision devices or workpieces.,Operate,operate_physical,repair
+Review blueprints or specifications to determine work requirements.,Evaluate,evaluate_inspect,review
+Assemble precision electronics or optical equipment.,Operate,operate_physical,assemble
+Prepare maps.,Create,produce_create,prepare
+Survey land or properties.,Evaluate,evaluate_inspect,survey
+Estimate costs for projects or productions.,Analyze,analyze_compute,estimate
+Determine geographic coordinates.,Acquire,info_acquisition,determine
+Research livestock management methods.,Acquire,info_acquisition,research
+Advise others on ways to improve processes or products.,Communicate,communicate_teach,advise
+Research genetic characteristics or expression.,Acquire,info_acquisition,research
+Perform animal breeding procedures.,Operate,operate_physical,perform
+Collaborate with technical specialists to resolve design or development problems.,Communicate,communicate_teach,collaborate
+Research methods to improve food products.,Acquire,info_acquisition,research
+Confer with clients to exchange information.,Communicate,communicate_teach,confer
+Inspect areas for compliance with sanitation standards.,Evaluate,evaluate_inspect,inspect
+Research sustainable agricultural processes or practices.,Acquire,info_acquisition,research
+Research impacts of environmental conservation initiatives.,Acquire,info_acquisition,research
+Develop environmental sustainability plans or projects.,Create,produce_create,develop
+Direct natural resources management or conservation programs.,Manage,direct_manage,direct
+Plan natural resources conservation or restoration programs.,Create,produce_create,plan
+Conduct climatological research.,Acquire,info_acquisition,conduct
+Analyze environmental data.,Analyze,analyze_compute,analyze
+Research crop management methods.,Acquire,info_acquisition,research
+Develop sustainable industrial or development methods.,Create,produce_create,develop
+Research hydrologic features or processes.,Acquire,info_acquisition,research
+Research geological features or processes.,Acquire,info_acquisition,research
+Analyze biological samples.,Analyze,analyze_compute,analyze
+Advise others about environmental management or conservation.,Communicate,communicate_teach,advise
+Classify organisms based on their characteristics or behavior.,Analyze,analyze_compute,classify
+Research diseases or parasites.,Acquire,info_acquisition,research
+Develop biological research methods.,Create,produce_create,develop
+Supervise scientific or technical personnel.,Manage,direct_manage,supervise
+Develop new or advanced products or production methods.,Create,produce_create,develop
+Research microbiological or chemical processes or structures.,Acquire,info_acquisition,research
+Prepare compounds or solutions for products or testing.,Create,produce_create,prepare
+Instruct college students in physical or life sciences.,Communicate,communicate_teach,instruct
+Set up laboratory or field equipment.,Operate,operate_physical,set
+"Cultivate micro-organisms for study, testing, or medical preparations.",Operate,operate_physical,cultivate
+Prepare biological samples for testing or analysis.,Create,produce_create,prepare
+Monitor environmental impacts of production or development activities.,Evaluate,evaluate_inspect,monitor
+Inspect condition of natural environments.,Evaluate,evaluate_inspect,inspect
+Examine characteristics or behavior of living organisms.,Acquire,info_acquisition,examine
+Operate laboratory or field equipment.,Operate,operate_physical,operate
+Analyze chemical compounds or substances.,Analyze,analyze_compute,analyze
+Research environmental impact of industrial or development activities.,Acquire,info_acquisition,research
+Measure environmental characteristics.,Evaluate,evaluate_inspect,measure
+Plan biological research.,Create,produce_create,plan
+Collect biological specimens.,Acquire,info_acquisition,collect
+Assess compliance with environmental laws.,Evaluate,evaluate_inspect,assess
+Develop technical or scientific databases.,Create,produce_create,develop
+Advise others on the development or use of new technologies.,Communicate,communicate_teach,advise
+Manage scientific or technical project resources.,Manage,direct_manage,manage
+Establish standards for medical care.,Create,produce_create,establish
+Coordinate cross-disciplinary research programs.,Manage,direct_manage,coordinate
+Direct medical science or healthcare programs.,Manage,direct_manage,direct
+Record research or operational data.,Document,record_document,record
+Direct scientific activities.,Manage,direct_manage,direct
+"Proofread documents, records, or other files to ensure accuracy.",Evaluate,evaluate_inspect,proofread
+Prepare proposal documents or grant applications.,Create,produce_create,prepare
+Develop collaborative relationships between departments or with external organizations.,Create,produce_create,develop
+Operate computers or computerized equipment.,Operate,operate_physical,operate
+Collect environmental data or samples.,Acquire,info_acquisition,collect
+Review plans or proposals for environmental conservation.,Evaluate,evaluate_inspect,review
+Develop plans to manage natural or renewable resources.,Create,produce_create,develop
+Monitor operational procedures in technical environments to ensure conformance to standards.,Evaluate,evaluate_inspect,monitor
+Apply knowledge or research findings to address environmental problems.,Acquire,info_acquisition,apply
+Collect geographical or geological field data.,Acquire,info_acquisition,collect
+Mediate disputes.,Communicate,communicate_teach,mediate
+Compile environmental or climatological data.,Document,record_document,compile
+"Review environmental permits, plans, or reports.",Evaluate,evaluate_inspect,review
+Issue permits or other legal documents.,Document,record_document,issue
+Confer with others to conduct or arrange operational activities.,Communicate,communicate_teach,confer
+Plan special events.,Manage,direct_manage,plan
+Develop educational programs.,Create,produce_create,develop
+Train staff members.,Communicate,communicate_teach,train
+Care for animals.,Operate,operate_physical,care
+Protect wildlife or natural areas.,Operate,operate_physical,protect
+Protect property from fire or water damage.,Operate,operate_physical,protect
+Provide first aid or rescue assistance in emergencies.,Communicate,communicate_teach,provide
+Plan work operations.,Manage,direct_manage,plan
+Direct activities of subordinates.,Manage,direct_manage,direct
+Repair structural components.,Operate,operate_physical,repair
+"Design layout of art or product exhibits, displays, or promotional materials.",Create,produce_create,design
+Conduct historical research.,Acquire,info_acquisition,conduct
+Compile geographic or related data.,Document,record_document,compile
+"Document events or evidence, using photographic or audiovisual equipment.",Document,record_document,document
+Cultivate land.,Operate,operate_physical,cultivate
+Determine methods to minimize environmental impact of activities.,Acquire,info_acquisition,determine
+"Hire farming, fishing or forestry workers.",Manage,direct_manage,hire
+Obtain written authorization to perform activities.,Acquire,info_acquisition,obtain
+Coordinate forestry or agricultural activities.,Manage,direct_manage,coordinate
+Develop methods of social or economic research.,Create,produce_create,develop
+Advise others on healthcare matters.,Communicate,communicate_teach,advise
+Collect information about community health needs.,Acquire,info_acquisition,collect
+Check physical condition of people or animals.,Evaluate,evaluate_inspect,check
+Measure the physical or physiological attributes of patients.,Evaluate,evaluate_inspect,measure
+Supervise student research or internship work.,Manage,direct_manage,supervise
+Measure radiation levels.,Evaluate,evaluate_inspect,measure
+Develop theories or models of physical phenomena.,Create,produce_create,develop
+Analyze geological or geographical data.,Analyze,analyze_compute,analyze
+Provide educational information to the public.,Communicate,communicate_teach,provide
+Direct technical activities or operations.,Manage,direct_manage,direct
+Develop mathematical models of environmental conditions.,Create,produce_create,develop
+Develop environmental research methods.,Create,produce_create,develop
+Analyze test or performance data to assess equipment operation.,Analyze,analyze_compute,analyze
+Diagnose equipment malfunctions.,Analyze,analyze_compute,diagnose
+Maintain laboratory or technical equipment.,Operate,operate_physical,maintain
+Advise others on matters of public policy.,Communicate,communicate_teach,advise
+Supervise trainees.,Manage,direct_manage,supervise
+Prepare information or documentation related to legal or regulatory matters.,Create,produce_create,prepare
+Promote environmental sustainability or conservation initiatives.,Communicate,communicate_teach,promote
+Appraise environmental impact of regulations or policies.,Evaluate,evaluate_inspect,appraise
+Evaluate civic projects or public policies.,Evaluate,evaluate_inspect,evaluate
+Prepare documentation for permits or licenses.,Create,produce_create,prepare
+Identify sustainable business practices.,Analyze,analyze_compute,identify
+Locate natural resources using geospatial or other environmental data.,Analyze,analyze_compute,locate
+Advise others on management of emergencies or hazardous situations or materials.,Communicate,communicate_teach,advise
+Monitor construction operations.,Evaluate,evaluate_inspect,monitor
+Inspect work sites to identify potential environmental or safety hazards.,Evaluate,evaluate_inspect,inspect
+Analyze geological samples.,Analyze,analyze_compute,analyze
+Maintain equipment or systems to ensure proper functioning.,Operate,operate_physical,maintain
+Coordinate construction or installation activities.,Manage,direct_manage,coordinate
+Direct natural resources extraction projects.,Manage,direct_manage,direct
+Assess equipment functioning.,Evaluate,evaluate_inspect,assess
+Instruct college students in social sciences or humanities disciplines.,Communicate,communicate_teach,instruct
+Monitor market conditions or trends.,Evaluate,evaluate_inspect,monitor
+Evaluate reports or designs to determine work needs.,Evaluate,evaluate_inspect,evaluate
+Plan social sciences research.,Create,produce_create,plan
+Counsel clients on mental health or personal achievement.,Communicate,communicate_teach,counsel
+Develop educational or training programs.,Create,produce_create,develop
+"Evaluate performance of applicants, trainees, or employees.",Evaluate,evaluate_inspect,evaluate
+Diagnose neural or psychological disorders.,Analyze,analyze_compute,diagnose
+Evaluate the effectiveness of counseling or educational programs.,Evaluate,evaluate_inspect,evaluate
+Modify treatment plans to accommodate client needs.,Create,produce_create,modify
+Design psychological or educational treatment procedures or programs.,Create,produce_create,design
+Collaborate with other professionals to assess client needs or plan treatments.,Communicate,communicate_teach,collaborate
+Advise others on educational matters.,Communicate,communicate_teach,advise
+"Evaluate patient functioning, capabilities, or health.",Evaluate,evaluate_inspect,evaluate
+Supervise workers providing client or patient services.,Manage,direct_manage,supervise
+Collect information about clients.,Acquire,info_acquisition,collect
+Assess educational needs of students.,Evaluate,evaluate_inspect,assess
+Collaborate with law enforcement or security agencies to share information.,Communicate,communicate_teach,collaborate
+Maintain student records.,Document,record_document,maintain
+Observe individuals' activities to gather information or compile evidence.,Evaluate,evaluate_inspect,observe
+Conduct research to increase knowledge about medical issues.,Acquire,info_acquisition,conduct
+Collaborate with healthcare professionals to plan or provide treatment.,Communicate,communicate_teach,collaborate
+Monitor clients to evaluate treatment progress.,Evaluate,evaluate_inspect,monitor
+Evaluate treatment options to guide medical decisions.,Evaluate,evaluate_inspect,evaluate
+Confer with clients to discuss treatment plans or progress.,Communicate,communicate_teach,confer
+"Inform viewers, listeners, or audiences.",Communicate,communicate_teach,inform
+Obtain property information.,Acquire,info_acquisition,obtain
+Conduct anthropological or archaeological research.,Acquire,info_acquisition,conduct
+Evaluate characteristics of archival or historical objects.,Evaluate,evaluate_inspect,evaluate
+Mark materials or objects for identification.,Document,record_document,mark
+Package materials or products.,Operate,operate_physical,package
+Clean objects.,Operate,operate_physical,clean
+Develop theories or models of social phenomena.,Create,produce_create,develop
+Analyze forensic evidence to solve crimes.,Analyze,analyze_compute,analyze
+"Prepare materials for preservation, storage, or display.",Create,produce_create,prepare
+"Communicate with clients about products, procedures, and policies.",Communicate,communicate_teach,communicate
+Manage clerical or administrative activities.,Manage,direct_manage,manage
+Represent the interests of clients in legal proceedings.,Communicate,communicate_teach,represent
+Measure ingredients.,Evaluate,evaluate_inspect,measure
+Care for plants or animals.,Operate,operate_physical,care
+Operate farming equipment.,Operate,operate_physical,operate
+Consult with others regarding safety or health equipment or facilities.,Communicate,communicate_teach,consult
+Supervise laboratory work.,Manage,direct_manage,supervise
+"Calculate weights, volumes or other characteristics of materials.",Analyze,analyze_compute,calculate
+Measure ingredients or substances to be used in production processes.,Evaluate,evaluate_inspect,measure
+Collect samples for analysis or testing.,Acquire,info_acquisition,collect
+Inspect work environments to ensure safety.,Evaluate,evaluate_inspect,inspect
+Assist skilled construction or extraction personnel.,Operate,operate_physical,assist
+Measure the level or depth of water or other liquids.,Evaluate,evaluate_inspect,measure
+"Clean equipment, parts, or tools to repair or maintain them in good working order.",Operate,operate_physical,clean
+Install gauges or controls.,Operate,operate_physical,install
+Test mechanical systems to ensure proper functioning.,Evaluate,evaluate_inspect,test
+Maintain work equipment or machinery.,Operate,operate_physical,maintain
+Communicate safety or hazard information to others.,Communicate,communicate_teach,communicate
+Communicate with other workers to coordinate activities.,Communicate,communicate_teach,communicate
+Dispose of trash or waste materials.,Operate,operate_physical,dispose
+Monitor alarm systems.,Evaluate,evaluate_inspect,monitor
+Verify accuracy of data.,Evaluate,evaluate_inspect,verify
+Check data for recording errors.,Evaluate,evaluate_inspect,check
+Record agricultural or forestry inventory data.,Document,record_document,record
+Patrol properties to maintain safety.,Evaluate,evaluate_inspect,patrol
+Patrol natural areas to ensure safety or enforce regulations.,Evaluate,evaluate_inspect,patrol
+Examine crime scenes to obtain evidence.,Acquire,info_acquisition,examine
+Measure distances or dimensions.,Evaluate,evaluate_inspect,measure
+Analyze crime scene evidence.,Analyze,analyze_compute,analyze
+Analyze test results.,Analyze,analyze_compute,analyze
+"Determine types of equipment, tools, or materials needed for jobs.",Operate,operate_physical,determine
+Collaborate with outside groups to develop programs or projects.,Communicate,communicate_teach,collaborate
+Maintain safety.,Operate,operate_physical,maintain
+Investigate accidents to determine causes.,Evaluate,evaluate_inspect,investigate
+Design public or employee health programs.,Create,produce_create,design
+Conduct health or safety training programs.,Communicate,communicate_teach,conduct
+Prepare healthcare training materials.,Create,produce_create,prepare
+Develop emergency procedures.,Create,produce_create,develop
+Maintain inventory of medical supplies or equipment.,Document,record_document,maintain
+Prepare hazardous waste for processing or disposal.,Create,produce_create,prepare
+Package products for storage or shipment.,Operate,operate_physical,package
+Analyze laboratory specimens to detect abnormalities or other problems.,Analyze,analyze_compute,analyze
+Write operational reports.,Create,produce_create,write
+Prepare official health documents or records.,Create,produce_create,prepare
+Protect patients or staff members using safety equipment.,Operate,operate_physical,protect
+Prepare medical supplies or equipment for use.,Create,produce_create,prepare
+Maintain medical laboratory equipment.,Operate,operate_physical,maintain
+Verify that medical activities or operations meet standards.,Evaluate,evaluate_inspect,verify
+Monitor medical facility activities to ensure adherence to standards or regulations.,Evaluate,evaluate_inspect,monitor
+Communicate health and wellness information to the public.,Communicate,communicate_teach,communicate
+Maintain medical facility records.,Document,record_document,maintain
+Assist others during emergencies.,Communicate,communicate_teach,assist
+Direct emergency management activities.,Manage,direct_manage,direct
+Direct fire fighting or prevention activities.,Manage,direct_manage,direct
+Administer drug screening tests.,Manage,direct_manage,administer
+Train staff members in social services skills.,Communicate,communicate_teach,train
+Counsel clients or patients with substance abuse issues.,Communicate,communicate_teach,counsel
+Maintain client records.,Document,record_document,maintain
+Develop treatment plans for patients or clients.,Create,produce_create,develop
+"Interview clients to gather information about their backgrounds, needs, or progress.",Acquire,info_acquisition,interview
+Intervene in crisis situations to assist clients.,Communicate,communicate_teach,intervene
+Present social services program information to the public.,Communicate,communicate_teach,present
+Maintain professional social services knowledge.,Acquire,info_acquisition,maintain
+Counsel family members of clients or patients.,Communicate,communicate_teach,counsel
+Advocate for individual or community needs.,Communicate,communicate_teach,advocate
+Confer with family members to discuss client treatment plans or progress.,Communicate,communicate_teach,confer
+Plan programs to address community health issues.,Communicate,communicate_teach,plan
+Evaluate potential problems in home or work environments of clients.,Evaluate,evaluate_inspect,evaluate
+Counsel clients regarding interpersonal issues.,Communicate,communicate_teach,counsel
+Counsel clients regarding educational or vocational issues.,Communicate,communicate_teach,counsel
+Plan programs to address community mental wellness needs.,Communicate,communicate_teach,plan
+Develop educational policies.,Create,produce_create,develop
+Develop working relationships with others to facilitate program activities.,Create,produce_create,develop
+Counsel clients or patients regarding personal issues.,Communicate,communicate_teach,counsel
+Help clients get needed services or resources.,Communicate,communicate_teach,help
+Assess individual or community needs for educational or social services.,Evaluate,evaluate_inspect,assess
+Refer individuals to educational or work programs.,Communicate,communicate_teach,refer
+Teach life skills or strategies to clients or their families.,Communicate,communicate_teach,teach
+Advise others on social or educational issues.,Communicate,communicate_teach,advise
+Assist clients in handling details of daily life.,Communicate,communicate_teach,assist
+Provide basic health care services.,Communicate,communicate_teach,provide
+"Collect medical information from patients, family members, or other medical professionals.",Acquire,info_acquisition,collect
+Develop health assessment methods or programs.,Create,produce_create,develop
+Manage organizational or program finances.,Manage,direct_manage,manage
+Supervise patient care personnel.,Manage,direct_manage,supervise
+Arrange physical or mental health services for clients.,Manage,direct_manage,arrange
+Develop tools to diagnose or assess needs.,Create,produce_create,develop
+Advise clients or community groups on health issues.,Communicate,communicate_teach,advise
+Recommend legal actions.,Communicate,communicate_teach,recommend
+Provide educational materials to community members.,Communicate,communicate_teach,provide
+Maintain social services program records.,Document,record_document,maintain
+Monitor health or behavior of people or animals.,Evaluate,evaluate_inspect,monitor
+Visit individuals in their homes to provide support or information.,Communicate,communicate_teach,visit
+Conduct diagnostic tests to determine patient health.,Evaluate,evaluate_inspect,conduct
+Examine patients to assess general physical condition.,Evaluate,evaluate_inspect,examine
+Transport clients to appointments.,Operate,operate_physical,transport
+Monitor nutrition related activities of individuals or groups.,Evaluate,evaluate_inspect,monitor
+Demonstrate activity techniques or equipment use.,Communicate,communicate_teach,demonstrate
+Interpret cultural or religious information for others.,Communicate,communicate_teach,interpret
+"Promote products, activities, or organizations.",Communicate,communicate_teach,promote
+Provide customers with general information or assistance.,Communicate,communicate_teach,provide
+Develop promotional strategies for religious organizations.,Create,produce_create,develop
+Prepare legal documents.,Create,produce_create,prepare
+Negotiate purchases or contracts.,Communicate,communicate_teach,negotiate
+Provide legal advice to clients.,Communicate,communicate_teach,provide
+Identify implications for cases from legal precedents or other legal information.,Analyze,analyze_compute,identify
+Interview claimants to get information related to legal proceedings.,Acquire,info_acquisition,interview
+Research relevant legal materials to aid decision making.,Acquire,info_acquisition,research
+Prepare documentation of legal proceedings.,Create,produce_create,prepare
+Arbitrate disputes between parties to resolve legal conflicts.,Communicate,communicate_teach,arbitrate
+Supervise activities of other legal personnel.,Manage,direct_manage,supervise
+Perform administrative or clerical tasks.,Document,record_document,perform
+Record information from legal proceedings.,Document,record_document,record
+Direct courtroom activities or procedures.,Manage,direct_manage,direct
+Confer with court staff to clarify information.,Communicate,communicate_teach,confer
+Maintain the order of legal documents.,Document,record_document,maintain
+Coordinate legal schedules or activities.,Manage,direct_manage,coordinate
+Administer oaths to court participants.,Manage,direct_manage,administer
+Prepare written decisions for legal proceedings.,Create,produce_create,prepare
+Authorize payments to settle legal disputes.,Manage,direct_manage,authorize
+Make decisions in legal cases.,Create,produce_create,make
+Rule on admissibility of legal proceedings.,Evaluate,evaluate_inspect,rule
+Serve court ordered documents.,Operate,operate_physical,serve
+Inventory materials or equipment.,Document,record_document,inventory
+"Estimate costs of products, services, or materials.",Analyze,analyze_compute,estimate
+Create technology-based learning materials.,Create,produce_create,create
+"Advise educators on curricula, instructional methods, or policies.",Communicate,communicate_teach,advise
+Develop instructional materials.,Create,produce_create,develop
+Guide class discussions.,Communicate,communicate_teach,guide
+Evaluate effectiveness of educational programs.,Evaluate,evaluate_inspect,evaluate
+Develop instructional objectives.,Create,produce_create,develop
+Select educational materials or equipment.,Create,produce_create,select
+Order instructional or library materials or equipment.,Manage,direct_manage,order
+Collaborate with other agencies and institutions to coordinate educational matters.,Communicate,communicate_teach,collaborate
+Perform student enrollment or registration activities.,Document,record_document,perform
+Compile specialized bibliographies or lists of materials.,Document,record_document,compile
+Direct department activities.,Manage,direct_manage,direct
+Teach physical science or mathematics courses at the college level.,Communicate,communicate_teach,teach
+Schedule instructional activities.,Manage,direct_manage,schedule
+Prepare activity or work schedules.,Create,produce_create,prepare
+Evaluate performance of educational staff.,Evaluate,evaluate_inspect,evaluate
+Teach humanities courses at the college level.,Communicate,communicate_teach,teach
+Tutor students who need extra assistance.,Communicate,communicate_teach,tutor
+Plan experiential learning activities.,Create,produce_create,plan
+Evaluate scholarly materials.,Evaluate,evaluate_inspect,evaluate
+Provide information to the general public.,Communicate,communicate_teach,provide
+Establish rules or policies governing student behavior.,Create,produce_create,establish
+Teach others to use technology or equipment.,Communicate,communicate_teach,teach
+Clean facilities or work areas.,Operate,operate_physical,clean
+Decontaminate equipment or sites to remove hazardous or toxic substances.,Operate,operate_physical,decontaminate
+Replace worn equipment components.,Operate,operate_physical,replace
+Treat patients using psychological therapies.,Communicate,communicate_teach,treat
+Care for patients with mental illnesses.,Communicate,communicate_teach,care
+Teach online courses.,Communicate,communicate_teach,teach
+Plan educational activities.,Communicate,communicate_teach,plan
+Coordinate student extracurricular activities.,Manage,direct_manage,coordinate
+Display student work.,Operate,operate_physical,display
+Teach physical education.,Communicate,communicate_teach,teach
+Apply multiple teaching methods.,Communicate,communicate_teach,apply
+Teach vocational courses.,Communicate,communicate_teach,teach
+Set up classroom materials or equipment.,Operate,operate_physical,set
+Provide for basic needs of children.,Communicate,communicate_teach,provide
+Teach life skills.,Communicate,communicate_teach,teach
+Read to students.,Acquire,info_acquisition,read
+"Monitor student behavior, social development, or health.",Evaluate,evaluate_inspect,monitor
+Discuss problems or issues with supervisors.,Communicate,communicate_teach,discuss
+Discuss student progress with parents or guardians.,Communicate,communicate_teach,discuss
+Enforce rules or policies governing student behavior.,Manage,direct_manage,enforce
+Modify teaching methods or materials to accommodate student needs.,Create,produce_create,modify
+Arrange childcare or educational settings to ensure physical safety of children.,Manage,direct_manage,arrange
+Collaborate with other teaching professionals to develop educational programs.,Communicate,communicate_teach,collaborate
+Assist students with special educational needs.,Communicate,communicate_teach,assist
+Supervise school or student activities.,Manage,direct_manage,supervise
+Develop strategies or programs for students with special needs.,Create,produce_create,develop
+Encourage students.,Communicate,communicate_teach,encourage
+Document lesson plans.,Document,record_document,document
+Assign class work to students.,Manage,direct_manage,assign
+Assist patrons with entering or exiting vehicles or other forms of transportation.,Communicate,communicate_teach,assist
+Operate audiovisual equipment.,Operate,operate_physical,operate
+Teach daily living skills or behaviors.,Communicate,communicate_teach,teach
+Organize informational materials.,Manage,direct_manage,organize
+"Develop policies or procedures for archives, museums or libraries.",Create,produce_create,develop
+Help patrons use library or archival resources.,Communicate,communicate_teach,help
+Arrange insurance coverage.,Manage,direct_manage,arrange
+Construct exhibits or parts of exhibits.,Create,produce_create,construct
+Inspect materials or equipment to determine need for repair or replacement.,Evaluate,evaluate_inspect,inspect
+Classify materials according to standard systems.,Analyze,analyze_compute,classify
+Review art or design materials.,Evaluate,evaluate_inspect,review
+Apply paint to surfaces.,Operate,operate_physical,apply
+Process library materials.,Analyze,analyze_compute,process
+Search information sources to find specific data.,Acquire,info_acquisition,search
+Troubleshoot equipment or systems operation problems.,Analyze,analyze_compute,troubleshoot
+Maintain inventory records.,Document,record_document,maintain
+Assist other educational professionals with projects or research.,Communicate,communicate_teach,assist
+"Move materials, equipment, or supplies.",Operate,operate_physical,move
+"Collect deposits, payments or fees.",Acquire,info_acquisition,collect
+"Send information, materials or documentation.",Communicate,communicate_teach,send
+Sort mail.,Operate,operate_physical,sort
+Demonstrate products to consumers.,Communicate,communicate_teach,demonstrate
+Implement therapeutic programs to improve patient functioning.,Communicate,communicate_teach,implement
+Research new technologies.,Acquire,info_acquisition,research
+Determine technical requirements of productions or projects.,Create,produce_create,determine
+Manage operations of artistic or entertainment departments or organizations.,Manage,direct_manage,manage
+Coordinate artistic activities.,Manage,direct_manage,coordinate
+Confer with clients to determine needs.,Communicate,communicate_teach,confer
+Coordinate design activities.,Manage,direct_manage,coordinate
+Design layouts for print publications.,Create,produce_create,design
+Negotiate for services.,Communicate,communicate_teach,negotiate
+"Develop artistic or design concepts for decoration, exhibition, or commercial purposes.",Create,produce_create,develop
+Prepare production storyboards.,Create,produce_create,prepare
+Package objects for shipping.,Operate,operate_physical,package
+"Construct distinctive physical objects for artistic, functional, or commercial purposes.",Create,produce_create,construct
+Select materials or props.,Create,produce_create,select
+"Apply finishes to artwork, crafts, or displays.",Operate,operate_physical,apply
+"Calculate dimensions of workpieces, products, or equipment.",Analyze,analyze_compute,calculate
+"Build models, patterns, or templates.",Create,produce_create,build
+Develop promotional strategies or plans.,Create,produce_create,develop
+Monitor current trends.,Evaluate,evaluate_inspect,monitor
+Collaborate with others to determine technical details of productions.,Communicate,communicate_teach,collaborate
+Coordinate logistics for productions or events.,Manage,direct_manage,coordinate
+Clean surfaces in preparation for work activities.,Operate,operate_physical,clean
+Immerse objects or workpieces in cleaning or coating solutions.,Operate,operate_physical,immerse
+Collaborate with others to prepare or perform artistic productions.,Communicate,communicate_teach,collaborate
+Entertain public with comedic or dramatic performances.,Communicate,communicate_teach,entertain
+"Arrange artwork, products, or props.",Operate,operate_physical,arrange
+Create computer-generated graphics or animation.,Create,produce_create,create
+Prepare film for distribution or use.,Create,produce_create,prepare
+Operate photographic developing or print production equipment.,Operate,operate_physical,operate
+Convert data among multiple digital or analog formats.,Document,record_document,convert
+Calculate costs of goods or services.,Analyze,analyze_compute,calculate
+Study scripts to determine project requirements.,Acquire,info_acquisition,study
+"Irrigate lawns, trees, or plants.",Operate,operate_physical,irrigate
+Arrange items for use or display.,Operate,operate_physical,arrange
+Stock products or parts.,Operate,operate_physical,stock
+Stock supplies or merchandise.,Operate,operate_physical,stock
+Arrange delivery of goods or services.,Manage,direct_manage,arrange
+Write advertising or promotional material.,Create,produce_create,write
+Discuss production content and progress with others.,Communicate,communicate_teach,discuss
+Inspect sets or exhibits.,Evaluate,evaluate_inspect,inspect
+Maintain security.,Operate,operate_physical,maintain
+Practice athletic or artistic skills.,Operate,operate_physical,practice
+Audition for roles.,Communicate,communicate_teach,audition
+Perform music for the public.,Communicate,communicate_teach,perform
+Write material for artistic or entertainment purposes.,Create,produce_create,write
+Direct productions or performances.,Manage,direct_manage,direct
+Coordinate activities of production personnel.,Manage,direct_manage,coordinate
+Manage content of broadcasts or presentations.,Manage,direct_manage,manage
+Edit audio or video recordings.,Create,produce_create,edit
+Determine presentation subjects or content.,Create,produce_create,determine
+Obtain copyrights or other legal permissions.,Acquire,info_acquisition,obtain
+Develop proposals for current or prospective customers.,Create,produce_create,develop
+Audition or interview potential performers or staff members.,Manage,direct_manage,audition
+Maintain logs of production activities.,Document,record_document,maintain
+Report news to the public.,Communicate,communicate_teach,report
+"Operate communications, transmissions, or broadcasting equipment.",Operate,operate_physical,operate
+Maintain recording or broadcasting equipment.,Operate,operate_physical,maintain
+Interview others for news or entertainment purposes.,Acquire,info_acquisition,interview
+Coach others.,Communicate,communicate_teach,coach
+Coordinate musical rehearsals or performances.,Manage,direct_manage,coordinate
+Inspect communications or broadcasting equipment.,Evaluate,evaluate_inspect,inspect
+Monitor broadcasting operations to ensure proper functioning.,Evaluate,evaluate_inspect,monitor
+"Operate control consoles for sound, lighting or video.",Operate,operate_physical,operate
+Set up still or video cameras or related equipment.,Operate,operate_physical,set
+Participate in athletic events.,Operate,operate_physical,participate
+Evaluate skills of athletes or performers.,Evaluate,evaluate_inspect,evaluate
+Coordinate athletic or sporting events or activities.,Manage,direct_manage,coordinate
+Train others on performance techniques.,Communicate,communicate_teach,train
+"Advise athletes, coaches, or trainers on exercise regimens, nutrition, or equipment use.",Communicate,communicate_teach,advise
+Investigate work related complaints to determine corrective actions.,Evaluate,evaluate_inspect,investigate
+"Discuss performance, complaints, or violations with supervisors.",Communicate,communicate_teach,discuss
+Investigate personal characteristics or activities of individuals.,Acquire,info_acquisition,investigate
+Sew clothing or other articles.,Operate,operate_physical,sew
+Repair textiles or apparel.,Operate,operate_physical,repair
+Perform dances.,Communicate,communicate_teach,perform
+Review production information to determine costume or makeup requirements.,Evaluate,evaluate_inspect,review
+Choreograph dances.,Create,produce_create,choreograph
+Study details of musical compositions.,Acquire,info_acquisition,study
+"Create musical compositions, arrangements or scores.",Create,produce_create,create
+Operate audio recording equipment.,Operate,operate_physical,operate
+Perform for recordings.,Communicate,communicate_teach,perform
+Respond to customer inquiries.,Communicate,communicate_teach,respond
+Assemble electrical or electronic equipment.,Operate,operate_physical,assemble
+Collect fares or payment from customers.,Acquire,info_acquisition,collect
+Record sales or transactions data.,Document,record_document,record
+Prepare sales or other contracts.,Create,produce_create,prepare
+Conduct amusement or gaming activities.,Manage,direct_manage,conduct
+Review audio or video recordings.,Evaluate,evaluate_inspect,review
+Mix sound inputs.,Operate,operate_physical,mix
+Gather information for news stories.,Acquire,info_acquisition,gather
+Host events.,Communicate,communicate_teach,host
+Analyze information obtained from news sources.,Analyze,analyze_compute,analyze
+Develop professional relationships or networks.,Create,produce_create,develop
+Process forensic or legal evidence in accordance with procedures.,Analyze,analyze_compute,process
+Type documents.,Document,record_document,type
+File documents or records.,Document,record_document,file
+Notify others of equipment problems.,Communicate,communicate_teach,notify
+Read materials to determine needed actions.,Acquire,info_acquisition,read
+"Design tools, fixtures, or other devices for production equipment.",Create,produce_create,design
+Dismantle equipment or temporary structures.,Operate,operate_physical,dismantle
+Disassemble equipment for maintenance or repair.,Operate,operate_physical,disassemble
+Attach equipment extensions or accessories.,Operate,operate_physical,attach
+"Install electrical components, equipment, or systems.",Operate,operate_physical,install
+Load materials or equipment.,Operate,operate_physical,load
+Unload materials or equipment.,Operate,operate_physical,unload
+Calibrate equipment to specifications.,Operate,operate_physical,calibrate
+Run wiring to connect equipment.,Operate,operate_physical,run
+Repair electrical equipment.,Operate,operate_physical,repair
+Program equipment to perform production tasks.,Create,produce_create,program
+Position safety or support equipment.,Operate,operate_physical,position
+"Set up material handling gear or equipment, such as rigging, packaging, or temporary structures.",Operate,operate_physical,set
+Gather information about work conditions or locations.,Acquire,info_acquisition,gather
+Prepare outgoing shipments.,Create,produce_create,prepare
+Label production materials.,Document,record_document,label
+Schedule patient procedures or appointments.,Manage,direct_manage,schedule
+Treat patients using physical therapy techniques.,Communicate,communicate_teach,treat
+Gather medical information from patient histories.,Acquire,info_acquisition,gather
+Diagnose medical conditions.,Analyze,analyze_compute,diagnose
+Record patient medical histories.,Document,record_document,record
+Advise patients on effects of health conditions or treatments.,Communicate,communicate_teach,advise
+Analyze test data or images to inform diagnosis or treatment.,Analyze,analyze_compute,analyze
+Refer patients to other healthcare practitioners or health resources.,Communicate,communicate_teach,refer
+Recommend types of assistive devices.,Communicate,communicate_teach,recommend
+Operate diagnostic or therapeutic medical instruments or equipment.,Operate,operate_physical,operate
+Administer anesthetics or sedatives to control pain.,Manage,direct_manage,administer
+"Examine mouth, teeth, gums, or related facial structures.",Evaluate,evaluate_inspect,examine
+Operate diagnostic imaging equipment.,Operate,operate_physical,operate
+Develop medical treatment plans.,Create,produce_create,develop
+Advise patients on preventive care techniques.,Communicate,communicate_teach,advise
+Fabricate medical devices.,Create,produce_create,fabricate
+Adjust prostheses or other assistive devices.,Operate,operate_physical,adjust
+Diagnose dental conditions.,Analyze,analyze_compute,diagnose
+Treat dental problems or diseases.,Communicate,communicate_teach,treat
+Prescribe medications.,Communicate,communicate_teach,prescribe
+Analyze patient data to determine patient needs or treatment goals.,Analyze,analyze_compute,analyze
+Operate on patients to treat conditions.,Operate,operate_physical,operate
+Direct healthcare delivery programs.,Manage,direct_manage,direct
+Treat chronic diseases or disorders.,Communicate,communicate_teach,treat
+"Treat acute illnesses, infections, or injuries.",Communicate,communicate_teach,treat
+Treat medical emergencies.,Communicate,communicate_teach,treat
+Adjust dental devices or appliances to ensure fit.,Operate,operate_physical,adjust
+Communicate detailed medical information to patients or family members.,Communicate,communicate_teach,communicate
+Train medical providers.,Communicate,communicate_teach,train
+Analyze laboratory findings.,Analyze,analyze_compute,analyze
+Manage preparation of special meals or diets.,Manage,direct_manage,manage
+Manage healthcare operations.,Manage,direct_manage,manage
+Order medical supplies or equipment.,Manage,direct_manage,order
+Train caregivers or other non-medical personnel.,Communicate,communicate_teach,train
+Supervise medical support personnel.,Manage,direct_manage,supervise
+Present medical research reports.,Communicate,communicate_teach,present
+Test patient vision.,Evaluate,evaluate_inspect,test
+"Fit eyeglasses, contact lenses, or other vision aids.",Operate,operate_physical,fit
+Prescribe assistive medical devices or related treatments.,Communicate,communicate_teach,prescribe
+"Train patients, family members, or caregivers in techniques for managing disabilities or illnesses.",Communicate,communicate_teach,train
+Monitor patients following surgeries or other treatments.,Evaluate,evaluate_inspect,monitor
+Prescribe treatments or therapies.,Communicate,communicate_teach,prescribe
+Verify accuracy of patient information.,Evaluate,evaluate_inspect,verify
+Advise medical personnel regarding healthcare issues.,Communicate,communicate_teach,advise
+Determine protocols for medical procedures.,Create,produce_create,determine
+Merchandise healthcare products or services.,Communicate,communicate_teach,merchandise
+Review customer insurance information.,Evaluate,evaluate_inspect,review
+Process medical billing information.,Analyze,analyze_compute,process
+Order medical diagnostic or clinical tests.,Manage,direct_manage,order
+Immunize patients.,Operate,operate_physical,immunize
+Administer intravenous medications.,Manage,direct_manage,administer
+Assist healthcare practitioners during surgery.,Communicate,communicate_teach,assist
+Monitor patient progress or responses to treatments.,Evaluate,evaluate_inspect,monitor
+Collect biological specimens from patients.,Acquire,info_acquisition,collect
+Maintain medical or professional knowledge.,Acquire,info_acquisition,maintain
+Implement advanced life support techniques.,Operate,operate_physical,implement
+Examine medical instruments or equipment to ensure proper operation.,Evaluate,evaluate_inspect,examine
+Maintain medical equipment or instruments.,Operate,operate_physical,maintain
+"Monitor patient conditions during treatments, procedures, or activities.",Evaluate,evaluate_inspect,monitor
+Assist healthcare practitioners during examinations or treatments.,Communicate,communicate_teach,assist
+Administer blood or other fluids intravenously.,Manage,direct_manage,administer
+Adjust settings or positions of medical equipment.,Operate,operate_physical,adjust
+Treat patients using alternative medical procedures.,Communicate,communicate_teach,treat
+Prepare reports summarizing patient diagnostic or care activities.,Create,produce_create,prepare
+Develop treatment plans that use non-medical therapies.,Create,produce_create,develop
+Assist patients with daily activities.,Communicate,communicate_teach,assist
+Clean medical equipment or facilities.,Operate,operate_physical,clean
+Encourage patients or clients to develop life skills.,Communicate,communicate_teach,encourage
+Evaluate patient outcomes to determine effectiveness of treatments.,Evaluate,evaluate_inspect,evaluate
+Enter patient or treatment data into computers.,Document,record_document,enter
+Process healthcare paperwork.,Analyze,analyze_compute,process
+Test patient heart or lung functioning.,Evaluate,evaluate_inspect,test
+Establish treatment goals.,Create,produce_create,establish
+Explain medical procedures or test results to patients or family members.,Communicate,communicate_teach,explain
+Administer cancer treatments.,Manage,direct_manage,administer
+Position patients for treatment or examination.,Operate,operate_physical,position
+Administer basic health care or medical treatments.,Manage,direct_manage,administer
+Inform medical professionals regarding patient conditions and care.,Communicate,communicate_teach,inform
+Interact with patients to build rapport or provide emotional support.,Communicate,communicate_teach,interact
+Process x-rays or other medical images.,Analyze,analyze_compute,process
+Sterilize medical equipment or instruments.,Operate,operate_physical,sterilize
+Move patients to or from treatment areas.,Operate,operate_physical,move
+Communicate test or assessment results to medical professionals.,Communicate,communicate_teach,communicate
+Repair medical facility equipment.,Operate,operate_physical,repair
+Test patient hearing.,Evaluate,evaluate_inspect,test
+Supervise technical medical personnel.,Manage,direct_manage,supervise
+Teach exercise or fitness techniques.,Communicate,communicate_teach,teach
+Develop exercise or conditioning programs.,Create,produce_create,develop
+Analyze quantitative data to determine effectiveness of treatments or therapies.,Analyze,analyze_compute,analyze
+Test biological specimens to gather information about patient conditions.,Evaluate,evaluate_inspect,test
+Teach health management classes.,Communicate,communicate_teach,teach
+Select medical equipment for addressing patient needs.,Operate,operate_physical,select
+Adjust tuning or functioning of musical instruments.,Operate,operate_physical,adjust
+Provide care for animals.,Manage,direct_manage,provide
+Treat animal injuries or illnesses.,Communicate,communicate_teach,treat
+Analyze medical data to determine cause of death.,Analyze,analyze_compute,analyze
+Prepare patients physically for medical procedures.,Create,produce_create,prepare
+"Assess patient work, living, or social environments.",Evaluate,evaluate_inspect,assess
+Administer non-intravenous medications.,Manage,direct_manage,administer
+Advise patients on healthcare system processes.,Communicate,communicate_teach,advise
+Establish nursing policies or standards.,Create,produce_create,establish
+Examine condition of property or products.,Evaluate,evaluate_inspect,examine
+Confer with other professionals to plan patient care.,Communicate,communicate_teach,confer
+Follow protocols or regulations for healthcare activities.,Operate,operate_physical,follow
+Care for women during pregnancy and childbirth.,Communicate,communicate_teach,care
+Test patient nervous system functioning.,Evaluate,evaluate_inspect,test
+Teach medical procedures to healthcare personnel.,Communicate,communicate_teach,teach
+Schedule medical facility use.,Manage,direct_manage,schedule
+Administer medical substances for imaging or other procedures.,Manage,direct_manage,administer
+Assess physical conditions of patients to aid in diagnosis or treatment.,Evaluate,evaluate_inspect,assess
+Operate laboratory equipment to analyze medical samples.,Operate,operate_physical,operate
+Develop healthcare quality and safety procedures.,Create,produce_create,develop
+Check quality of diagnostic images.,Evaluate,evaluate_inspect,check
+Administer screening tests to determine abilities or treatment needs.,Manage,direct_manage,administer
+Prepare biological specimens for laboratory analysis.,Create,produce_create,prepare
+Create advanced digital images of patients using computer imaging systems.,Create,produce_create,create
+Maintain repair or maintenance records.,Document,record_document,maintain
+Distribute supplies to workers.,Operate,operate_physical,distribute
+Maintain sterile operative fields.,Operate,operate_physical,maintain
+Monitor video displays of medical equipment to ensure proper functioning.,Evaluate,evaluate_inspect,monitor
+Prepare accident or incident reports.,Create,produce_create,prepare
+Assist patients with hygiene or daily living activities.,Communicate,communicate_teach,assist
+Load digital images onto computers or websites.,Operate,operate_physical,load
+Assist customers to ensure comfort or safety.,Communicate,communicate_teach,assist
+Review work orders or schedules to determine operations or procedures.,Evaluate,evaluate_inspect,review
+Make patient-assistive devices or device models.,Create,produce_create,make
+Adjust equipment to ensure optimal performance.,Operate,operate_physical,adjust
+Record vital statistics or other health information.,Document,record_document,record
+Maintain medical records.,Document,record_document,maintain
+Drive vehicles to transport individuals or equipment.,Operate,operate_physical,drive
+"Estimate supplies, ingredients, or staff requirements for food preparation activities.",Analyze,analyze_compute,estimate
+Monitor availability of equipment or supplies.,Evaluate,evaluate_inspect,monitor
+Operate cash registers.,Operate,operate_physical,operate
+Process sales or other transactions.,Analyze,analyze_compute,process
+Answer telephones to direct calls or provide information.,Communicate,communicate_teach,answer
+Repair medical or dental assistive devices.,Operate,operate_physical,repair
+Refer customers to appropriate personnel.,Communicate,communicate_teach,refer
+Distribute materials to employees or customers.,Operate,operate_physical,distribute
+Teach basic living or other adaptive skills to patients or caregivers.,Communicate,communicate_teach,teach
+Clean facilities or equipment.,Operate,operate_physical,clean
+Accompany patients or clients on outings to provide assistance.,Communicate,communicate_teach,accompany
+Accompany individuals or groups to activities.,Communicate,communicate_teach,accompany
+Adjust building climate control systems.,Operate,operate_physical,adjust
+Assess skin or hair conditions.,Evaluate,evaluate_inspect,assess
+Inspect facilities for cleanliness.,Evaluate,evaluate_inspect,inspect
+Stock medical or patient care supplies.,Operate,operate_physical,stock
+Give medications or immunizations.,Operate,operate_physical,give
+Engage patients in exercises or activities.,Communicate,communicate_teach,engage
+Feed patients.,Operate,operate_physical,feed
+Administer therapy treatments to patients using hands or physical treatment aids.,Manage,direct_manage,administer
+Document client health or progress.,Document,record_document,document
+Perform housekeeping duties.,Operate,operate_physical,perform
+Prepare foods or meals.,Create,produce_create,prepare
+Teach health or hygiene practices.,Communicate,communicate_teach,teach
+Drive vehicles to transport patrons.,Operate,operate_physical,drive
+Assist individuals with special needs.,Communicate,communicate_teach,assist
+Operate medical equipment.,Operate,operate_physical,operate
+Assist practitioners to perform medical procedures.,Operate,operate_physical,assist
+Clean patient rooms or patient treatment rooms.,Operate,operate_physical,clean
+Interview patients to gather medical information.,Acquire,info_acquisition,interview
+Monitor patients to detect health problems.,Evaluate,evaluate_inspect,monitor
+Hold patients to ensure proper positioning or safety.,Operate,operate_physical,hold
+Adjust positions of patients on beds or tables.,Operate,operate_physical,adjust
+Prepare medical instruments or equipment for use.,Create,produce_create,prepare
+Dispose of biomedical waste in accordance with standards.,Operate,operate_physical,dispose
+Explain technical medical information to patients.,Communicate,communicate_teach,explain
+Transport biological or other medical materials.,Operate,operate_physical,transport
+Relay information between personnel.,Communicate,communicate_teach,relay
+Clean medical equipment.,Operate,operate_physical,clean
+Collaborate with law enforcement or security agencies to respond to incidents.,Communicate,communicate_teach,collaborate
+Encourage patients during therapeutic activities.,Communicate,communicate_teach,encourage
+Attend educational events to update medical knowledge.,Acquire,info_acquisition,attend
+Develop patient therapy programs.,Create,produce_create,develop
+Teach medical procedures or medical equipment use to patients.,Communicate,communicate_teach,teach
+Prepare medical reports or documents.,Create,produce_create,prepare
+Communicate patient status to other health practitioners.,Communicate,communicate_teach,communicate
+Inventory medical supplies or equipment.,Document,record_document,inventory
+Monitor work areas or procedures to ensure compliance with safety procedures.,Evaluate,evaluate_inspect,monitor
+Prepare patient treatment areas for use.,Create,produce_create,prepare
+Fit patients for assistive devices.,Operate,operate_physical,fit
+Monitor medical equipment to ensure proper functioning.,Evaluate,evaluate_inspect,monitor
+Administer therapeutic massages.,Manage,direct_manage,administer
+Control prescription refills or authorizations.,Operate,operate_physical,control
+"Greet customers, patrons, or visitors.",Communicate,communicate_teach,greet
+Apply identification labels or tags.,Document,record_document,apply
+Count prison inmates or personnel.,Document,record_document,count
+Use weapons or physical force to maintain security.,Operate,operate_physical,use
+Direct operations of correctional facilities.,Manage,direct_manage,direct
+Locate suspicious objects or vehicles.,Evaluate,evaluate_inspect,locate
+Search individuals for illegal or dangerous items.,Acquire,info_acquisition,search
+Train employees in proper work procedures.,Operate,operate_physical,train
+Rescue people from hazardous situations.,Operate,operate_physical,rescue
+Administer first aid.,Manage,direct_manage,administer
+Supervise inmate activities.,Manage,direct_manage,supervise
+Resolve interpersonal conflicts.,Communicate,communicate_teach,resolve
+"Escort prisoners to courtrooms, prisons, or other facilities.",Operate,operate_physical,escort
+Inform others about laws or regulations.,Communicate,communicate_teach,inform
+Direct criminal investigations.,Manage,direct_manage,direct
+Direct law enforcement activities.,Manage,direct_manage,direct
+Inspect facilities to ensure compliance with security or safety regulations.,Evaluate,evaluate_inspect,inspect
+Prepare investigation or incident reports.,Create,produce_create,prepare
+Request emergency personnel.,Communicate,communicate_teach,request
+Assess characteristics of fires.,Evaluate,evaluate_inspect,assess
+Relay information about incidents or emergencies to personnel using phones or two-way radios.,Communicate,communicate_teach,relay
+Operate firefighting equipment.,Operate,operate_physical,operate
+Maintain fire fighting tools or equipment.,Operate,operate_physical,maintain
+Recommend improvements to increase safety or reduce risks.,Communicate,communicate_teach,recommend
+Inspect facilities to ensure compliance with fire regulations.,Evaluate,evaluate_inspect,inspect
+Locate fires or fire danger areas.,Evaluate,evaluate_inspect,locate
+Perform forest firefighting activities.,Operate,operate_physical,perform
+Communicate situation details to appropriate personnel.,Communicate,communicate_teach,communicate
+Operate surveillance equipment to detect suspicious or illegal activities.,Operate,operate_physical,operate
+Record operational or production data.,Document,record_document,record
+Monitor access or flow of people to prevent problems.,Evaluate,evaluate_inspect,monitor
+Prevent unauthorized individuals from entering restricted areas.,Operate,operate_physical,prevent
+Block physical access to restricted areas.,Operate,operate_physical,block
+Provide safety training.,Communicate,communicate_teach,provide
+Prepare hoses or water supplies to fight fires.,Create,produce_create,prepare
+Attend training to learn new skills or update knowledge.,Acquire,info_acquisition,attend
+Participate in physical training to maintain fitness.,Operate,operate_physical,participate
+Educate the public about fire safety or prevention.,Communicate,communicate_teach,educate
+Record information about suspects or criminals.,Document,record_document,record
+Record crime or accident scene evidence with video or still cameras.,Document,record_document,record
+Interview people to gather information about criminal activities.,Acquire,info_acquisition,interview
+Record information about environmental conditions.,Document,record_document,record
+Confiscate prohibited or dangerous items.,Operate,operate_physical,confiscate
+"Provide security escorts for officials, jury members, or other individuals.",Manage,direct_manage,provide
+Document legal or regulatory information.,Document,record_document,document
+Maintain public order or security.,Operate,operate_physical,maintain
+Guard facilities.,Operate,operate_physical,guard
+Warn individuals about rule violations or safety concerns.,Communicate,communicate_teach,warn
+Serve food or beverages.,Operate,operate_physical,serve
+Inspect cargo to identify potential hazards.,Evaluate,evaluate_inspect,inspect
+Use databases to locate investigation details or other information.,Acquire,info_acquisition,use
+Plan work procedures.,Create,produce_create,plan
+Issue warnings or citations.,Manage,direct_manage,issue
+Monitor vehicle movement or location.,Evaluate,evaluate_inspect,monitor
+"Investigate transportation incidents, violations, or complaints.",Evaluate,evaluate_inspect,investigate
+Direct vehicle traffic.,Manage,direct_manage,direct
+Assist motorists or pedestrians.,Communicate,communicate_teach,assist
+Interview people to obtain information about actions or status of individuals.,Acquire,info_acquisition,interview
+Examine personal documentation to ensure that it is valid.,Evaluate,evaluate_inspect,examine
+Direct security operations.,Manage,direct_manage,direct
+Balance receipts.,Document,record_document,balance
+Record operational or environmental data.,Document,record_document,record
+Record information about suspicious objects.,Document,record_document,record
+Operate ships or other watercraft.,Operate,operate_physical,operate
+Provide transportation information to passengers or customers.,Communicate,communicate_teach,provide
+Clean vehicles or vehicle components.,Operate,operate_physical,clean
+Assist passengers during vehicle boarding.,Communicate,communicate_teach,assist
+Monitor traffic signals.,Evaluate,evaluate_inspect,monitor
+Assist disabled or incapacitated individuals.,Communicate,communicate_teach,assist
+"Notify others of emergencies, problems, or hazards.",Communicate,communicate_teach,notify
+Discuss child development and behavior with parents or guardians.,Communicate,communicate_teach,discuss
+Record operational details of travel.,Document,record_document,record
+Check quality of foods or supplies.,Evaluate,evaluate_inspect,check
+Coordinate activities of food service staff.,Manage,direct_manage,coordinate
+Train food preparation or food service personnel.,Manage,direct_manage,train
+Determine prices for menu items.,Analyze,analyze_compute,determine
+Cook foods.,Operate,operate_physical,cook
+Coordinate timing of food production activities.,Manage,direct_manage,coordinate
+Communicate with customers to resolve complaints or ensure satisfaction.,Communicate,communicate_teach,communicate
+Schedule equipment maintenance.,Manage,direct_manage,schedule
+Manage food service operations or parts of operations.,Manage,direct_manage,manage
+"Clean food preparation areas, facilities, or equipment.",Operate,operate_physical,clean
+Monitor food services operations to ensure procedures are followed.,Evaluate,evaluate_inspect,monitor
+Cut cooked or raw foods.,Operate,operate_physical,cut
+Prepare foods for cooking or serving.,Create,produce_create,prepare
+"Maintain food, beverage, or equipment inventories.",Document,record_document,maintain
+Present food or beverage information or menus to customers.,Communicate,communicate_teach,present
+Assist customers with seating arrangements.,Communicate,communicate_teach,assist
+Process customer bills or payments.,Analyze,analyze_compute,process
+Take customer orders.,Communicate,communicate_teach,take
+Stock serving stations or dining areas with food or supplies.,Operate,operate_physical,stock
+Prepare breads or doughs.,Create,produce_create,prepare
+Prepare hot or cold beverages.,Create,produce_create,prepare
+Mix ingredients.,Operate,operate_physical,mix
+"Move equipment, supplies or food to required locations.",Operate,operate_physical,move
+Store supplies or goods in kitchens or storage areas.,Operate,operate_physical,store
+Clean tableware.,Operate,operate_physical,clean
+Arrange food for serving.,Operate,operate_physical,arrange
+Assist chefs or caterers with food or drink preparation.,Operate,operate_physical,assist
+Clean food service areas.,Operate,operate_physical,clean
+Package food or supplies.,Operate,operate_physical,package
+Remove trash.,Operate,operate_physical,remove
+Distribute resources to patrons or employees.,Operate,operate_physical,distribute
+Arrange tables or dining areas.,Operate,operate_physical,arrange
+Collect dirty dishes or other tableware.,Acquire,info_acquisition,collect
+Communicate dining or order details to kitchen personnel.,Communicate,communicate_teach,communicate
+Add garnishes to food.,Operate,operate_physical,add
+Set up merchandise displays.,Operate,operate_physical,set
+Inspect food products.,Evaluate,evaluate_inspect,inspect
+Usher patrons to seats or exits.,Communicate,communicate_teach,usher
+"Load shipments, belongings, or materials.",Operate,operate_physical,load
+Remove snow.,Operate,operate_physical,remove
+Supervise maintenance workers.,Manage,direct_manage,supervise
+Inspect work to ensure standards are met.,Evaluate,evaluate_inspect,inspect
+Plan employee work schedules.,Manage,direct_manage,plan
+Confer with coworkers to coordinate maintenance or cleaning activities.,Communicate,communicate_teach,confer
+Inspect buildings or grounds to determine condition.,Evaluate,evaluate_inspect,inspect
+"Select equipment, materials, or supplies for cleaning or maintenance activities.",Operate,operate_physical,select
+Instruct staff in work policies or procedures.,Communicate,communicate_teach,instruct
+Evaluate current or prospective maintenance employees.,Evaluate,evaluate_inspect,evaluate
+Arrange maintenance activities.,Manage,direct_manage,arrange
+Document work hours or activities.,Document,record_document,document
+Estimate maintenance service requirements or costs.,Analyze,analyze_compute,estimate
+Plant greenery to improve landscape appearance.,Operate,operate_physical,plant
+Trim trees or other vegetation.,Operate,operate_physical,trim
+Prepare chemicals for work application.,Create,produce_create,prepare
+Inspect landscaping to determine treatment needs.,Evaluate,evaluate_inspect,inspect
+Provide information about landscaping services or costs.,Operate,operate_physical,provide
+Monitor building premises to ensure occupant or visitor safety.,Evaluate,evaluate_inspect,monitor
+Remove debris from work sites.,Operate,operate_physical,remove
+Operate grounds maintenance equipment.,Operate,operate_physical,operate
+Drive trucks or other vehicles to or at work sites.,Operate,operate_physical,drive
+Clean building walls or flooring.,Operate,operate_physical,clean
+Clean furniture or fixtures.,Operate,operate_physical,clean
+Move furniture.,Operate,operate_physical,move
+Decorate indoor or outdoor spaces.,Create,produce_create,decorate
+Treat facilities to eliminate pests.,Operate,operate_physical,treat
+Sort materials or products.,Operate,operate_physical,sort
+Operate garment treatment equipment.,Operate,operate_physical,operate
+"Schedule repair, installation or maintenance activities.",Manage,direct_manage,schedule
+Treat greenery or surfaces with protective substances.,Operate,operate_physical,treat
+"Cultivate lawns, turf, or gardens.",Operate,operate_physical,cultivate
+Install equipment to protect or support trees.,Operate,operate_physical,install
+Install fencing or other barriers.,Operate,operate_physical,install
+Install masonry materials.,Operate,operate_physical,install
+Build construction forms or molds.,Operate,operate_physical,build
+Climb ladders or vehicles to perform duties.,Operate,operate_physical,climb
+Monitor patron activities to identify problems or potential problems.,Evaluate,evaluate_inspect,monitor
+Perform basic equipment maintenance.,Operate,operate_physical,perform
+Maintain knowledge of business operations.,Acquire,info_acquisition,maintain
+Operate gaming equipment.,Operate,operate_physical,operate
+Conduct gaming transactions.,Document,record_document,conduct
+Inspect facilities.,Evaluate,evaluate_inspect,inspect
+Organize recreational activities or events.,Manage,direct_manage,organize
+Train animals.,Operate,operate_physical,train
+Discuss service options or needs with clients.,Communicate,communicate_teach,discuss
+Clean tools or equipment.,Operate,operate_physical,clean
+Compute gaming wins and losses.,Analyze,analyze_compute,compute
+Clean work areas.,Operate,operate_physical,clean
+Operate audio-visual equipment.,Operate,operate_physical,operate
+Provide patrons with directions to locales or attractions.,Communicate,communicate_teach,provide
+Provide notifications to customers or patrons.,Communicate,communicate_teach,provide
+Clean fabrics or apparel.,Operate,operate_physical,clean
+Design costumes or cosmetic effects for characters.,Create,produce_create,design
+Collaborate with others to determine production details.,Communicate,communicate_teach,collaborate
+Handle luggage or other possessions for patrons.,Operate,operate_physical,handle
+Store items.,Operate,operate_physical,store
+Set up mechanical equipment.,Operate,operate_physical,set
+Apply makeup to alter or enhance appearance.,Operate,operate_physical,apply
+Embalm corpses.,Operate,operate_physical,embalm
+Apply decorative or textured finishes or coverings.,Operate,operate_physical,apply
+Direct funeral or mortuary activities.,Manage,direct_manage,direct
+"Apply cleansing or conditioning agents to client hair, scalp, or skin.",Operate,operate_physical,apply
+Handle caskets.,Operate,operate_physical,handle
+Discuss goods or services information with customers or patrons.,Communicate,communicate_teach,discuss
+Load materials into equipment for processing.,Operate,operate_physical,load
+Adjust temperature controls of ovens or other heating equipment.,Operate,operate_physical,adjust
+Operate grinding equipment.,Operate,operate_physical,operate
+Prepare administrative documents.,Create,produce_create,prepare
+Provide escort or transportation.,Manage,direct_manage,provide
+Load items into ovens or furnaces.,Operate,operate_physical,load
+Trim client hair.,Operate,operate_physical,trim
+Apply protective coverings to objects or surfaces near work areas.,Operate,operate_physical,apply
+Provide medical or cosmetic advice for clients.,Communicate,communicate_teach,provide
+Apply solutions to hair for therapeutic or cosmetic purposes.,Operate,operate_physical,apply
+"Treat nails by shaping, decorating, or augmenting.",Operate,operate_physical,treat
+Groom wigs or hairpieces.,Operate,operate_physical,groom
+Develop daily schedules for children or families.,Create,produce_create,develop
+Monitor recreational facility operations.,Evaluate,evaluate_inspect,monitor
+Meet with coworkers to communicate work orders or plans.,Communicate,communicate_teach,meet
+Answer customer questions about goods or services.,Communicate,communicate_teach,answer
+Monitor sales activities.,Evaluate,evaluate_inspect,monitor
+Supervise sales or support personnel.,Manage,direct_manage,supervise
+Maintain records of sales or other business transactions.,Document,record_document,maintain
+Monitor work areas to provide security.,Evaluate,evaluate_inspect,monitor
+Train sales personnel.,Communicate,communicate_teach,train
+Coordinate sales campaigns.,Manage,direct_manage,coordinate
+Explain technical product or service information to customers.,Communicate,communicate_teach,explain
+Contact current or potential customers to promote products or services.,Communicate,communicate_teach,contact
+"Issue money, credit, or vouchers.",Document,record_document,issue
+Prepare cash for deposit or disbursement.,Create,produce_create,prepare
+Review accuracy of sales or other transactions.,Evaluate,evaluate_inspect,review
+Verify customer credit information.,Evaluate,evaluate_inspect,verify
+Take product orders from customers.,Communicate,communicate_teach,take
+Analyze shipping information to make routing decisions.,Analyze,analyze_compute,analyze
+Calculate shipping costs.,Analyze,analyze_compute,calculate
+Measure product or material dimensions.,Evaluate,evaluate_inspect,measure
+Repair parts or assemblies.,Operate,operate_physical,repair
+Review laws or regulations to maintain professional knowledge.,Evaluate,evaluate_inspect,review
+Assist customers with product selection.,Communicate,communicate_teach,assist
+Estimate costs or terms of sales.,Analyze,analyze_compute,estimate
+Develop content for sales presentations or other materials.,Create,produce_create,develop
+Deliver promotional presentations to current or prospective customers.,Communicate,communicate_teach,deliver
+Study product information to acquire professional knowledge.,Acquire,info_acquisition,study
+Attend events to develop professional knowledge.,Acquire,info_acquisition,attend
+Customize financial products or services to meet customer needs.,Create,produce_create,customize
+Identify investment opportunities or strategies.,Analyze,analyze_compute,identify
+Share sales-related or market information with colleagues.,Communicate,communicate_teach,share
+Maintain records of customer accounts.,Document,record_document,maintain
+Customize energy products or services to meet customer needs.,Create,produce_create,customize
+Assess locations for potential green technology installations.,Evaluate,evaluate_inspect,assess
+"Model cosmetics, clothing, or accessories.",Communicate,communicate_teach,model
+Identify job or employment opportunities.,Analyze,analyze_compute,identify
+Drive passenger vehicles.,Operate,operate_physical,drive
+Contract real estate to clients.,Manage,direct_manage,contract
+Schedule appointments with prospective customers.,Manage,direct_manage,schedule
+Record personnel information.,Document,record_document,record
+Maintain call records.,Document,record_document,maintain
+Assist individuals with paperwork.,Communicate,communicate_teach,assist
+Discuss account status or activity with customers or patrons.,Communicate,communicate_teach,discuss
+Negotiate financial arrangements.,Communicate,communicate_teach,negotiate
+Obtain personal or financial information about customers or applicants.,Acquire,info_acquisition,obtain
+Verify accuracy of financial or transactional data.,Evaluate,evaluate_inspect,verify
+Operate office equipment.,Operate,operate_physical,operate
+Route mail to correct destinations.,Operate,operate_physical,route
+Maintain office equipment in proper operating condition.,Operate,operate_physical,maintain
+Weigh parcels to determine shipping costs.,Evaluate,evaluate_inspect,weigh
+Verify employee information.,Evaluate,evaluate_inspect,verify
+Train others in operational procedures.,Communicate,communicate_teach,train
+Coordinate shipping activities with external parties.,Manage,direct_manage,coordinate
+Inspect shipments to ensure correct order fulfillment.,Evaluate,evaluate_inspect,inspect
+Track goods or materials.,Document,record_document,track
+Prepare business correspondence.,Create,produce_create,prepare
+Issue documentation or identification to customers or employees.,Document,record_document,issue
+Distribute incoming mail.,Operate,operate_physical,distribute
+Prepare outgoing mail.,Create,produce_create,prepare
+Record information from meetings or other formal proceedings.,Document,record_document,record
+Record information about legal matters.,Document,record_document,record
+Issue certificates or licenses.,Document,record_document,issue
+Recommend packing or shipping methods.,Communicate,communicate_teach,recommend
+"Attach identification information to products, items or containers.",Operate,operate_physical,attach
+Store records or related materials.,Document,record_document,store
+"Make travel, accommodations, or entertainment arrangements for others.",Create,produce_create,make
+Repair books or other printed material.,Operate,operate_physical,repair
+Review customer information.,Evaluate,evaluate_inspect,review
+Verify shipping documentation.,Evaluate,evaluate_inspect,verify
+Record shipping information.,Document,record_document,record
+Assemble wood products.,Operate,operate_physical,assemble
+"Interpret blueprints, specifications, or diagrams to inform installation, development or operation activities.",Analyze,analyze_compute,interpret
+Adjust office equipment to ensure proper operation.,Operate,operate_physical,adjust
+Record service or repair activities.,Document,record_document,record
+Control power supply connections.,Operate,operate_physical,control
+Notify others of equipment repair or maintenance needs.,Communicate,communicate_teach,notify
+Receive shipments.,Operate,operate_physical,receive
+Read work orders to determine material or setup requirements.,Acquire,info_acquisition,read
+Record production information.,Document,record_document,record
+Count finished products or workpieces.,Document,record_document,count
+Collect samples of materials or products for testing.,Acquire,info_acquisition,collect
+Prepare products for testing.,Create,produce_create,prepare
+Transcribe spoken or written information.,Document,record_document,transcribe
+"Train workers in farming, forestry, or hunting techniques.",Create,produce_create,train
+Schedule agricultural or forestry work.,Manage,direct_manage,schedule
+"Transport animals, crops, or equipment.",Operate,operate_physical,transport
+Inspect equipment or facilities to determine condition or maintenance needs.,Evaluate,evaluate_inspect,inspect
+"Maintain forestry, hunting, or agricultural equipment.",Operate,operate_physical,maintain
+"Advise others on farming or forestry operations, regulations, or equipment.",Communicate,communicate_teach,advise
+Mark agricultural or forestry products for identification.,Document,record_document,mark
+Package agricultural products for shipment or further processing.,Operate,operate_physical,package
+Measure physical characteristics of forestry or agricultural products.,Evaluate,evaluate_inspect,measure
+Clean equipment or facilities.,Operate,operate_physical,clean
+Prepare materials or solutions for animal or plant use.,Create,produce_create,prepare
+Promote agricultural or hunting activities.,Communicate,communicate_teach,promote
+Build agricultural structures.,Operate,operate_physical,build
+Sell agricultural products.,Communicate,communicate_teach,sell
+Sort forestry or agricultural materials.,Operate,operate_physical,sort
+Operate irrigation systems.,Operate,operate_physical,operate
+Apply chemical solutions to plants to protect against disease or insects or to enhance growth.,Operate,operate_physical,apply
+"Plant crops, trees, or other plants.",Operate,operate_physical,plant
+Load agricultural or forestry products for shipment.,Operate,operate_physical,load
+Operate conveyors or other industrial material moving equipment.,Operate,operate_physical,operate
+Harvest agricultural products.,Operate,operate_physical,harvest
+Cut trees or logs.,Operate,operate_physical,cut
+Prepare land for agricultural use.,Create,produce_create,prepare
+Locate animals for fishing or hunting purposes.,Evaluate,evaluate_inspect,locate
+Navigate water vessels.,Operate,operate_physical,navigate
+Remove skin or other body parts from animals.,Operate,operate_physical,remove
+Position animal trapping or capture equipment.,Operate,operate_physical,position
+Capture or kill animals.,Operate,operate_physical,capture
+Determine forestry techniques or methods.,Acquire,info_acquisition,determine
+Operate forestry equipment.,Operate,operate_physical,operate
+Evaluate log quality.,Evaluate,evaluate_inspect,evaluate
+Direct material handling or moving activities.,Manage,direct_manage,direct
+Estimate materials requirements for projects.,Analyze,analyze_compute,estimate
+Estimate construction project labor requirements.,Analyze,analyze_compute,estimate
+Direct construction or extraction personnel.,Manage,direct_manage,direct
+Coordinate construction project activities.,Manage,direct_manage,coordinate
+Communicate with other construction or extraction personnel to discuss project details.,Communicate,communicate_teach,communicate
+Order construction or extraction materials or equipment.,Manage,direct_manage,order
+Measure work site dimensions.,Evaluate,evaluate_inspect,measure
+Mark reference points on construction materials.,Operate,operate_physical,mark
+Train construction or extraction personnel.,Operate,operate_physical,train
+Evaluate projects to determine compliance with technical specifications.,Evaluate,evaluate_inspect,evaluate
+Inspect equipment or tools to be used in construction or excavation.,Evaluate,evaluate_inspect,inspect
+"Plan layout of construction, installation, or repairs.",Create,produce_create,plan
+Test green technology installations to verify performance.,Evaluate,evaluate_inspect,test
+Create construction or installation diagrams.,Create,produce_create,create
+Estimate construction project costs.,Analyze,analyze_compute,estimate
+Inspect industrial or commercial equipment to ensure proper operation.,Evaluate,evaluate_inspect,inspect
+Weld metal components.,Operate,operate_physical,weld
+"Operate cranes, hoists, or other moving or lifting equipment.",Operate,operate_physical,operate
+Signal equipment operators to indicate proper equipment positioning.,Communicate,communicate_teach,signal
+Fabricate parts or components.,Operate,operate_physical,fabricate
+Install metal structural components.,Operate,operate_physical,install
+Position structural components.,Operate,operate_physical,position
+Measure materials or objects for installation or assembly.,Evaluate,evaluate_inspect,measure
+Assemble products or production equipment.,Operate,operate_physical,assemble
+"Cut tile, stone, or other masonry materials.",Operate,operate_physical,cut
+Remove excess materials from finished construction projects.,Operate,operate_physical,remove
+Apply mortar.,Operate,operate_physical,apply
+Mix substances or compounds needed for work activities.,Operate,operate_physical,mix
+Align masonry materials.,Operate,operate_physical,align
+"Remove worn, damaged or outdated materials from work areas.",Operate,operate_physical,remove
+Apply sealants or other protective coatings.,Operate,operate_physical,apply
+Spread concrete or other aggregate mixtures.,Operate,operate_physical,spread
+Apply decorative masonry finishes.,Operate,operate_physical,apply
+Smooth surfaces with abrasive materials or tools.,Operate,operate_physical,smooth
+Drill holes in construction materials.,Operate,operate_physical,drill
+Dig holes or trenches.,Operate,operate_physical,dig
+Position construction forms or molds.,Operate,operate_physical,position
+Clean work sites.,Operate,operate_physical,clean
+Cut wood components for installation.,Operate,operate_physical,cut
+Install building fixtures.,Operate,operate_physical,install
+Install doors or windows.,Operate,operate_physical,install
+Install wooden structural components.,Operate,operate_physical,install
+Verify alignment of structures or equipment.,Evaluate,evaluate_inspect,verify
+Select construction materials.,Operate,operate_physical,select
+Assemble temporary equipment or structures.,Operate,operate_physical,assemble
+Install trim or paneling.,Operate,operate_physical,install
+Install carpet or flooring.,Operate,operate_physical,install
+Apply material to fill gaps in surfaces.,Operate,operate_physical,apply
+"Cut carpet, vinyl or other flexible materials.",Operate,operate_physical,cut
+Prepare surfaces for finishing.,Create,produce_create,prepare
+Trim excess material from installations.,Operate,operate_physical,trim
+Finish concrete surfaces.,Operate,operate_physical,finish
+Apply adhesives to construction materials.,Operate,operate_physical,apply
+Inspect completed work to ensure proper installation.,Evaluate,evaluate_inspect,inspect
+Load materials into construction equipment.,Operate,operate_physical,load
+Determine construction project layouts.,Create,produce_create,determine
+Cut metal components for installation.,Operate,operate_physical,cut
+Pour materials into or on designated areas.,Operate,operate_physical,pour
+Compact materials to create level bases.,Operate,operate_physical,compact
+"Break up rock, asphalt, or concrete.",Operate,operate_physical,break
+Install roofing materials.,Operate,operate_physical,install
+Move construction or extraction materials to locations where they are needed.,Operate,operate_physical,move
+Install plumbing or piping.,Operate,operate_physical,install
+Load or unload materials used in construction or extraction.,Operate,operate_physical,load
+Maintain construction tools or equipment.,Operate,operate_physical,maintain
+Test air quality at work sites.,Evaluate,evaluate_inspect,test
+Operate pumps or compressors.,Operate,operate_physical,operate
+Protect structures or surfaces near work areas to avoid damage.,Operate,operate_physical,protect
+"Install green structural components, equipment or systems.",Operate,operate_physical,install
+Operate road-surfacing equipment.,Operate,operate_physical,operate
+Operate equipment or vehicles to clear construction sites or move materials.,Operate,operate_physical,operate
+"Spread sand, dirt or other loose materials onto surfaces.",Operate,operate_physical,spread
+Drive trucks or truck-mounted equipment.,Operate,operate_physical,drive
+Operate heavy-duty construction or installation equipment.,Operate,operate_physical,operate
+Install equipment attachments or components.,Operate,operate_physical,install
+Update job related knowledge or skills.,Document,record_document,update
+Position construction or extraction equipment.,Operate,operate_physical,position
+Locate equipment or materials in need of repair or replacement.,Evaluate,evaluate_inspect,locate
+Select construction equipment.,Operate,operate_physical,select
+Remove debris or vegetation from work sites.,Operate,operate_physical,remove
+Cut openings in existing structures.,Operate,operate_physical,cut
+Install insulation in equipment or structures.,Operate,operate_physical,install
+Climb equipment or structures to access work areas.,Operate,operate_physical,climb
+Test electrical equipment or systems to ensure proper functioning.,Evaluate,evaluate_inspect,test
+Inspect electrical or electronic systems for defects.,Evaluate,evaluate_inspect,inspect
+Thread wire or cable through ducts or conduits.,Operate,operate_physical,thread
+Cut glass.,Operate,operate_physical,cut
+Maintain plumbing structures or fixtures.,Operate,operate_physical,maintain
+Position hand tools.,Operate,operate_physical,position
+Inspect plumbing systems or fixtures.,Evaluate,evaluate_inspect,inspect
+Install green plumbing or water handling systems.,Operate,operate_physical,install
+"Repair worn, damaged, or defective mechanical parts.",Operate,operate_physical,repair
+Remove parts or components from equipment.,Operate,operate_physical,remove
+"Replace worn, damaged, or defective mechanical parts.",Operate,operate_physical,replace
+Install solar energy systems.,Operate,operate_physical,install
+Determine appropriate locations for operations or installations.,Analyze,analyze_compute,determine
+Operate excavation equipment.,Operate,operate_physical,operate
+"Move products, materials, or equipment between work areas.",Operate,operate_physical,move
+Authorize construction activities.,Manage,direct_manage,authorize
+Operate detonation equipment.,Operate,operate_physical,operate
+Maintain drilling equipment.,Operate,operate_physical,maintain
+Monitor extraction operations.,Evaluate,evaluate_inspect,monitor
+Install drilling equipment.,Operate,operate_physical,install
+Operate drilling equipment.,Operate,operate_physical,operate
+Collect geological samples.,Acquire,info_acquisition,collect
+Prepare excavation or extraction sites for commissioning or decommissioning.,Create,produce_create,prepare
+Maintain extraction or excavation equipment.,Operate,operate_physical,maintain
+Inspect material-moving equipment to detect problems.,Evaluate,evaluate_inspect,inspect
+Signal others to coordinate vehicle movement.,Communicate,communicate_teach,signal
+Maintain material moving equipment in good working condition.,Operate,operate_physical,maintain
+Receive information or instructions for performing work assignments.,Communicate,communicate_teach,receive
+Shovel materials.,Operate,operate_physical,shovel
+Drill holes in earth or rock.,Operate,operate_physical,drill
+Develop equipment or component configurations.,Create,produce_create,develop
+Prepare explosives for detonation.,Create,produce_create,prepare
+Operate mining equipment.,Operate,operate_physical,operate
+Remove debris or damaged materials.,Operate,operate_physical,remove
+Position material handling equipment.,Operate,operate_physical,position
+Clean machinery or equipment.,Operate,operate_physical,clean
+Operate locomotives or other rail vehicles.,Operate,operate_physical,operate
+Connect cables or electrical lines.,Operate,operate_physical,connect
+Weigh materials to ensure compliance with specifications.,Evaluate,evaluate_inspect,weigh
+Monitor loading processes to ensure they are performed properly.,Evaluate,evaluate_inspect,monitor
+Communicate with others to coordinate material handling or movement.,Communicate,communicate_teach,communicate
+Examine physical characteristics of natural stone or stone products.,Evaluate,evaluate_inspect,examine
+Inspect systems to determine if they are operating properly.,Evaluate,evaluate_inspect,inspect
+Estimate costs for labor or materials.,Analyze,analyze_compute,estimate
+Operate welding equipment.,Operate,operate_physical,operate
+Inspect completed work to ensure proper functioning.,Evaluate,evaluate_inspect,inspect
+Install programs onto computer or computer-controlled equipment.,Operate,operate_physical,install
+Confer with customers or users to assess problems.,Communicate,communicate_teach,confer
+"Travel to work sites to perform installation, repair or maintenance work.",Operate,operate_physical,travel
+Train customers in the use of products.,Communicate,communicate_teach,train
+Test mechanical equipment to ensure proper functioning.,Evaluate,evaluate_inspect,test
+Align equipment or machinery.,Operate,operate_physical,align
+Test electrical circuits or components for proper functioning.,Evaluate,evaluate_inspect,test
+Lubricate equipment to allow proper functioning.,Operate,operate_physical,lubricate
+Read technical information needed to perform maintenance or repairs.,Acquire,info_acquisition,read
+Lay cables to connect equipment.,Operate,operate_physical,lay
+Connect electrical components or equipment.,Operate,operate_physical,connect
+Bolt objects into place.,Operate,operate_physical,bolt
+Inspect telecommunications equipment to identify problems.,Evaluate,evaluate_inspect,inspect
+Repair electrical components.,Operate,operate_physical,repair
+"Assemble electrical components, subsystems, or systems.",Operate,operate_physical,assemble
+Read work orders or descriptions of problems to determine repairs or modifications needed.,Acquire,info_acquisition,read
+Test communications equipment to ensure proper functioning.,Evaluate,evaluate_inspect,test
+Move large objects using heavy equipment.,Operate,operate_physical,move
+Install audio or communications equipment.,Operate,operate_physical,install
+"Position equipment using hand tools, power tools, or heavy equipment.",Operate,operate_physical,position
+Solder parts or connections between parts.,Operate,operate_physical,solder
+Repair electrical circuits or wiring.,Operate,operate_physical,repair
+Adjust the tension of nuts or bolts.,Operate,operate_physical,adjust
+Rewire electrical or electronic systems.,Operate,operate_physical,rewire
+Confer with coworkers to resolve equipment problems.,Communicate,communicate_teach,confer
+Service vehicles to maintain functionality.,Operate,operate_physical,service
+Paint surfaces or equipment.,Operate,operate_physical,paint
+"Advise others on issues related to repairs, installation, or equipment design.",Communicate,communicate_teach,advise
+Install machine or equipment replacement parts.,Operate,operate_physical,install
+Lay out work according to specifications.,Operate,operate_physical,lay
+Measure equipment outputs.,Evaluate,evaluate_inspect,measure
+Repair defective engines or engine components.,Operate,operate_physical,repair
+Rebuild parts or components.,Operate,operate_physical,rebuild
+"Inspect mechanical equipment to locate damage, defects, or wear.",Evaluate,evaluate_inspect,inspect
+Communicate with coworkers to coordinate installations or repairs.,Communicate,communicate_teach,communicate
+Braze metal parts or components.,Operate,operate_physical,braze
+Smooth surfaces of objects or equipment.,Operate,operate_physical,smooth
+Cut materials according to specifications or needs.,Operate,operate_physical,cut
+Sharpen cutting or grinding tools.,Operate,operate_physical,sharpen
+Seal gaps or cracks to prevent leakage or moisture intrusion.,Operate,operate_physical,seal
+"Remove dents from equipment, materials, tools or structures.",Operate,operate_physical,remove
+"Drill holes in parts, equipment, or materials.",Operate,operate_physical,drill
+"Install heating, ventilation, or air conditioning (HVAC) equipment.",Operate,operate_physical,install
+Inspect equipment to locate or identify electrical problems.,Evaluate,evaluate_inspect,inspect
+Document test results.,Document,record_document,document
+Install vehicle parts or accessories.,Operate,operate_physical,install
+Remove parts or components from vehicles.,Operate,operate_physical,remove
+Install piping for installation or maintenance activities.,Operate,operate_physical,install
+Operate heating or drying equipment.,Operate,operate_physical,operate
+Observe equipment in operation to detect potential problems.,Evaluate,evaluate_inspect,observe
+Prepare compounds or solutions to be used for repairs.,Create,produce_create,prepare
+Mount materials or workpieces onto production equipment.,Operate,operate_physical,mount
+Adjust vehicle components according to specifications.,Operate,operate_physical,adjust
+Heat material or workpieces to prepare for or complete production.,Operate,operate_physical,heat
+Replace vehicle glass.,Operate,operate_physical,replace
+Clean workpieces or finished products.,Operate,operate_physical,clean
+Repair non-engine automotive or vehicle components.,Operate,operate_physical,repair
+Operate transportation equipment to demonstrate function or malfunction.,Operate,operate_physical,operate
+Inspect vehicles to determine overall condition.,Evaluate,evaluate_inspect,inspect
+"Record information about parts, materials or repair procedures.",Document,record_document,record
+"Service heating, ventilation or air-conditioning (HVAC) systems or components.",Operate,operate_physical,service
+Service green vehicles to make repairs or maintain good working order.,Operate,operate_physical,service
+Inspect gas systems or components to identify leaks or other potential hazards.,Evaluate,evaluate_inspect,inspect
+Repair tires.,Operate,operate_physical,repair
+Dismantle heavy equipment or machinery.,Operate,operate_physical,dismantle
+Grind parts to required dimensions.,Operate,operate_physical,grind
+Repair pipes to stop leaking.,Operate,operate_physical,repair
+Install hardware or other interior fixtures.,Operate,operate_physical,install
+"Install parts, assemblies, or attachments in transportation or material handling equipment.",Operate,operate_physical,install
+Connect hoses to equipment or piping.,Operate,operate_physical,connect
+Refinish wood or metal surfaces.,Operate,operate_physical,refinish
+Assemble structural components.,Operate,operate_physical,assemble
+Install structural foundations.,Operate,operate_physical,install
+Install metering equipment.,Operate,operate_physical,install
+"Install energy-efficient heating, ventilation, or air conditioning (HVAC) equipment.",Operate,operate_physical,install
+Install home appliances.,Operate,operate_physical,install
+Level machines or equipment.,Operate,operate_physical,level
+Position containers to receive materials or workpieces.,Operate,operate_physical,position
+Place materials into molds.,Operate,operate_physical,place
+Calculate requirements for equipment installation or repair projects.,Analyze,analyze_compute,calculate
+"Polish materials, workpieces, or finished products.",Operate,operate_physical,polish
+Repair green energy equipment or systems.,Operate,operate_physical,repair
+Attach rigging to objects so they can be moved.,Operate,operate_physical,attach
+Repair production equipment or tools.,Operate,operate_physical,repair
+"Set equipment guides, stops, spacers, or other fixtures.",Operate,operate_physical,set
+Disable door locks.,Operate,operate_physical,disable
+Install prefabricated or manufactured structures.,Operate,operate_physical,install
+Instruct workers to use equipment or perform technical procedures.,Communicate,communicate_teach,instruct
+Study blueprints or other instructions to determine equipment setup requirements.,Acquire,info_acquisition,study
+Inspect production equipment.,Evaluate,evaluate_inspect,inspect
+Confer with others to resolve production problems or equipment malfunctions.,Communicate,communicate_teach,confer
+Determine metal or plastic production methods.,Analyze,analyze_compute,determine
+Assemble metal or plastic parts or products.,Operate,operate_physical,assemble
+Align parts or workpieces to ensure proper assembly.,Operate,operate_physical,align
+Install mechanical components in production equipment.,Operate,operate_physical,install
+Assemble metal structures.,Operate,operate_physical,assemble
+Draw guide lines or markings on materials or workpieces using patterns or other references.,Create,produce_create,draw
+Inspect installed components or assemblies.,Evaluate,evaluate_inspect,inspect
+Apply lubricants or coolants to workpieces.,Operate,operate_physical,apply
+Operate metal or plastic forming equipment.,Operate,operate_physical,operate
+Operate cutting equipment.,Operate,operate_physical,operate
+Solder parts or workpieces.,Operate,operate_physical,solder
+Measure dimensions of completed products or workpieces to verify conformance to specifications.,Evaluate,evaluate_inspect,measure
+"Mark products, workpieces, or equipment with identifying information.",Document,record_document,mark
+Cut industrial materials in preparation for fabrication or processing.,Operate,operate_physical,cut
+Sort recyclable materials.,Operate,operate_physical,sort
+Reshape metal workpieces to established specifications.,Operate,operate_physical,reshape
+Trim excess material from workpieces.,Operate,operate_physical,trim
+Connect supply lines to production equipment or tools.,Operate,operate_physical,connect
+Assemble electromechanical or hydraulic systems.,Operate,operate_physical,assemble
+Mount attachments or tools onto production equipment.,Operate,operate_physical,mount
+Read work orders or other instructions to determine product specifications or materials requirements.,Acquire,info_acquisition,read
+Load materials into production equipment.,Operate,operate_physical,load
+Remove products or workpieces from production equipment.,Operate,operate_physical,remove
+Apply protective or decorative finishes to workpieces or products.,Operate,operate_physical,apply
+Maintain production or processing equipment.,Operate,operate_physical,maintain
+Adjust flow of electricity to tools or production equipment.,Operate,operate_physical,adjust
+Smooth metal surfaces or edges.,Operate,operate_physical,smooth
+Lay out parts to prepare for assembly.,Operate,operate_physical,lay
+"Inspect metal, plastic, or composite products.",Evaluate,evaluate_inspect,inspect
+Lift materials or workpieces using cranes or other lifting equipment.,Operate,operate_physical,lift
+Shape metal workpieces with hammers or other small hand tools.,Operate,operate_physical,shape
+Design templates or patterns.,Create,produce_create,design
+"Construct patterns, templates, or other work aids.",Create,produce_create,construct
+Mix substances to create chemical solutions.,Operate,operate_physical,mix
+Apply water or solutions to fabrics or apparel.,Operate,operate_physical,apply
+Apply parting agents or other solutions to molds.,Operate,operate_physical,apply
+Clean production equipment.,Operate,operate_physical,clean
+Build production molds.,Create,produce_create,build
+Inspect timing devices.,Evaluate,evaluate_inspect,inspect
+Reshape small metal components for precision assembly.,Operate,operate_physical,reshape
+Operate forklifts or other loaders.,Operate,operate_physical,operate
+Shape clay or dough to create products.,Operate,operate_physical,shape
+"Operate cooking, baking, or other food preparation equipment.",Operate,operate_physical,operate
+Evaluate quality of food ingredients or prepared foods.,Evaluate,evaluate_inspect,evaluate
+Determine food production methods.,Create,produce_create,determine
+Weigh finished products.,Evaluate,evaluate_inspect,weigh
+Prepare meat products for sale or consumption.,Create,produce_create,prepare
+Cut meat products.,Operate,operate_physical,cut
+Estimate material requirements for production.,Analyze,analyze_compute,estimate
+Confer with customers or designers to determine order specifications.,Communicate,communicate_teach,confer
+Process animal carcasses.,Analyze,analyze_compute,process
+"Sort materials or products for processing, storing, shipping, or grading.",Operate,operate_physical,sort
+Clean materials to prepare them for production.,Operate,operate_physical,clean
+Slaughter animals.,Operate,operate_physical,slaughter
+Monitor instruments to ensure proper production conditions.,Evaluate,evaluate_inspect,monitor
+Operate pumping systems or equipment.,Operate,operate_physical,operate
+Watch operating equipment to detect malfunctions.,Evaluate,evaluate_inspect,watch
+Adjust equipment controls to regulate flow of production materials or products.,Operate,operate_physical,adjust
+Sterilize food cooking or processing equipment.,Operate,operate_physical,sterilize
+Clear equipment jams.,Operate,operate_physical,clear
+Feed materials or products into or through equipment.,Operate,operate_physical,feed
+Position raw materials on processing or production equipment.,Operate,operate_physical,position
+Operate mixing equipment.,Operate,operate_physical,operate
+Adjust equipment controls to regulate coolant flow.,Operate,operate_physical,adjust
+Determine production equipment settings.,Evaluate,evaluate_inspect,determine
+Select production equipment according to product specifications.,Operate,operate_physical,select
+Conduct test runs of production equipment.,Evaluate,evaluate_inspect,conduct
+"Remove accessories, tools, or other parts from equipment.",Operate,operate_physical,remove
+Maneuver workpieces in equipment during production.,Operate,operate_physical,maneuver
+Monitor equipment operation to ensure that products are not flawed.,Evaluate,evaluate_inspect,monitor
+Lubricate production equipment.,Operate,operate_physical,lubricate
+Set equipment controls to meet cutting specifications.,Operate,operate_physical,set
+"Measure materials to mark reference points, cutting lines, or other indicators.",Evaluate,evaluate_inspect,measure
+Monitor lubrication of equipment or workpieces.,Evaluate,evaluate_inspect,monitor
+Prepare fabrics or materials for processing or production.,Create,produce_create,prepare
+"Assemble machine tools, parts, or fixtures.",Operate,operate_physical,assemble
+Create diagrams or blueprints for workpieces or products.,Create,produce_create,create
+Adjust equipment controls to regulate gas flow.,Operate,operate_physical,adjust
+Skim impurities from molten metal.,Operate,operate_physical,skim
+Ignite fuel to activate heating equipment.,Operate,operate_physical,ignite
+Remove workpieces from molds.,Operate,operate_physical,remove
+"Engrave designs, text, or other markings onto materials, workpieces, or products.",Operate,operate_physical,engrave
+"Repair templates, patterns, or molds.",Operate,operate_physical,repair
+Apply solutions to production equipment.,Operate,operate_physical,apply
+"Position patterns on equipment, materials, or workpieces.",Operate,operate_physical,position
+"Fill cracks, imperfections, or holes in products or workpieces.",Operate,operate_physical,fill
+"Adjust equipment controls to regulate flow of water, cleaning solutions, or other liquids.",Operate,operate_physical,adjust
+"Melt metal, plastic, or other materials to prepare for production.",Operate,operate_physical,melt
+"Enter commands, instructions, or specifications into equipment.",Document,record_document,enter
+Attach decorative or functional accessories to products.,Operate,operate_physical,attach
+Inspect finishes of workpieces or finished products.,Evaluate,evaluate_inspect,inspect
+Operate painting or coating equipment.,Operate,operate_physical,operate
+Inspected printed materials or other images to verify quality.,Evaluate,evaluate_inspect,inspected
+Download data.,Acquire,info_acquisition,download
+Mix ingredients to create specific finishes.,Operate,operate_physical,mix
+Operate equipment to print images or bind printed images together.,Operate,operate_physical,operate
+Operate sewing equipment.,Operate,operate_physical,operate
+Stack finished items for further processing or shipment.,Operate,operate_physical,stack
+"Inspect garments for defects, damage, or stains.",Evaluate,evaluate_inspect,inspect
+Compare physical characteristics of materials or products to specifications or standards.,Analyze,analyze_compute,compare
+"Smooth garments with irons, presses, or steamers.",Operate,operate_physical,smooth
+Adjust fabrics or other materials during garment production.,Operate,operate_physical,adjust
+Cut fabrics.,Operate,operate_physical,cut
+Assemble garments or textile products.,Operate,operate_physical,assemble
+Construct customized assistive medical or dental devices.,Create,produce_create,construct
+Measure clients to ensure proper product fit.,Evaluate,evaluate_inspect,measure
+Inspect textile products.,Evaluate,evaluate_inspect,inspect
+Sew materials.,Operate,operate_physical,sew
+Operate textile cutting or production equipment.,Operate,operate_physical,operate
+Repair furniture or upholstery.,Operate,operate_physical,repair
+Shape surfaces or edges of wood workpieces.,Operate,operate_physical,shape
+Operate woodworking equipment.,Operate,operate_physical,operate
+Design furniture.,Create,produce_create,design
+Inspect lumber or raw woodstock.,Evaluate,evaluate_inspect,inspect
+Operate energy production equipment.,Operate,operate_physical,operate
+Operate energy distribution equipment.,Operate,operate_physical,operate
+Maintain sustainable energy production equipment.,Operate,operate_physical,maintain
+Monitor external factors impacting operations.,Evaluate,evaluate_inspect,monitor
+Monitor conditions at energy-producing landfills.,Evaluate,evaluate_inspect,monitor
+Operate natural gas generation equipment.,Operate,operate_physical,operate
+Measure stock or liquid levels in sustainable fuel production systems.,Evaluate,evaluate_inspect,measure
+Operate biomass or biofuel production equipment.,Operate,operate_physical,operate
+Inspect sustainable energy production facilities or equipment.,Evaluate,evaluate_inspect,inspect
+"Prepare biological feedstock for physical, chemical, or biological processing.",Create,produce_create,prepare
+Monitor equipment fluid levels.,Evaluate,evaluate_inspect,monitor
+Operate chemical processing or water treatment systems or equipment.,Operate,operate_physical,operate
+Operate natural gas distribution equipment.,Operate,operate_physical,operate
+Monitor biofuel production operations.,Evaluate,evaluate_inspect,monitor
+Design jewelry or decorative objects.,Create,produce_create,design
+Adjust position of molds during processing.,Operate,operate_physical,adjust
+Examine physical characteristics of gemstones or precious metals.,Evaluate,evaluate_inspect,examine
+Inspect medical or dental assistive devices.,Evaluate,evaluate_inspect,inspect
+Cast molds of patient anatomies to create medical or dental devices.,Operate,operate_physical,cast
+Shape glass or similar materials.,Operate,operate_physical,shape
+Apply decorative coloring to photographs or printed materials.,Operate,operate_physical,apply
+Assemble tires.,Operate,operate_physical,assemble
+Monitor cargo area conditions.,Evaluate,evaluate_inspect,monitor
+Resolve personnel problems.,Communicate,communicate_teach,resolve
+Recommend personnel decisions or human resources activities.,Communicate,communicate_teach,recommend
+Train transportation or material moving personnel.,Operate,operate_physical,train
+Acquire supplies or equipment.,Manage,direct_manage,acquire
+Direct passenger or freight transport activities.,Manage,direct_manage,direct
+Plan implementation or promotion of recycling programs.,Create,produce_create,plan
+Operate packing or other material processing equipment.,Operate,operate_physical,operate
+Record details of deliveries or shipments.,Document,record_document,record
+Resolve issues affecting transportation operations.,Manage,direct_manage,resolve
+Maintain vehicles in good working condition.,Operate,operate_physical,maintain
+Pilot aircraft.,Operate,operate_physical,pilot
+Report vehicle or equipment malfunctions.,Communicate,communicate_teach,report
+Respond to transportation emergencies.,Communicate,communicate_teach,respond
+Monitor equipment gauges or displays to ensure proper operation.,Evaluate,evaluate_inspect,monitor
+Inspect aircraft or aircraft components.,Evaluate,evaluate_inspect,inspect
+Monitor engine operation or functioning.,Evaluate,evaluate_inspect,monitor
+Coordinate flight control or management activities.,Manage,direct_manage,coordinate
+Choose optimal transportation routes or speeds.,Analyze,analyze_compute,choose
+Maintain locomotives or other rail equipment in good working condition.,Operate,operate_physical,maintain
+Test performance of aircraft equipment.,Evaluate,evaluate_inspect,test
+Plan flight operations.,Manage,direct_manage,plan
+Inspect cargo to ensure it is properly loaded or secured.,Evaluate,evaluate_inspect,inspect
+Adjust routes or speeds as necessary.,Operate,operate_physical,adjust
+Monitor surroundings to detect potential hazards.,Evaluate,evaluate_inspect,monitor
+Follow safety procedures for vehicle operation.,Operate,operate_physical,follow
+Secure cargo.,Operate,operate_physical,secure
+Read maps to determine routes.,Acquire,info_acquisition,read
+Inspect cargo areas for cleanliness or condition.,Evaluate,evaluate_inspect,inspect
+Inspect locomotives or other railroad equipment.,Evaluate,evaluate_inspect,inspect
+Control equipment that regulates vehicle traffic.,Operate,operate_physical,control
+Connect hoses to equipment or machinery.,Operate,operate_physical,connect
+Direct maintenance or repair activities.,Manage,direct_manage,direct
+"Secure watercraft to docks, wharves or other vessels.",Operate,operate_physical,secure
+Maintain watercraft engines or machinery.,Operate,operate_physical,maintain
+Clean vessels or marine equipment.,Operate,operate_physical,clean
+Control pumps or pumping equipment.,Operate,operate_physical,control
+Time vehicle speed or traffic-control equipment operation.,Evaluate,evaluate_inspect,time
+Sort materials or objects for processing or transport.,Operate,operate_physical,sort
+Operate recycling equipment.,Operate,operate_physical,operate

@@ -2,7 +2,7 @@
 paper_config.py — Visual palette and formatting constants for paper charts.
 
 Defines a consistent visual language for all paper figures. Based on the
-workforce_meeting_v2 readable style (big text, fill space), adapted for
+readable presentation style (big text, fill space), adapted for
 publication use. Colors are muted/washed-out to match the correlation
 heatmap aesthetic.
 """
@@ -112,7 +112,7 @@ CONFIG_COLORS: dict[str, str] = {
 #     natural eco_2015 family.
 #
 # Used by paper builders that iterate CONFIG_ORDER / OVERVIEW_CONFIG_ORDER
-# and by direct lookups (e.g. part_3 _agentic_ceiling_top10).
+# and by direct lookups in the builders.
 PAPER_CONFIG_DATASET_OVERRIDES: dict[str, str] = {
     "agentic_confirmed": "AEI API 2025 2026-05-31",
 }
@@ -262,3 +262,31 @@ def style_paper_figure(
     )
 
     return fig
+
+
+# ── Group / gradient colors used by the figure builders ─────────────────
+# Physical-mix tiers (job-zone violins, verb-family panels) and the
+# focused-set employment gradient.
+
+GROUP_COLORS = {
+    "Non-physical": METRIC_COLORS["tasks"],     # Slate blue
+    "Mixed":        METRIC_COLORS["wages"],     # Sage green
+    "Physical":     METRIC_COLORS["workers"],   # Gold / yellow
+}
+
+
+# ─────────────────────────────────────────────────────────────────────────
+# Figure 4 (variant): risk_score_5f_workers — two-panel rank-by-tasks view.
+# Same SKA-gated focused set as risk_score_5f, but flipped framing:
+#   Panel A: x = % tasks exposed (in-bar: tasks %)
+#   Panel B: x = workers exposed (in-bar: formatted count)
+#   Right column: emp_proj_pct, one straight vertical line
+#   Y-order:  shared, descending by % tasks exposed
+#   Color:    |emp_proj_pct| — darker = larger employment decline
+# Replaces risk_score_5f in main() — see results.md / README.md.
+# ─────────────────────────────────────────────────────────────────────────
+
+EMP_LIGHT = "#efd9c2"   # at-risk gradient: light tan → deep burgundy
+
+
+EMP_DARK = "#7a2e1f"

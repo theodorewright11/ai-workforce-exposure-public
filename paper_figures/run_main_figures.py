@@ -5,12 +5,18 @@ Run from anywhere:
     python paper_figures/run_main_figures.py
 
 Figures are written to paper_figures/figures/ (committed). Intermediate CSVs and
-working copies land in paper_figures/results/ (gitignored). Section headers mirror
-the paper's Results section (§6.2–6.8). See MAIN_FIGURES.md for the rendered set.
+working copies land in paper_figures/results/ (gitignored). See MAIN_FIGURES.md
+for the rendered set and paper_figures/lib/figure_data.py for the shared data
+layer every figure is built from.
 
-Requires the raw datasets in ../data/ (gitignored — see README for how to obtain
-them). Each figure is run independently; if one fails the rest still proceed and a
-summary of failures is printed at the end.
+Exposure is weighted by work time: each (task, occupation) row carries
+`time_per_day` (estimated hours per day, normalised so an occupation's tasks sum
+to a 7-hour workday), so an exposure percentage is the share of the workday AI
+reaches, employment-weighted at group level. Usage intensity is the deliberate
+exception — it divides by employment alone.
+
+Requires the datasets in ../data/. Each figure runs independently; if one fails
+the rest still proceed and a summary of failures is printed at the end.
 """
 from __future__ import annotations
 
@@ -30,45 +36,44 @@ for _stream in (sys.stdout, sys.stderr):
     except Exception:  # noqa: BLE001
         pass
 
-from lib.builders import part1, part2, part3      # noqa: E402
+from lib.builders import (  # noqa: E402
+    adoption, agentic, focused, jobzone, occupation, trend, verbs,
+)
 
 RESULTS = HERE / "results"
 FIGURES = HERE / "figures"
 (RESULTS / "figures").mkdir(parents=True, exist_ok=True)
 FIGURES.mkdir(exist_ok=True)
 
-# Paper Results order (§6.2 → §6.8). Each entry: (label, callable, extra_args).
-SECTIONS: list[tuple[str, list[tuple[str, object, tuple]]]] = [
-    ("6.2  Overall Measures", [
-        ("External benchmark convergence (major + occupation)", part1.build_convergence, ()),
-        ("AI economic exposure across data configurations", part1.build_overview, ()),
+# Main-body order (mirrors MAIN_FIGURES.md).
+SECTIONS: list[tuple[str, list[tuple[str, object]]]] = [
+    ("Occupational structure", [
+        ("Major categories — phys/non-phys stacked, with workers and wages",
+         occupation.build_major_stacked),
+        ("General work activities — phys/non-phys stacked, with workers and wages",
+         occupation.build_gwa_stacked),
     ]),
-    ("6.3  Trends", [
-        ("All Confirmed vs Ceiling over time + data tables", part1.build_temporal, ()),
+    ("Job zones", [
+        ("Job-zone violins + per-zone usage columns", jobzone.build_job_zone_usage),
     ]),
-    ("6.4  Major Occupational Categories", [
-        ("Major categories — % tasks exposed (Confirmed | Variant A | Variant B)",
-         part2.build_major_categories_pct, ()),
-        ("Major categories — workers and wages", part2.build_major_categories_wkrs_wages, ()),
+    ("Verb families", [
+        ("Verb-family overview — All Confirmed", verbs.build_verb_family_overview),
+        ("The verb family each major treats most unlike the economy",
+         verbs.build_verb_family_exemplars),
     ]),
-    ("6.5  General Work Activities", [
-        ("GWA — % tasks exposed (Confirmed | Variant A | Variant B)", part2.build_gwa_pct, ()),
+    ("Agentic AI", [
+        ("Intermediate work activities where MCP tooling runs ahead of confirmed use",
+         agentic.build_agentic_tooling),
     ]),
-    ("6.6  Skills, Knowledge, Abilities", [
-        ("SKA capability vs workforce need (skills + knowledge/abilities)",
-         part2.build_ska_levels, ()),
+    ("Actual AI usage", [
+        ("Major-category adoption ×median", adoption.build_major_adoption),
+        ("GWA adoption ×median", adoption.build_gwa_adoption),
     ]),
-    ("6.7  Agentic AI", [
-        ("Agentic confirmed vs ceiling — major categories", part3.build_agentic_ceiling_major, ()),
-        ("Agentic confirmed vs ceiling — general work activities", part3.build_agentic_ceiling_gwa, ()),
+    ("Trends", [
+        ("Phys / non-phys / aggregate trend", trend.build_trend_phys),
     ]),
-    ("6.8  Other Areas of Interest", [
-        ("Job zone violin — full economy vs non-physical", part2.build_job_zone_violin, ()),
-        ("Tech commodities where AI has reach", part3.build_tech_commodities, ()),
-        ("High exposure × negative employment projection (focused set)",
-         part3.build_risk_score_5f_workers, ()),
-        ("U.S. states clustered on AI exposure", part3.build_state_clusters_map, ()),
-        ("AI usage intensity by sector", part3.build_intensity_anchor_fulleco, ()),
+    ("Focused set", [
+        ("Focused set + usage ×median", focused.build_focused_set_usage),
     ]),
 ]
 
@@ -79,10 +84,10 @@ def main() -> None:
         print("\n" + "=" * 78)
         print(f"  {header}")
         print("=" * 78)
-        for label, fn, args in items:
+        for label, fn in items:
             print(f"\n  -> {label}")
             try:
-                fn(RESULTS, FIGURES, *args)
+                fn(RESULTS, FIGURES)
             except Exception as exc:  # noqa: BLE001 — report and continue
                 failures.append((label, f"{type(exc).__name__}: {exc}"))
                 print(f"    !! FAILED: {type(exc).__name__}: {exc}")
@@ -93,8 +98,8 @@ def main() -> None:
         print(f"  MAIN-BODY FIGURES: {len(failures)} failure(s):")
         for label, err in failures:
             print(f"    - {label}: {err}")
-    else:
-        print("  MAIN-BODY FIGURES: all figures regenerated into paper_figures/figures/")
+        sys.exit(1)
+    print("  MAIN-BODY FIGURES: all figures regenerated into paper_figures/figures/")
     print("=" * 78)
 
 

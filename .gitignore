@@ -4,8 +4,9 @@
 # are ignored.
 
 # ---- Generated figure outputs + run logs (regenerable) ----
+# Figure PNGs under paper_figures/figures/ ARE committed; the per-chart CSVs
+# and the working copies under paper_figures/results/ are regenerable.
 paper_figures/results/
-paper_figures/lib/**/results/
 paper_figures/*.log
 
 # ---- Python ----

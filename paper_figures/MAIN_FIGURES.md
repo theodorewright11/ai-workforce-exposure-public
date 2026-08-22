@@ -1,86 +1,52 @@
 # Main-Body Figures
 
-Every main-body figure from the paper, in Results order (§6.2 → §6.8). Regenerate
-with `python paper_figures/run_main_figures.py`.
+Every main-body figure from the paper, in Results order. Regenerate with
+`python paper_figures/run_main_figures.py`.
 
 ---
 
-## 6.2 Overall Measures
+## Occupational Structure
 
-External-benchmark convergence between our AI-usage sources and external exposure
-indices, at the SOC major and occupation levels.
+![Major categories — phys/non-phys stacked, with workers and wages exposed](figures/major_categories_stacked.png)
 
-![Benchmark convergence — major level](figures/convergence_major.png)
-
-![Benchmark convergence — occupation level](figures/convergence_occ.png)
-
-AI economic exposure (tasks / workers / wages) across the five data configurations.
-
-![AI economic exposure across data configurations](figures/overview.png)
+![GWA — phys/non-phys stacked, with workers and wages exposed](figures/gwa_stacked.png)
 
 ---
 
-## 6.3 Trends
+## Job Zones
 
-All Confirmed vs. All Sources (Ceiling) over time, plus the per-snapshot tasks-rated
-and auto-aug tables.
-
-![All Confirmed vs Ceiling over time](figures/temporal_trend.png)
-
-![Tasks rated & AI capability over time — All Confirmed](figures/temporal_table_confirmed.png)
-
-![Tasks rated & AI capability over time — All Sources (Ceiling)](figures/temporal_table_ceiling.png)
+![Job zone violins + usage](figures/job_zone_usage.png)
 
 ---
 
-## 6.4 Major Occupational Categories
+## Verb Families
 
-Major-category exposure with the physical / non-physical structural lens
-(All Confirmed | Variant A | Variant B), then workers and wages exposed.
+![Verb family — All Confirmed](figures/verb_family_all_confirmed.png)
 
-![Major categories — % tasks exposed](figures/major_categories_pct.png)
-
-![Major categories — workers and wages](figures/major_categories_wkrs_wages.png)
+![The verb family each major treats most unlike the economy](figures/verb_family_exemplars.png)
 
 ---
 
-## 6.5 General Work Activities
+## Agentic AI
 
-GWA-level exposure (All Confirmed | Hypothetical Variant A | Variant B).
-
-![GWA — % tasks exposed](figures/gwa_pct.png)
+![Intermediate work activities where MCP tooling runs furthest ahead of confirmed use](figures/agentic_tooling.png)
 
 ---
 
-## 6.6 Skills, Knowledge, Abilities
+## Actual AI Usage
 
-AI capability vs. workforce requirements, element by element.
+![Major-category adoption ×median](figures/major_adoption.png)
 
-![SKA — skills](figures/ska_skills.png)
-
-![SKA — knowledge and abilities](figures/ska_knowledge_abilities.png)
+![GWA adoption ×median](figures/gwa_adoption.png)
 
 ---
 
-## 6.7 Agentic AI
+## Trends
 
-Agentic Confirmed vs. Agentic Ceiling gap, by major category and by general work
-activity.
-
-![Agentic confirmed vs ceiling — major categories](figures/agentic_ceiling_major.png)
-
-![Agentic confirmed vs ceiling — general work activities](figures/agentic_ceiling_gwa.png)
+![Trend — phys / non-phys / aggregate](figures/trend_phys.png)
 
 ---
 
-## 6.8 Other Areas of Interest
+## Focused Set
 
-![Job zone — full economy vs non-physical occupations](figures/job_zone_violin.png)
-
-![Tech commodities where AI has reach](figures/tech_commodities.png)
-
-![High AI exposure × negative employment projection (focused set)](figures/risk_score_5f_workers.png)
-
-![U.S. states clustered on AI exposure](figures/state_clusters_map.png)
-
-![AI usage intensity by sector](figures/intensity_anchor_fulleco.png)
+![Focused set + usage ×median](figures/focused_set_usage.png)

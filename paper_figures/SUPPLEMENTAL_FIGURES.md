@@ -1,98 +1,58 @@
 # Supplemental Figures
 
-Every supplemental (appendix) figure from the paper's Supplementary Materials, in
-order. Regenerate with `python paper_figures/run_supplemental_figures.py`.
+Every supplementary-materials figure, in order. Regenerate with
+`python paper_figures/run_supplemental_figures.py`.
 
 ---
 
-## Full Convergence Matrix
+## Verb Families, Non-Physical Tasks Only
 
-The complete square correlation matrix (every internal source/config × every
-external benchmark), at each SOC level.
+![Verb family — All Confirmed, non-physical](figures/verb_family_all_confirmed_nonphys.png)
+
+---
+
+## Actual AI Usage Inside Three Majors
+
+### Life, Physical & Social Science
+
+![Top occupations — Life, Physical & Social Science](figures/usage_drivers_occ_life_phys_soc_sci.png)
+
+![Top tasks — Life, Physical & Social Science](figures/usage_drivers_task_life_phys_soc_sci.png)
+
+### Arts, Design & Entertainment
+
+![Top occupations — Arts, Design & Entertainment](figures/usage_drivers_occ_arts_design_ent.png)
+
+![Top tasks — Arts, Design & Entertainment](figures/usage_drivers_task_arts_design_ent.png)
+
+### Computer & Mathematical
+
+![Top occupations — Computer & Mathematical](figures/usage_drivers_occ_comp_math.png)
+
+![Top tasks — Computer & Mathematical](figures/usage_drivers_task_comp_math.png)
+
+---
+
+## Actual AI Usage Inside the Four Leading Work Activities
+
+![Top activities — Getting Information](figures/usage_dwa_getting_information.png)
+
+![Top activities — Working with Computers](figures/usage_dwa_working_with_computers.png)
+
+![Top activities — Performing for or Working Directly with the Public](figures/usage_dwa_performing_for_or_working_directly_with_the_public.png)
+
+![Top activities — Interpreting the Meaning of Information for Others](figures/usage_dwa_interpreting_the_meaning_of_information_for_others.png)
+
+---
+
+## Convergence Against External Benchmarks
 
 ![Full convergence matrix — major](figures/convergence_full_major.png)
-
-![Full convergence matrix — minor](figures/convergence_full_minor.png)
-
-![Full convergence matrix — broad](figures/convergence_full_broad.png)
 
 ![Full convergence matrix — occupation](figures/convergence_full_occ.png)
 
 ---
 
-## Aggregate Economy — Overview Without Auto-Aug
-
-Exposure across configurations with the auto-aug weighting turned off.
-
-![Overview without auto-aug](figures/overview_no_autoaug.png)
-
----
-
-## Trend Line — Physical vs Non-Physical Tasks
-
-![Temporal trend — non-physical tasks](figures/temporal_trend_nonphys.png)
-
----
-
-## Major Occupational Category Trends and 2-Year Projection
-
-![Major-category tasks trend](figures/major_categories_trend_tasks.png)
-
-![Major-category workers trend](figures/major_categories_trend_workers.png)
-
----
-
-## Where We and Eloundou Disagree by Major Occupational Category
+## Where We and Eloundou Disagree
 
 ![Eloundou divergence by major](figures/eloundou_divergence_major.png)
-
----
-
-## Knowledge and Abilities Full Elements
-
-![SKA knowledge — full element level](figures/ska_knowledge_full.png)
-
-![SKA abilities — full element level](figures/ska_abilities_full.png)
-
----
-
-## Generalized Work Activities — Workers and Wages
-
-![GWA workers and wages](figures/gwa_wkrs_wages.png)
-
----
-
-## State Rankings
-
-![State clusters — each panel ranked independently](figures/state_clusters_each_ranked.png)
-
-![State clusters — combined rank sum across both panels](figures/state_clusters_combined_ranked.png)
-
----
-
-## Actual AI Usage
-
-Underadoption gap by major, then within-major intensity drivers (top occupations and
-top tasks) for the three highest-lift majors.
-
-![Underadoption gap by major](figures/underadoption_gap.png)
-
-![Intensity drivers — Life, Physical & Social Science (occupations)](figures/intensity_drivers_occ_life_phys_soc_sci.png)
-
-![Intensity drivers — Life, Physical & Social Science (tasks)](figures/intensity_drivers_task_life_phys_soc_sci.png)
-
-![Intensity drivers — Arts, Design & Entertainment (occupations)](figures/intensity_drivers_occ_arts_design_ent.png)
-
-![Intensity drivers — Arts, Design & Entertainment (tasks)](figures/intensity_drivers_task_arts_design_ent.png)
-
-![Intensity drivers — Computer & Mathematical (occupations)](figures/intensity_drivers_occ_comp_math.png)
-
-![Intensity drivers — Computer & Mathematical (tasks)](figures/intensity_drivers_task_comp_math.png)
-
----
-
-## Framework Capability and Adoption Correlations
-
-![Capability vs adoption properties across all occupations](figures/capability_vs_adoption_all_occs.png)
-
-![Adoption frictions vs exposure within non-physical occupations](figures/adoption_friction_scatter.png)

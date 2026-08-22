@@ -6,12 +6,15 @@ Run from anywhere:
     python paper_figures/run_supplemental_figures.py
 
 Figures are written to paper_figures/figures/ (committed). Intermediate CSVs and
-working copies land in paper_figures/results/ (gitignored). Section headers mirror
-the Supplementary Materials figure sections. See SUPPLEMENTAL_FIGURES.md for the
-rendered set.
+working copies land in paper_figures/results/ (gitignored). See
+SUPPLEMENTAL_FIGURES.md for the rendered set.
 
-Requires the raw datasets in ../data/ (gitignored — see README). Each figure runs
-independently; failures are summarized at the end and do not stop the run.
+Same weighting as the main body — work time (`time_per_day`, normalised to a
+7-hour workday), employment-weighted at group level. Usage is the exception by
+design: Σ debiased pct ÷ Σ employment, employment alone.
+
+Requires the datasets in ../data/. Each figure runs independently; failures are
+summarized at the end and do not stop the run.
 """
 from __future__ import annotations
 
@@ -31,64 +34,32 @@ for _stream in (sys.stdout, sys.stderr):
     except Exception:  # noqa: BLE001
         pass
 
-from lib.builders import appendix                 # noqa: E402
+from lib.builders import benchmarks, drivers, verbs  # noqa: E402
 
 RESULTS = HERE / "results"
 FIGURES = HERE / "figures"
 (RESULTS / "figures").mkdir(parents=True, exist_ok=True)
 FIGURES.mkdir(exist_ok=True)
 
-
-def _convergence_all(results: Path, figures: Path) -> None:
-    """Full convergence matrix, one figure per SOC level (Major/Minor/Broad/Occ)."""
-    for lvl_key, lvl_title in [("major", "Major level"), ("minor", "Minor level"),
-                               ("broad", "Broad level"), ("occupation", "Occupation level")]:
-        short = "occ" if lvl_key == "occupation" else lvl_key
-        appendix.build_convergence_full(
-            results, figures,
-            levels=[(lvl_key, lvl_title)],
-            out_name=f"convergence_full_{short}.png",
-            csv_name=f"spearman_combined_full_{short}.csv",
-        )
-
-
-# Supplementary Materials figure order (mirrors paper_figures results.md appendix).
+# Supplementary Materials figure order (mirrors SUPPLEMENTAL_FIGURES.md).
 SECTIONS: list[tuple[str, list[tuple[str, object]]]] = [
-    ("Full Convergence Matrix (Major / Minor / Broad / Occupation)", [
-        ("Full convergence matrices — all four SOC levels", _convergence_all),
+    ("Verb Families — Non-Physical Tasks Only", [
+        ("Verb-family overview — All Confirmed, non-physical",
+         verbs.build_verb_family_overview_nonphys),
     ]),
-    ("Aggregate Economy — Overview Without Auto-Aug", [
-        ("Exposure across configs with auto-aug weighting off", appendix.build_overview_no_autoaug),
+    ("Actual AI Usage Inside Three Majors", [
+        ("Top occupations + top tasks, 3 majors (6 figures)",
+         drivers.build_usage_drivers_majors),
     ]),
-    ("Trend Line — Physical vs Non-Physical Tasks", [
-        ("Temporal trend restricted to non-physical tasks", appendix.build_temporal_trend_nonphys),
+    ("Actual AI Usage Inside the Four Leading Work Activities", [
+        ("Top detailed activities per GWA (4 figures)", drivers.build_usage_drivers_gwa),
     ]),
-    ("Major Occupational Category Trends and 2-Year Projection", [
-        ("Major-category tasks + workers trend", appendix.build_major_categories_trend),
+    ("Convergence Against External Benchmarks", [
+        ("Full convergence matrix — major level", benchmarks.build_convergence_major),
+        ("Full convergence matrix — occupation level", benchmarks.build_convergence_occ),
     ]),
-    ("Where We and Eloundou Disagree by Major Occupational Category", [
-        ("Eloundou z-score divergence by major", appendix.build_eloundou_divergence_major),
-    ]),
-    ("Knowledge and Abilities Full Elements", [
-        ("Full element-level SKA (knowledge + abilities)", appendix.build_ska_full),
-    ]),
-    ("Generalized Work Activities — Workers and Wages", [
-        ("GWA workers/wages counterpart to the main-body GWA chart", appendix.build_gwa_wkrs_wages),
-    ]),
-    ("State Rankings", [
-        ("State clusters — each panel ranked independently", appendix.build_state_clusters_each_ranked),
-        ("State clusters — combined rank sum across both panels", appendix.build_state_clusters_combined_ranked),
-    ]),
-    ("Actual AI Usage", [
-        ("Underadoption gap by major occupational category", appendix.build_underadoption_gap),
-        ("Within-major intensity drivers (Life/Phys/Soc, Arts/Design, Comp/Math)",
-         appendix.build_intensity_drivers),
-    ]),
-    ("Framework Capability and Adoption Correlations", [
-        ("Capability vs adoption properties across all occupations",
-         appendix.build_capability_vs_adoption_all_occs),
-        ("Adoption frictions vs exposure within non-physical occupations",
-         appendix.build_adoption_friction_scatter),
+    ("Where We and Eloundou Disagree", [
+        ("Eloundou z-score divergence by major", benchmarks.build_eloundou_divergence),
     ]),
 ]
 
@@ -113,8 +84,8 @@ def main() -> None:
         print(f"  SUPPLEMENTAL FIGURES: {len(failures)} failure(s):")
         for label, err in failures:
             print(f"    - {label}: {err}")
-    else:
-        print("  SUPPLEMENTAL FIGURES: all figures regenerated into paper_figures/figures/")
+        sys.exit(1)
+    print("  SUPPLEMENTAL FIGURES: all figures regenerated into paper_figures/figures/")
     print("=" * 78)
 
 

@@ -3,10 +3,19 @@
 Run from the repo root:
     .venv/Scripts/python -m pytest dashboard/api/tests -q
 
-These pin the headline numbers to the paper (2026-05-31 snapshot) so a refactor
-that silently changes a baseline (e.g. the agentic_confirmed eco_2025 rebasing, or
-the usage full-eco denominator) fails loudly. Tolerances are loose (±0.5) — we're
-guarding the wiring, not re-deriving the figures.
+These pin the dashboard's headline numbers on the 2026-05-31 snapshot so a
+refactor that silently changes a baseline (e.g. the agentic_confirmed eco_2025
+rebasing, or the usage full-eco denominator) fails loudly. Tolerances are loose
+(±0.5) — we're guarding the wiring, not re-deriving the figures.
+
+The expected values are NOT read off a paper figure. The dashboard is
+freq-weighted; the paper figures moved to work-time weighting (`time_day`), so
+the two no longer produce the same quantity. Each constant below was
+independently re-derived from the raw CSVs in data/ using the PRD §4 formula --
+sum(AI task_comp) / sum(ECO task_comp) x 100 over unique (occupation, task)
+pairs, task_comp = freq_mean x auto_aug_mean / 5 -- without going through
+backend/ or dashboard/ code. Re-verify the same way if the datasets are
+refreshed again; do not copy numbers from the figures.
 """
 import dashboard.api  # noqa: F401  — sys.path bootstrap
 
@@ -35,7 +44,7 @@ def test_occ_exposure_matches_paper():
     assert len(r.rows) == 22
     top = _top(r.rows)
     assert top.category.startswith("Computer and Mathematical")
-    assert abs(top.pct_tasks_affected - 83.4) < 0.6   # paper Fig 11/12
+    assert abs(top.pct_tasks_affected - 68.9) < 0.6   # re-derived from raw CSVs
 
 
 def test_wa_exposure_matches_paper():
@@ -43,15 +52,15 @@ def test_wa_exposure_matches_paper():
     assert len(r.rows) == 37
     top = _top(r.rows)
     assert top.category.startswith("Working with Computers")
-    assert abs(top.pct_tasks_affected - 84.4) < 0.6   # paper Fig 13
+    assert abs(top.pct_tasks_affected - 74.0) < 0.6   # re-derived from raw CSVs
 
 
 def test_agentic_confirmed_uses_eco2025_baseline():
-    # paper_dataset_for() rebases agentic_confirmed onto eco_2025 → Comp&Math ~71.9
+    # paper_dataset_for() rebases agentic_confirmed onto eco_2025 -> Comp&Math ~70.0
     r = exposure(ExposureRequest(config="agentic_confirmed", level="major", geo="nat", kind="occ"))
     top = _top(r.rows)
     assert top.category.startswith("Computer and Mathematical")
-    assert abs(top.pct_tasks_affected - 71.9) < 0.8   # paper Fig 17
+    assert abs(top.pct_tasks_affected - 70.0) < 0.8   # re-derived from raw CSVs
 
 
 def test_drilldown_children():
@@ -78,7 +87,7 @@ def test_usage_intensity_matches_paper():
     # On the 2026-05-31 intensity dataset the top major shifted from
     # Life/Phys/Soc Science to Computer & Mathematical.
     assert top["category"].startswith("Computer and Mathematical")
-    assert abs(top["intensity"] - 21.3) < 0.8         # paper Fig 23
+    assert abs(top["intensity"] - 21.3) < 0.8         # 2026-05-31 intensity set
     office = [r for r in rows if r["category"].startswith("Office and Admin")][0]
     assert abs(office["intensity"] - 1.0) < 0.05      # anchor
 
@@ -88,6 +97,6 @@ def test_occupation_report():
     assert len(titles["titles"]) == 923
     rep = occupation_report(title="Computer Programmers", geo="nat")
     assert rep["title"] == "Computer Programmers"
-    assert abs(rep["headline"]["pct_tasks_affected"] - 86.7) < 1.0
+    assert abs(rep["headline"]["pct_tasks_affected"] - 72.1) < 1.0  # re-derived
     # per-source fields + MCP servers populated
     assert any(t.get("top_mcps") for t in rep["tasks"])

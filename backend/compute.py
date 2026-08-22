@@ -106,13 +106,28 @@ def apply_physical_filter(df: pd.DataFrame, physical_mode: str) -> pd.DataFrame:
     return df
 
 
+TASK_COMP_METHODS = frozenset({"freq", "imp", "time_day"})
+
+
 def compute_task_comp(
     df: pd.DataFrame,
     method: str,
     use_auto_aug: bool,
 ) -> pd.Series:
+    # Explicit membership check: the branch below falls through to the value
+    # method for anything unrecognised, so a typo used to silently return
+    # freq x rel x imp instead of raising.
+    assert method in TASK_COMP_METHODS, (
+        f"Unknown method {method!r}; expected one of {sorted(TASK_COMP_METHODS)}"
+    )
     if method == "freq":
         tc = df["freq_mean"].copy().fillna(0.0)
+    elif method == "time_day":
+        # Estimated hours per day spent on the task. Normalised upstream so
+        # every occupation's tasks sum to 7.0, which makes the resulting
+        # percentage a share of the workday rather than of task frequency.
+        assert "time_per_day" in df.columns, "time_per_day missing for method='time_day'"
+        tc = df["time_per_day"].copy().fillna(0.0)
     else:
         tc = df["freq_mean"].fillna(0.0) * df["relevance"].fillna(0.0) * df["importance"].fillna(0.0)
 
@@ -138,6 +153,7 @@ def dedup_and_compute(
         emp_col, wage_col,
         "broad_occ", "minor_occ_category", "major_occ_category",
         "freq_mean", "importance", "relevance", "auto_aug_mean",
+        "time_per_day",
     ]
 
     agg_dict = {c: "first" for c in keep if c in df.columns}
@@ -600,6 +616,10 @@ def _compute_wa_for_group(
     # Compute per-task weight for emp allocation
     if method == "freq":
         eco_task_dedup["_emp_weight"] = eco_task_dedup["freq_mean"].fillna(0.0)
+    elif method == "time_day":
+        # Share of the 7-hour workday the task takes, so emp_per_task is the
+        # full-time-equivalent headcount whose day goes to that task.
+        eco_task_dedup["_emp_weight"] = eco_task_dedup["time_per_day"].fillna(0.0)
     else:
         eco_task_dedup["_emp_weight"] = (
             eco_task_dedup["freq_mean"].fillna(0.0)

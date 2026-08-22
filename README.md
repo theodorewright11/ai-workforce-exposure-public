@@ -34,9 +34,12 @@ Mathematics.
 
 ```
 paper_figures/   Regenerate every figure in the paper + supplement
+  lib/figure_data.py   Dataset pins + work-time exposure / usage helpers
+  lib/builders/        One module per figure family
+  tests/               Unit tests for the helpers and layout invariants
 dashboard/       Interactive dashboard (FastAPI backend + Next.js frontend)
 backend/         Shared compute engine (powers both the figures and the dashboard)
-data/            Datasets (not committed; see "Data" below)
+data/            Datasets (committed; see "Data" below)
 ```
 
 **The dashboard** lets you look up any occupation, explore exposure across the SOC
@@ -49,13 +52,23 @@ it and how the dashboard code is organized are in
 ```bash
 python -m venv venv && source venv/Scripts/activate
 pip install -r requirements.txt
-# obtain the datasets into ./data/ (see "Data" below), then:
-python paper_figures/run_main_figures.py
-python paper_figures/run_supplemental_figures.py
+python paper_figures/run_main_figures.py          # 10 main-body figures
+python paper_figures/run_supplemental_figures.py  # 14 supplemental figures
 ```
 
-Each figure runs independently; if one fails (for example a missing dataset) the
-rest still proceed.
+PNGs land in `paper_figures/figures/` (committed); the CSV behind every chart
+lands in `paper_figures/results/` (regenerable, not committed). Each figure runs
+independently; if one fails the rest still proceed. See
+[`paper_figures/MAIN_FIGURES.md`](paper_figures/MAIN_FIGURES.md) and
+[`paper_figures/SUPPLEMENTAL_FIGURES.md`](paper_figures/SUPPLEMENTAL_FIGURES.md)
+for the rendered set.
+
+Exposure in the figures is weighted by **work time**. Each (task, occupation)
+row carries `time_per_day` — estimated hours per day, normalised so an
+occupation's tasks sum to a 7-hour workday — so an exposure percentage is the
+share of the workday AI reaches, employment-weighted at group level. Actual-usage
+intensity is denominated by employment alone. The shared data layer is
+`paper_figures/lib/figure_data.py`; tests are in `paper_figures/tests/`.
 
 ---
 
