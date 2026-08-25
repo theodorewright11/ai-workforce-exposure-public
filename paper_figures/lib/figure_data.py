@@ -692,8 +692,23 @@ def intensity_pairs(geo: str = DEFAULT_GEO) -> pd.DataFrame:
     return pairs
 
 
-def intensity_act_rows(act_col: str = "gwa_title",
-                       geo: str = DEFAULT_GEO) -> pd.DataFrame:
+# ── Frame caches ──────────────────────────────────────────────────────────
+# The three builders below each rebuild a ~60k-row join from CSV. The figures
+# call them a handful of times; the dashboard calls them once per page view,
+# where 0.3s each is the difference between a click feeling instant and not.
+#
+# Callers routinely tag the result in place (`rows["family"] = ...`), so every
+# cached frame is handed out as a COPY. Copying 60k rows costs ~10ms against a
+# ~300ms rebuild, and returning the live object would let one caller's tag
+# leak into the next one's frame.
+
+_eco_act_split_cache: dict[tuple[str, str], pd.DataFrame] = {}
+_act_exposure_rows_cache: dict[tuple[str, str, str, str], pd.DataFrame] = {}
+_intensity_act_rows_cache: dict[tuple[str, str], pd.DataFrame] = {}
+
+
+def _build_intensity_act_rows(act_col: str = "gwa_title",
+                              geo: str = DEFAULT_GEO) -> pd.DataFrame:
     """Rated (task, occ, act) rows of the intensity dataset with each pair's
     adj_pct, raw pct, and eco_weight split /n across its distinct values of
     `act_col`, so per-activity sums stay a true decomposition (Σ = the pair
@@ -732,8 +747,8 @@ def intensity_gwa_rows(geo: str = DEFAULT_GEO) -> pd.DataFrame:
     return intensity_act_rows("gwa_title", geo=geo)
 
 
-def eco_act_split_rows(act_col: str = "gwa_title",
-                       geo: str = DEFAULT_GEO) -> pd.DataFrame:
+def _build_eco_act_split_rows(act_col: str = "gwa_title",
+                              geo: str = DEFAULT_GEO) -> pd.DataFrame:
     """FULL eco_2025 universe at (task, occ, act) grain, /n-split across the
     pair's distinct activities.
 
@@ -963,7 +978,7 @@ def pair_exposure_rows(
     return rows
 
 
-def act_exposure_rows(
+def _build_act_exposure_rows(
     dataset_name: str,
     act_col: str = "gwa_title",
     physical_mode: str = "all",
@@ -1021,6 +1036,46 @@ def act_exposure(
     g["pct"] = g["hours_exposed"] / g["hours"].replace(0.0, np.nan) * 100.0
     g["workers_fte"] = g["hours_exposed"] / OCC_DAY_HOURS
     return g
+
+
+
+# ── Cached public wrappers ────────────────────────────────────────────────
+# Each returns a COPY: callers tag these frames in place (families.py adds a
+# `family` column), and handing out the live cached object would let one
+# caller's tag appear in the next caller's frame.
+
+
+def intensity_act_rows(act_col: str = "gwa_title",
+                       geo: str = DEFAULT_GEO) -> pd.DataFrame:
+    """Cached `_build_intensity_act_rows`. See it for the semantics."""
+    key = (act_col, geo)
+    if key not in _intensity_act_rows_cache:
+        _intensity_act_rows_cache[key] = _build_intensity_act_rows(act_col, geo)
+    return _intensity_act_rows_cache[key].copy()
+
+
+def eco_act_split_rows(act_col: str = "gwa_title",
+                       geo: str = DEFAULT_GEO) -> pd.DataFrame:
+    """Cached `_build_eco_act_split_rows`. See it for the semantics."""
+    key = (act_col, geo)
+    if key not in _eco_act_split_cache:
+        _eco_act_split_cache[key] = _build_eco_act_split_rows(act_col, geo)
+    return _eco_act_split_cache[key].copy()
+
+
+def act_exposure_rows(
+    dataset_name: str,
+    act_col: str = "gwa_title",
+    physical_mode: str = "all",
+    geo: str = DEFAULT_GEO,
+) -> pd.DataFrame:
+    """Cached `_build_act_exposure_rows`. See it for the semantics."""
+    key = (dataset_name, act_col, physical_mode, geo)
+    if key not in _act_exposure_rows_cache:
+        _act_exposure_rows_cache[key] = _build_act_exposure_rows(
+            dataset_name, act_col, physical_mode, geo
+        )
+    return _act_exposure_rows_cache[key].copy()
 
 
 # ── Standalone MCP snapshot (tool specs, not usage) ───────────────────────
