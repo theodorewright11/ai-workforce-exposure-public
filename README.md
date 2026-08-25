@@ -42,10 +42,21 @@ backend/         Shared compute engine (powers both the figures and the dashboar
 data/            Datasets (committed; see "Data" below)
 ```
 
-**The dashboard** lets you look up any occupation, explore exposure across the SOC
-and work-activity hierarchies, and see where AI is actually being used. How to run
-it and how the dashboard code is organized are in
-[`dashboard/README.md`](dashboard/README.md).
+**The dashboard** has three pages:
+
+- **My Occupation** — look up any of the 923 occupations and see what share of its
+  workday current AI reaches, what share it doesn't, and which kinds of work those
+  are, down to the individual task.
+- **Economy at a Glance** — the whole picture in six blocks: the headline share and
+  its trend, the eight verb families, occupational categories, work activities, the
+  31 occupations that are both heavily exposed and projected to shed employment,
+  and states ranked by the exposure of their job mix.
+- **Explore the Data** — the research surface: all five configurations, every
+  aggregation level, geography, trends and projections.
+
+Every number the dashboard shows is produced by the same code as the corresponding
+paper figure, so the two cannot drift. How to run it and how the code is organized
+are in [`dashboard/README.md`](dashboard/README.md).
 
 **The figures** regenerate from `paper_figures/`:
 
