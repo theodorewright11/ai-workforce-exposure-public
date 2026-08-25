@@ -32,7 +32,6 @@ LATEST_DATE = "2026-05-31"
 
 _titles_cache: Optional[list[str]] = None
 _hierarchy_cache: Optional[list[dict]] = None
-_occ_usage_cache: dict[str, pd.DataFrame] = {}
 
 
 # ── Occupation universe ───────────────────────────────────────────────────
@@ -66,37 +65,6 @@ def get_occupation_hierarchy() -> list[dict]:
     return _hierarchy_cache
 
 
-# ── Occupation-level usage (the paper's quantity) ─────────────────────────
-
-def _occ_usage(geo: str) -> pd.DataFrame:
-    """Per-occupation usage lift, anchored on the median rated occupation.
-
-    Same construction as `builders/drivers.occ_usage_frame`, but across the
-    whole economy rather than inside one major — the card compares this job
-    to every job, not to its neighbours.
-
-    Only occupations with at least one rated pair enter the anchor
-    population. Entering the rest as zeros would drag the median down and
-    inflate every reading.
-    """
-    if geo in _occ_usage_cache:
-        return _occ_usage_cache[geo]
-
-    pairs = figure_data.intensity_pairs(geo=geo)
-    emp = figure_data.pair_level_emp("title_current", geo=geo)
-
-    frame = pd.DataFrame({"num": pairs.groupby("title_current")["adj_pct"].sum()})
-    frame["den"] = emp.reindex(frame.index)
-    frame = frame[frame["den"] > 0].copy()
-    assert not frame.empty, "no occupation survived the positive-denominator filter"
-    frame["ratio"] = frame["num"] / frame["den"]
-    frame["usage_x"] = figure_data.anchor_lower_median(frame["ratio"])
-    frame["usage_rank"] = frame["usage_x"].rank(ascending=False, method="min").astype(int)
-    frame = frame.reset_index()
-    _occ_usage_cache[geo] = frame
-    return frame
-
-
 # ── Headline ──────────────────────────────────────────────────────────────
 
 def _headline(title: str, geo: str) -> dict:
@@ -111,7 +79,12 @@ def _headline(title: str, geo: str) -> dict:
     first = figure_data.occ_exposure(FIRST_DATASET, geo=geo).set_index("title_current")
     pct_first = float(first.loc[title, "p"]) * 100.0 if title in first.index else None
 
-    usage = _occ_usage(geo).set_index("title_current")
+    # figure_data.occ_usage_lift is the one implementation of this quantity --
+    # builders/focused.py and this card each used to carry their own copy.
+    # Anchored on the median RATED occupation (815 of 923), economy-wide, so
+    # 1.00x means the same thing here as on every other surface.
+    usage = figure_data.occ_usage_lift(geo)
+    usage_rank = usage.rank(ascending=False, method="min")
     has_usage = title in usage.index
 
     idx = _eco_occ_index().set_index("title_current")
@@ -132,8 +105,8 @@ def _headline(title: str, geo: str) -> dict:
         "pct_rank": int(ranks.loc[title]),
         "total_occupations": int(len(occ)),
         # 2 — usage, paired with it
-        "usage_x": round(float(usage.loc[title, "usage_x"]), 2) if has_usage else 0.0,
-        "usage_rank": int(usage.loc[title, "usage_rank"]) if has_usage else None,
+        "usage_x": round(float(usage.loc[title]), 2) if has_usage else 0.0,
+        "usage_rank": int(usage_rank.loc[title]) if has_usage else None,
         "usage_of": int(len(usage)),
         # 3 — direction
         "pct_first": round(pct_first, 1) if pct_first is not None else None,
