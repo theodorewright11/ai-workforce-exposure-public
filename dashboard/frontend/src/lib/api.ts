@@ -100,3 +100,71 @@ export async function fetchOccupationReport(
   if (!res.ok) throw new Error(`/api/occupation-report failed: ${res.status}`);
   return res.json();
 }
+
+/* ── Economy at a Glance ───────────────────────────────────────────────────
+ * The page takes no controls, so its whole payload is one request.
+ */
+export interface TrendPoint { date: string; pct: number }
+export interface TrendSeriesBlock { key: string; label: string; points: TrendPoint[] }
+export interface EconomyTrend {
+  series: TrendSeriesBlock[];
+  headline_pct: number; headline_unexposed: number;
+  first_pct: number; first_date: string; latest_date: string; change_pp: number;
+}
+export interface EconomyFamily {
+  family: string; label: string; short: string;
+  pct_exposed: number; pct_unexposed: number; usage_x: number;
+  share_of_day: number; n_tasks: number;
+}
+export interface EconomyGroup {
+  category: string; pct_exposed: number; pct_unexposed: number;
+  workers_exposed: number; wages_exposed: number; usage_x: number;
+}
+export interface FocusedRow {
+  title: string; major: string; job_zone: number | null;
+  pct_exposed: number; pct_unexposed: number; emp_proj_pct: number;
+  usage_x: number; workers_exposed: number;
+}
+export interface StateRow {
+  geo: string; state: string; rank: number;
+  pct_exposed: number; pct_unexposed: number;
+  employment: number; workers_exposed: number;
+}
+export interface EconomyResponse {
+  trend: EconomyTrend;
+  families: EconomyFamily[];
+  majors: EconomyGroup[];
+  gwas: EconomyGroup[];
+  focused: { exposure_min: number; count: number; total_workers: number; rows: FocusedRow[] };
+  states: { total: number; top: StateRow[]; bottom: StateRow[] };
+  dataset: string;
+}
+
+export async function fetchEconomy(geo: string = "nat"): Promise<EconomyResponse> {
+  const res = await fetch(`${API_BASE}/api/economy?geo=${encodeURIComponent(geo)}`);
+  if (!res.ok) throw new Error(`/api/economy failed: ${res.status}`);
+  return res.json();
+}
+
+/* ── Verb families (Explore tab 3) ─────────────────────────────────────────
+ * Verb family is not a level in GWA → IWA → DWA; it re-buckets the DWA level,
+ * so it has its own endpoint and its own drill path (family → DWA).
+ */
+export interface FamilyRowApi {
+  category: string; family?: string; short?: string;
+  pct_exposed: number; pct_unexposed: number; usage_x: number;
+  share_of_day?: number; n_tasks: number;
+}
+export interface FamiliesResponse {
+  rows: FamilyRowApi[]; parent: string | null; child_level: string | null;
+}
+
+export async function fetchFamilies(
+  config: string = "all_confirmed", geo: string = "nat", parent?: string,
+): Promise<FamiliesResponse> {
+  const q = new URLSearchParams({ config, geo });
+  if (parent) q.set("parent", parent);
+  const res = await fetch(`${API_BASE}/api/families?${q.toString()}`);
+  if (!res.ok) throw new Error(`/api/families failed: ${res.status}`);
+  return res.json();
+}

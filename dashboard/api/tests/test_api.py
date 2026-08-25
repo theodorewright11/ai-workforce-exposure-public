@@ -1,102 +1,196 @@
-"""Smoke + regression tests for the public dashboard API.
+"""Regression tests for the public dashboard API (v2).
 
 Run from the repo root:
     .venv/Scripts/python -m pytest dashboard/api/tests -q
 
-These pin the dashboard's headline numbers on the 2026-05-31 snapshot so a
-refactor that silently changes a baseline (e.g. the agentic_confirmed eco_2025
-rebasing, or the usage full-eco denominator) fails loudly. Tolerances are loose
-(±0.5) — we're guarding the wiring, not re-deriving the figures.
+The governing invariant of v2 is **the dashboard shows the same number as the
+paper figure**, so most of these assert exactly that: they read the committed
+per-chart CSV under `paper_figures/results/` and check the API agrees.
 
-The expected values are NOT read off a paper figure. The dashboard is
-freq-weighted; the paper figures moved to work-time weighting (`time_day`), so
-the two no longer produce the same quantity. Each constant below was
-independently re-derived from the raw CSVs in data/ using the PRD §4 formula --
-sum(AI task_comp) / sum(ECO task_comp) x 100 over unique (occupation, task)
-pairs, task_comp = freq_mean x auto_aug_mean / 5 -- without going through
-backend/ or dashboard/ code. Re-verify the same way if the datasets are
-refreshed again; do not copy numbers from the figures.
+That is a stronger guard than pinning literals. A pinned constant only catches
+a change to the dashboard; comparing against the figure output catches the
+dashboard and the figures drifting apart, which is the failure v1 actually had
+(v1 was freq-weighted while the figures moved to work time, so the two stopped
+measuring the same quantity and nothing failed).
+
+The figure CSVs are stored at 2-4 decimal places, hence the 0.05 tolerances.
 """
+import math
+from pathlib import Path
+
+import pandas as pd
+import pytest
+
 import dashboard.api  # noqa: F401  — sys.path bootstrap
 
-from dashboard.api.main import (
-    config, exposure, ExposureRequest, exposure_children, ChildrenRequest,
-    trend, TrendRequest, usage, UsageRequest,
-    occupation_report, occupation_report_titles,
-)
+from fastapi.testclient import TestClient
+
+from dashboard.api.main import app
+from dashboard.api.economy import get_economy
+from dashboard.api.occupation import get_occupation_card
+from lib import families as fam_lib
+from lib import figure_data
+from lib.focused import focused_set
+
+RESULTS = Path(__file__).resolve().parents[3] / "paper_figures" / "results"
+
+client = TestClient(app)
 
 
-def _top(rows, key="pct_tasks_affected"):
-    return sorted(rows, key=lambda r: getattr(r, key), reverse=True)[0]
+def _figure_csv(name: str) -> pd.DataFrame:
+    path = RESULTS / name
+    if not path.exists():
+        pytest.skip(f"{name} not generated; run paper_figures/run_main_figures.py")
+    return pd.read_csv(path)
 
 
-def test_config_has_five_configs():
-    c = config()
-    keys = [x["key"] for x in c["configs"]]
-    assert keys == ["all_confirmed", "human_conversation", "agentic_confirmed",
-                    "all_ceiling", "agentic_ceiling"]
-    assert c["default_config"] == "all_confirmed"
-    assert "task" in c["usage_levels"].values()
+# ── The dashboard/figure invariant ──────────────────────────────────────────
+
+def test_headline_matches_trend_figure():
+    """37.9% of the U.S. workday, straight off trend_phys.csv."""
+    ref = _figure_csv("trend_phys.csv")
+    expected = float(
+        ref[(ref.series == "confirmed_all") & (ref.date == "2026-05-31")]
+        .pct_tasks_affected.iloc[0]
+    )
+    got = get_economy("nat")["trend"]["headline_pct"]
+    assert abs(got - expected) < 0.05, f"headline {got} vs figure {expected}"
 
 
-def test_occ_exposure_matches_paper():
-    r = exposure(ExposureRequest(config="all_confirmed", level="major", geo="nat", kind="occ"))
-    assert len(r.rows) == 22
-    top = _top(r.rows)
-    assert top.category.startswith("Computer and Mathematical")
-    assert abs(top.pct_tasks_affected - 68.9) < 0.6   # re-derived from raw CSVs
+def test_trend_series_matches_figure():
+    """Every point of all three series, not just the endpoint."""
+    ref = _figure_csv("trend_phys.csv")
+    key = {"all": "confirmed_all", "exclude": "confirmed_nonphys", "only": "confirmed_phys"}
+    for series in get_economy("nat")["trend"]["series"]:
+        name = key[series["key"]]
+        for point in series["points"]:
+            row = ref[(ref.series == name) & (ref.date == point["date"])]
+            assert len(row) == 1, f"no figure row for {name} {point['date']}"
+            expected = float(row.pct_tasks_affected.iloc[0])
+            assert abs(point["pct"] - expected) < 0.05, (
+                f"{name} {point['date']}: {point['pct']} vs figure {expected}"
+            )
 
 
-def test_wa_exposure_matches_paper():
-    r = exposure(ExposureRequest(config="all_confirmed", level="gwa", geo="nat", kind="wa"))
-    assert len(r.rows) == 37
-    top = _top(r.rows)
-    assert top.category.startswith("Working with Computers")
-    assert abs(top.pct_tasks_affected - 74.0) < 0.6   # re-derived from raw CSVs
+def test_verb_families_match_figure():
+    ref = _figure_csv("verb_family_all_confirmed.csv").set_index("family")
+    for row in get_economy("nat")["families"]:
+        exp_pct = float(ref.loc[row["family"], "pct_work_time_exposed"])
+        exp_use = float(ref.loc[row["family"], "usage_x"])
+        assert abs(row["pct_exposed"] - exp_pct) < 0.05, row["family"]
+        assert abs(row["usage_x"] - exp_use) < 0.05, row["family"]
 
 
-def test_agentic_confirmed_uses_eco2025_baseline():
-    # paper_dataset_for() rebases agentic_confirmed onto eco_2025 -> Comp&Math ~70.0
-    r = exposure(ExposureRequest(config="agentic_confirmed", level="major", geo="nat", kind="occ"))
-    top = _top(r.rows)
-    assert top.category.startswith("Computer and Mathematical")
-    assert abs(top.pct_tasks_affected - 70.0) < 0.8   # re-derived from raw CSVs
+def test_majors_match_figure():
+    ref = _figure_csv("major_categories_stacked.csv").set_index("major_occ_category")
+    for row in get_economy("nat")["majors"]:
+        expected = float(ref.loc[row["category"], "pct_exposed"])
+        assert abs(row["pct_exposed"] - expected) < 0.05, row["category"]
 
 
-def test_drilldown_children():
-    ch = exposure_children(ChildrenRequest(
-        config="all_confirmed", level="major", geo="nat", kind="occ",
-        parent="Computer and Mathematical Occupations"))
-    cats = {r.category for r in ch.rows}
-    assert "Computer Occupations" in cats
+def test_focused_set_matches_figure():
+    """The 31 — membership and values, rebuilt without the SKA loader."""
+    ref = _figure_csv("focused_set_usage.csv")
+    got = focused_set()
+    assert set(got.title_current) == set(ref.title_current)
+    assert len(got) == len(ref) == 31
+    merged = got.merge(ref, on="title_current", suffixes=("", "_ref"))
+    assert (merged["pct"] - merged["pct_ref"]).abs().max() < 0.05
 
 
-def test_trend_uses_paper_series_dates():
-    t = trend(TrendRequest(config="all_confirmed", level="major", geo="nat", kind="occ"))
-    dates = [d.date for d in t.data_points]
-    # paper series window: v3 snapshot (2025-08-11) → latest
-    assert dates == ["2025-08-11", "2025-11-13", "2026-02-12",
-                     "2026-04-30", "2026-05-31"]
+# ── Structural invariants ───────────────────────────────────────────────────
+
+def test_exposure_and_usage_are_always_paired():
+    """PRD §2.3 — a rated row carries both, by construction.
+
+    If this ever fails the data has changed shape, and the whole card design
+    (which never shows an exposure number alone) needs revisiting.
+    """
+    df = figure_data.dataset_pairs(figure_data.PRIMARY_DATASET)
+    exposed = df["auto_aug_mean"].fillna(0) > 0
+    usage = df["pct_normalized"].fillna(0) > 0
+    assert int((exposed & ~usage).sum()) == 0, "exposure without usage"
 
 
-def test_usage_intensity_matches_paper():
-    u = usage(UsageRequest(level="major"))
-    assert u["child_level"] == "minor"
-    rows = u["rows"]
-    top = rows[0]
-    # On the 2026-05-31 intensity dataset the top major shifted from
-    # Life/Phys/Soc Science to Computer & Mathematical.
-    assert top["category"].startswith("Computer and Mathematical")
-    assert abs(top["intensity"] - 21.3) < 0.8         # 2026-05-31 intensity set
-    office = [r for r in rows if r["category"].startswith("Office and Admin")][0]
-    assert abs(office["intensity"] - 1.0) < 0.05      # anchor
+def test_verb_family_taxonomy_covers_everything():
+    eco = figure_data.load_eco_raw()
+    mapped = figure_data.assign_family(eco["dwa_title"].dropna())
+    assert mapped.notna().mean() > 0.999
 
 
-def test_occupation_report():
-    titles = occupation_report_titles()
-    assert len(titles["titles"]) == 923
-    rep = occupation_report(title="Computer Programmers", geo="nat")
-    assert rep["title"] == "Computer Programmers"
-    assert abs(rep["headline"]["pct_tasks_affected"] - 72.1) < 1.0  # re-derived
-    # per-source fields + MCP servers populated
-    assert any(t.get("top_mcps") for t in rep["tasks"])
+def test_state_exposure_is_employment_weighted():
+    """Geography has to actually move the number, or the states block is a lie."""
+    st = figure_data.state_exposure()
+    assert len(st) >= 50
+    assert st["pct"].max() - st["pct"].min() > 5.0, "states barely differ — check emp col"
+    # A single occupation is geo-invariant; only the mix moves.
+    nat = figure_data.occ_exposure(figure_data.PRIMARY_DATASET, geo="nat").set_index("title_current")
+    ut = figure_data.occ_exposure(figure_data.PRIMARY_DATASET, geo="ut").set_index("title_current")
+    common = nat.index.intersection(ut.index)[:50]
+    assert (nat.loc[common, "p"] - ut.loc[common, "p"]).abs().max() < 1e-9
+
+
+def test_family_usage_anchor_is_per_grain():
+    """Economy-wide families anchor on the lower-middle family = 1.00x."""
+    fam = fam_lib.family_rows(figure_data.PRIMARY_DATASET)
+    assert math.isclose(float(fam["usage_x"].sort_values().iloc[(len(fam) - 1) // 2]), 1.0, abs_tol=1e-6)
+
+
+# ── Endpoints ───────────────────────────────────────────────────────────────
+
+def test_health_and_config():
+    assert client.get("/api/health").json()["status"] == "ok"
+    cfg = client.get("/api/config").json()
+    assert len(cfg["configs"]) == 5
+    assert cfg["default_config"] == "all_confirmed"
+
+
+def test_economy_endpoint_has_six_blocks():
+    body = client.get("/api/economy").json()
+    for block in ("trend", "families", "majors", "gwas", "focused", "states"):
+        assert block in body, block
+    assert len(body["families"]) == 8
+    assert body["focused"]["count"] == 31
+    assert len(body["states"]["top"]) == 10
+
+
+def test_families_endpoint_and_drilldown():
+    body = client.get("/api/families").json()
+    assert len(body["rows"]) == 8
+    for row in body["rows"]:
+        # the complement is always present, and the pair always adds to 100
+        assert abs(row["pct_exposed"] + row["pct_unexposed"] - 100.0) < 0.05
+    drill = client.get("/api/families", params={"parent": "evaluate_inspect"}).json()
+    assert len(drill["rows"]) > 50
+    assert drill["parent"] == "evaluate_inspect"
+
+
+def test_occupation_card_shape():
+    card = get_occupation_card("Computer Programmers")
+    assert card is not None
+    head = card["headline"]
+    assert abs(head["pct_exposed"] + head["pct_unexposed"] - 100.0) < 0.05
+    assert head["total_occupations"] == 923
+    assert card["families"], "no verb families on the card"
+    # Every family row shown carries both signals.
+    for row in card["families"]:
+        assert "pct_exposed" in row and "usage_x" in row
+    # and its tasks resolve
+    assert any(card["tasks"].get(f["family"]) for f in card["families"])
+
+
+def test_occupation_card_unknown_title():
+    assert get_occupation_card("Not A Real Job") is None
+
+
+def test_wa_task_list_survives_the_ska_deletion():
+    body = client.post("/api/wa-tasks", json={"level": "dwa", "name": "Evaluate student work."}).json()
+    assert len(body["tasks"]) > 0
+    assert "auto" in body["tasks"][0]
+
+
+def test_explore_exposure_still_works():
+    r = client.post("/api/exposure", json={
+        "config": "all_confirmed", "level": "major", "geo": "nat", "kind": "occ",
+    }).json()
+    assert len(r["rows"]) == 22

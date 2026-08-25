@@ -42,7 +42,10 @@ from dashboard.api.occupation import (
     get_occupation_hierarchy,
     get_occupation_card,
 )
-from dashboard.api.occupation_report import get_wa_task_list
+from dashboard.api.wa_tasks import get_wa_task_list
+from dashboard.api.economy import get_economy
+from lib import families as fam_lib
+from lib import figure_data
 from dashboard.api.usage_intensity import compute_intensity
 
 # ── Config metadata ─────────────────────────────────────────────────────────────
@@ -412,3 +415,79 @@ def occupation_report(
     if payload is None:
         raise HTTPException(status_code=404, detail=f"Occupation not found: {title}")
     return payload
+
+
+# ── Economy at a Glance ─────────────────────────────────────────────────────────
+
+@app.get("/api/economy")
+def economy(geo: str = Query("nat", description="Geography code")):
+    """All six blocks in one payload — the page takes no other input, so this
+    is the most cacheable surface in the product (PRD §3.2)."""
+    if geo not in GEO_OPTIONS:
+        raise HTTPException(status_code=400, detail=f"Unknown geo: {geo}")
+    return get_economy(geo)
+
+
+# ── Verb families ───────────────────────────────────────────────────────────────
+
+@app.get("/api/families")
+def families(
+    config: str = Query("all_confirmed"),
+    geo: str = Query("nat"),
+    parent: Optional[str] = Query(None, description="Family key → its DWAs"),
+):
+    """Explore's verb-family tab. `parent` drills a family down to its DWAs.
+
+    Verb family is NOT a level in the GWA → IWA → DWA hierarchy — it is an
+    orthogonal re-bucketing of the DWA level — so it gets its own endpoint
+    rather than another value in the activity-level selector.
+    """
+    if geo not in GEO_OPTIONS:
+        raise HTTPException(status_code=400, detail=f"Unknown geo: {geo}")
+    dataset = paper_dataset_for(config)
+    if parent:
+        df = fam_lib.family_dwa_rows(parent, dataset, geo=geo)
+        rows = [
+            {"category": str(r.dwa_title),
+             "pct_exposed": _safe(r.pct_exposed),
+             "pct_unexposed": _safe(r.pct_unexposed),
+             "usage_x": _safe(r.usage_x),
+             "n_tasks": _safe_int(r.n_tasks)}
+            for r in df.itertuples()
+        ]
+        return {"rows": rows, "parent": parent, "child_level": None}
+    df = fam_lib.family_rows(dataset, geo=geo)
+    total = float(df["hours"].sum()) or 1.0
+    rows = [
+        {"category": str(r.label),
+         "family": str(r.family),
+         "short": str(r.short),
+         "pct_exposed": _safe(r.pct_exposed),
+         "pct_unexposed": _safe(r.pct_unexposed),
+         "usage_x": _safe(r.usage_x),
+         "share_of_day": round(float(r.hours) / total * 100.0, 1),
+         "n_tasks": _safe_int(r.n_tasks)}
+        for r in df.itertuples()
+    ]
+    return {"rows": rows, "parent": None, "child_level": "dwa"}
+
+
+# ── Warm the caches off the request path ────────────────────────────────────────
+
+@app.on_event("startup")
+def _warm_caches() -> None:
+    """Build the economy payload in a background thread at boot.
+
+    Cold it is ~26s (15 trend frames + 51 state rollups); warm it is instant.
+    Doing it in a thread rather than at import keeps the container answering
+    the health check straight away instead of failing it while pandas works.
+    """
+    import threading
+
+    def _warm() -> None:
+        try:
+            get_economy("nat")
+        except Exception:  # noqa: BLE001 — a warm failure must not kill boot
+            pass
+
+    threading.Thread(target=_warm, daemon=True).start()

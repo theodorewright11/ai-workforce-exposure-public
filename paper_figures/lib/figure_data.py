@@ -823,6 +823,34 @@ def usage_rate(
     return rate.rename("usage_rate")
 
 
+_occ_usage_lift_cache: dict[str, pd.Series] = {}
+
+
+def occ_usage_lift(geo: str = DEFAULT_GEO) -> pd.Series:
+    """Per-occupation usage, anchored so the median RATED occupation = 1.00x.
+
+    Indexed by title_current. The population is the ~815 occupations with at
+    least one rated (task, occ) pair, not all 923: the rest have no observed
+    usage at all, and entering them as zeros would drag the median down and
+    multiply every value by ~1.4. Excluding them keeps the anchor "the median
+    occupation AI has been seen used in", which is the conservative reading.
+
+    Anchored against the whole economy, never inside a subset -- the focused
+    set and the occupation card both read against the same 1.00x, so the same
+    number means the same thing wherever it appears.
+    """
+    if geo in _occ_usage_lift_cache:
+        return _occ_usage_lift_cache[geo]
+    pairs = intensity_pairs(geo=geo)
+    num = pairs.groupby("title_current")["adj_pct"].sum()
+    emp = pair_level_emp("title_current", geo=geo)
+    rate = (num / emp.reindex(num.index)).replace([np.inf, -np.inf], np.nan).dropna()
+    assert not rate.empty, "No rated usage pairs"
+    out = anchor_lower_median(rate).rename("usage_x")
+    _occ_usage_lift_cache[geo] = out
+    return out
+
+
 def pair_level_emp(group_col: str, extra_cols: tuple[str, ...] = (),
                    geo: str = DEFAULT_GEO) -> pd.Series:
     """Σ emp per group over (task, occupation) pairs.
@@ -918,6 +946,99 @@ def occ_exposure(dataset_name: str, physical_mode: str = "all",
     out = out.merge(struct, on="title_current", how="inner")
     assert len(out) > 800, f"Only {len(out)} occupations matched"
     _occ_exposure_cache[key] = out
+    return out
+
+
+_group_usage_cache: dict[tuple[str, str], pd.Series] = {}
+
+
+def group_usage_x(group_col: str, geo: str = DEFAULT_GEO) -> pd.Series:
+    """Usage x median for a grouping, matching the adoption figures.
+
+    Two shapes, because the two groupings mean different things:
+
+    - An OCCUPATION attribute (major_occ_category, job_zone) groups whole
+      pairs, so the pair's usage and its employment both land in exactly one
+      group -- nothing to split.
+    - An ACTIVITY (gwa_title, dwa_title) can hold the same pair several
+      times, so both numerator and denominator are /n-split across the pair's
+      distinct activities and the group sums still add back to the economy.
+
+    Getting this backwards inflates every activity that shares tasks.
+    """
+    key = (group_col, geo)
+    if key in _group_usage_cache:
+        return _group_usage_cache[key]
+
+    if group_col in {"gwa_title", "dwa_title", "iwa_title"}:
+        num = intensity_act_rows(group_col, geo=geo).groupby(group_col)["adj_pct_split"].sum()
+        den = eco_act_split_rows(group_col, geo=geo).groupby(group_col)["eco_weight_split"].sum()
+        num = num.reindex(den.index).fillna(0.0)
+    else:
+        num = intensity_pairs(geo=geo).groupby(group_col)["adj_pct"].sum()
+        den = pair_level_emp(group_col, geo=geo).reindex(num.index)
+
+    ratio = pd.Series(
+        np.where(den > 0, num / den.replace(0.0, np.nan), 0.0), index=num.index
+    ).fillna(0.0)
+    out = anchor_lower_median(ratio).rename("usage_x")
+    _group_usage_cache[key] = out
+    return out
+
+
+_state_exposure_cache: dict[str, pd.DataFrame] = {}
+
+
+def state_exposure(dataset_name: Optional[str] = None,
+                   physical_mode: str = "all") -> pd.DataFrame:
+    """Every state ranked by the exposure of its JOB MIX.
+
+    Because a group percentage is employment-weighted, swapping the national
+    employment column for a state's is not a relabelling -- it re-weights the
+    state's occupational mix:
+
+        pct = sum(p_occ x emp_state,occ) / sum(emp_state,occ) x 100
+
+    A single occupation's exposure is identical in every state; what differs
+    is which jobs the state has. Label it as the exposure of the state's job
+    mix or the number says something the data does not.
+
+    Territories (GU, PR, VI) are excluded -- their OEWS coverage is partial
+    enough that they rank on missing data rather than on their mix.
+    """
+    from config import GEO_OPTIONS  # backend/config.py
+
+    dataset_name = dataset_name or PRIMARY_DATASET
+    key = f"{dataset_name}|{physical_mode}"
+    if key in _state_exposure_cache:
+        return _state_exposure_cache[key]
+
+    skip = {"nat", "gu", "pr", "vi"}
+    rows: list[dict] = []
+    for code, label in GEO_OPTIONS.items():
+        if code in skip:
+            continue
+        occ = occ_exposure(dataset_name, physical_mode, geo=code)
+        emp = occ["emp"].fillna(0.0)
+        total = float(emp.sum())
+        if total <= 0:
+            continue
+        exposed = float((occ["p"] * emp).sum())
+        rows.append({
+            "geo": code,
+            "state": label,
+            "pct": exposed / total * 100.0,
+            "employment": total,
+            "workers_affected": exposed,
+            "wages_affected": float((occ["p"] * emp * occ["wage"].fillna(0.0)).sum()),
+        })
+
+    out = pd.DataFrame(rows)
+    assert len(out) >= 50, f"Only {len(out)} states resolved"
+    out["pct_unexposed"] = 100.0 - out["pct"]
+    out = out.sort_values("pct", ascending=False).reset_index(drop=True)
+    out["rank"] = out.index + 1
+    _state_exposure_cache[key] = out
     return out
 
 

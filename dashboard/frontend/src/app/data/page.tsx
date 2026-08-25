@@ -4,14 +4,15 @@ import { useEffect, useMemo, useState } from "react";
 import type { ConfigResponse, ExposureResponse, UsageResponse, TrendResponse, MetricKey } from "@/lib/types";
 import {
   fetchConfig, fetchExposure, fetchExposureChildren, fetchExposureToOcc,
-  fetchTrend, fetchUsage, fetchWaTasks, type ExposureKind, type WaTask,
+  fetchTrend, fetchUsage, fetchWaTasks, fetchFamilies,
+  type ExposureKind, type WaTask, type FamilyRowApi,
 } from "@/lib/api";
 import { METRIC_COLORS, INTENSITY_COLOR, CATEGORY_PALETTE } from "@/lib/theme";
 import { fmtPct, fmtCount, fmtWages, fmtIntensity } from "@/lib/format";
 import MetricBars, { type BarDatum } from "@/components/data/MetricBars";
 import TrendChart, { type TrendSeries } from "@/components/data/TrendChart";
 
-type Tab = "occ" | "wa" | "usage";
+type Tab = "occ" | "wa" | "family" | "usage";
 type RankBy = "current" | "abs" | "pct";
 
 const OCC_CHILD: Record<string, string | null> = { major: "minor", minor: "broad", broad: "occupation", occupation: null };
@@ -26,6 +27,11 @@ const METRICS: { key: MetricKey; title: string }[] = [
 const TABS: { key: Tab; label: string }[] = [
   { key: "occ", label: "Occupation Exposure" },
   { key: "wa", label: "Work-Activity Exposure" },
+  // Verb family is its own tab, not a level in the WA selector: that selector
+  // is the GWA -> IWA -> DWA hierarchy, and verb family re-buckets the DWA
+  // level orthogonally to it. Listing it there would assert a parent-child
+  // relationship that does not exist.
+  { key: "family", label: "Verb Families" },
   { key: "usage", label: "Actual AI Usage" },
 ];
 
@@ -72,6 +78,10 @@ export default function DataPage() {
   const [usageData, setUsageData] = useState<UsageResponse | null>(null);
   const [trendData, setTrendData] = useState<TrendResponse | null>(null);
   const [waTasks, setWaTasks] = useState<{ name: string; tasks: WaTask[] } | null>(null);
+  // Verb families keep their own row state: they are not part of the SOC or the
+  // GWA hierarchy, so they cannot ride the shared exposure/drill machinery.
+  const [famRows, setFamRows] = useState<FamilyRowApi[]>([]);
+  const [famParent, setFamParent] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => { fetchConfig().then((c) => { setConfig(c); setConfigKey(c.default_config); }).catch((e) => setErr(e.message)); }, []);
@@ -86,8 +96,8 @@ export default function DataPage() {
     (tab === "wa" && curLevel === "dwa") || canJump || (childMap[curLevel] != null)
   );
 
-  useEffect(() => { setPath([]); setWaTasks(null); }, [tab, occLevel, waLevel, usageLevel, configKey, geo]);
-  useEffect(() => { if (tab === "usage") setTrend(false); }, [tab]);
+  useEffect(() => { setPath([]); setWaTasks(null); setFamParent(null); }, [tab, occLevel, waLevel, usageLevel, configKey, geo]);
+  useEffect(() => { if (tab === "usage" || tab === "family") setTrend(false); }, [tab]);
 
   useEffect(() => {
     if (!config) return;
@@ -95,7 +105,10 @@ export default function DataPage() {
     const parent = lastEntry;
     const run = async () => {
       try {
-        if (tab === "usage") {
+        if (tab === "family") {
+          const d = await fetchFamilies(configKey, geo, famParent ?? undefined);
+          if (!cancel) { setFamRows(d.rows); setExpData(null); setUsageData(null); setTrendData(null); }
+        } else if (tab === "usage") {
           const d = parent ? await fetchUsage(curLevel, parent.level, parent.category) : await fetchUsage(curLevel);
           if (!cancel) { setUsageData(d); setExpData(null); setTrendData(null); }
         } else if (trend && !parent) {
@@ -115,7 +128,7 @@ export default function DataPage() {
     };
     run();
     return () => { cancel = true; };
-  }, [config, tab, configKey, curLevel, geo, kind, trend, path]); // eslint-disable-line
+  }, [config, tab, configKey, curLevel, geo, kind, trend, path, famParent]); // eslint-disable-line
 
   const displayRows = useMemo(() => {
     if (!expData) return [];
@@ -163,8 +176,8 @@ export default function DataPage() {
   if (err) return <Centered><span style={{ color: "#b91c1c" }}>Backend error: {err}</span></Centered>;
   if (!config) return <Centered><Spinner /></Centered>;
 
-  const levelOptions = tab === "occ" ? config.occ_levels : tab === "wa" ? config.wa_levels : config.usage_levels;
-  const setBaseLevel = tab === "occ" ? setOccLevel : tab === "wa" ? setWaLevel : setUsageLevel;
+  const levelOptions = tab === "occ" ? config.occ_levels : tab === "wa" ? config.wa_levels : tab === "family" ? {} : config.usage_levels;
+  const setBaseLevel = tab === "occ" ? setOccLevel : tab === "wa" ? setWaLevel : tab === "family" ? (() => {}) : setUsageLevel;
   const showMax = expData?.total_categories ?? usageData?.rows.length ?? 0;
   const total = expData
     ? { workers_affected: expData.total_workers, wages_affected: expData.total_wages, pct_tasks_affected: 0 }
@@ -190,7 +203,7 @@ export default function DataPage() {
       {/* Controls */}
       <div style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "flex-end", marginBottom: 18 }}>
         {tab !== "usage" && <Field label="Data configuration"><Select value={configKey} onChange={setConfigKey} options={config.configs.map((c) => ({ value: c.key, label: c.label }))} /></Field>}
-        <Field label={tab === "usage" ? "Hierarchy level" : "Level"}><Select value={baseLevel} onChange={setBaseLevel} options={Object.entries(levelOptions).map(([label, value]) => ({ value, label }))} /></Field>
+        {tab !== "family" && <Field label={tab === "usage" ? "Hierarchy level" : "Level"}><Select value={baseLevel} onChange={setBaseLevel} options={Object.entries(levelOptions).map(([label, value]) => ({ value, label }))} /></Field>}
         {tab !== "usage" && <Field label="Geography"><Select value={geo} onChange={setGeo} options={Object.entries(config.geo_options).map(([value, label]) => ({ value, label }))} /></Field>}
         {tab !== "usage" && <Field label="Sort / metric"><Select value={sortMetric} onChange={(v) => setSortMetric(v as MetricKey)} options={METRICS.map((m) => ({ value: m.key, label: m.title }))} /></Field>}
         <Field label={`Show${showMax ? ` (of ${showMax})` : ""}`}>
@@ -229,6 +242,8 @@ export default function DataPage() {
       {/* Content */}
       {waTasks ? (
         <WaTaskList tasks={waTasks.tasks} />
+      ) : tab === "family" ? (
+        <FamilyPanel rows={famRows} parent={famParent} onDrill={setFamParent} />
       ) : tab === "usage" ? (
         <UsagePanel rows={usageRows} canDrill={canDrillCur} onDrill={drill} />
       ) : trend && path.length === 0 ? (
@@ -256,7 +271,9 @@ export default function DataPage() {
       )}
 
       <p style={{ fontSize: 11.5, color: "var(--text-muted)", marginTop: 26, lineHeight: 1.65, maxWidth: 760 }}>
-        {tab === "usage" ? (
+        {tab === "family" ? (
+          <>Every task in the economy grouped by the kind of action it is, cutting across occupations and across the GWA hierarchy. The filled bar is the share of that work AI has been observed doing; the rest is what it has not. <strong>×</strong> is how much AI use lands on the family relative to the median family. Click a family for the detailed work activities inside it.</>
+        ) : tab === "usage" ? (
           <>Relative ranking of where AI is currently being used. Read each bar as <strong>X× the median</strong> usage relative to task need at this level. We correct as best we can for AI user-base bias, and divide by task frequency and employment so more-common work doesn&rsquo;t simply show up more. Absolute reach can&rsquo;t be inferred — only the relative ordering.</>
         ) : (
           <>Ranking of what current AI capability exposes in the workforce, as informed by actual AI usage — where we most expect to see transformation going forward. This is agnostic to what that change looks like: high exposure does not mean these jobs go away.</>
@@ -434,4 +451,64 @@ function tabStyle(active: boolean): React.CSSProperties {
 }
 function segBtn(active: boolean): React.CSSProperties {
   return { fontSize: 12, padding: "6px 11px", borderRadius: 6, cursor: "pointer", border: "1px solid var(--border)", background: active ? "var(--brand-light)" : "var(--bg-surface)", color: active ? "var(--brand)" : "var(--text-secondary)", fontWeight: active ? 600 : 400 };
+}
+
+/* ── Verb families ──────────────────────────────────────────────────────────
+ * Not part of the SOC or GWA hierarchies — an orthogonal re-bucketing of the
+ * DWA level — so this renders its own list rather than reusing MetricBars.
+ * Every row pairs exposure with usage, and the bar draws its own complement.
+ */
+function FamilyPanel({ rows, parent, onDrill }: {
+  rows: FamilyRowApi[]; parent: string | null; onDrill: (f: string | null) => void;
+}) {
+  if (!rows.length) return <Empty />;
+  const EXPOSED = "#3a5f83", UNEXPOSED = "#dfe4e8", USAGE = "#b0894a";
+  return (
+    <div style={{ maxWidth: 900 }}>
+      {parent && (
+        <button onClick={() => onDrill(null)} style={{
+          fontSize: 12.5, fontWeight: 600, color: "var(--brand)", background: "none",
+          border: "none", cursor: "pointer", padding: "0 0 10px",
+        }}>← All verb families</button>
+      )}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 120px 58px 58px 62px", gap: 10,
+        padding: "6px 10px", fontSize: 10.5, color: "var(--text-muted)", fontWeight: 600,
+        textTransform: "uppercase", letterSpacing: "0.04em" }}>
+        <span>{parent ? "Detailed work activity" : "Verb family"}</span>
+        <span />
+        <span style={{ textAlign: "right" }}>Exposed</span>
+        <span style={{ textAlign: "right" }}>Not</span>
+        <span style={{ textAlign: "right" }}>Use</span>
+      </div>
+      {rows.map((r) => {
+        const clickable = !parent && !!r.family;
+        return (
+          <div key={r.category}
+            onClick={() => clickable && r.family && onDrill(r.family)}
+            style={{
+              display: "grid", gridTemplateColumns: "1fr 120px 58px 58px 62px", gap: 10,
+              alignItems: "center", padding: "9px 10px", borderBottom: "1px solid var(--border)",
+              cursor: clickable ? "pointer" : "default",
+            }}>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 12.5, color: "var(--text-primary)", overflow: "hidden",
+                textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={r.category}>
+                {clickable && <span style={{ opacity: 0.4, marginRight: 6 }}>▸</span>}{r.category}
+              </div>
+              <div style={{ fontSize: 10.5, color: "var(--text-muted)" }}>
+                {r.n_tasks} task{r.n_tasks === 1 ? "" : "s"}
+                {r.share_of_day != null ? ` · ${r.share_of_day}% of the workday` : ""}
+              </div>
+            </div>
+            <div style={{ height: 15, borderRadius: 3, overflow: "hidden", display: "flex", background: UNEXPOSED }}>
+              <div style={{ width: `${r.pct_exposed}%`, background: EXPOSED }} />
+            </div>
+            <div style={{ fontSize: 12.5, fontWeight: 600, color: EXPOSED, textAlign: "right" }}>{r.pct_exposed.toFixed(1)}%</div>
+            <div style={{ fontSize: 12.5, color: "var(--text-muted)", textAlign: "right" }}>{r.pct_unexposed.toFixed(1)}%</div>
+            <div style={{ fontSize: 12.5, fontWeight: 600, color: USAGE, textAlign: "right" }}>{r.usage_x.toFixed(2)}×</div>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
