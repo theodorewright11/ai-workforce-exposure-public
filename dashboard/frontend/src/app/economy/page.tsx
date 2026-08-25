@@ -14,8 +14,8 @@ import {
   type FocusedRow, type StateRow, type EconomyTrend,
 } from "@/lib/api";
 
-const EXPOSED = "#3a5f83";
-const UNEXPOSED = "#dfe4e8";
+const EXPOSED = "#3a5f83";   // work AI has been observed doing
+const UNEXPOSED = "#dfe4e8"; // work it has not
 const USAGE = "#b0894a";
 
 const nf = new Intl.NumberFormat("en-US");
@@ -42,11 +42,11 @@ export default function EconomyPage() {
       <FamilyBlock families={data.families} />
       <GroupBlock
         title="Which fields" rows={data.majors}
-        blurb="The 22 major occupational categories, most-exposed first. Workers exposed is a full-time-equivalent count, not a headcount of people at risk."
+        blurb="The 22 major occupational categories, most-exposed first. Each row, left to right: a bar whose filled part is the share of that category's work time AI has been observed doing; that share as a number; the number of workers whose full working time the exposed share adds up to; and actual AI use as a multiple of the median category. The workers figure is an amount of work time restated as people, not a count of jobs at risk."
       />
       <GroupBlock
         title="Which activities" rows={data.gwas}
-        blurb="The 15 most-exposed of O*NET's 37 general work activities — the standard taxonomy, cut by domain of activity rather than by kind of action."
+        blurb="The 15 most-exposed of O*NET's 37 general work activities, read the same way as the panel above. This is the standard taxonomy, cut by domain of activity; the verb families above cut the same work by kind of action instead."
       />
       <FocusedBlock focused={data.focused} />
       <StatesBlock states={data.states} />
@@ -65,14 +65,14 @@ function Headline({ trend }: { trend: EconomyTrend }) {
   return (
     <div style={{ marginBottom: 34 }}>
       <div style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 10 }}>
-        Share of the U.S. workday that current AI has been observed doing
+        Share of the U.S. workday AI has been observed doing
       </div>
       <div style={{ display: "flex", alignItems: "baseline", gap: 16, flexWrap: "wrap" }}>
         <div style={{ fontSize: 62, fontWeight: 700, lineHeight: 1, letterSpacing: "-0.03em", color: EXPOSED }}>
           {trend.headline_pct}%
         </div>
         <div style={{ fontSize: 15, color: "var(--text-secondary)" }}>
-          {trend.headline_unexposed}% of the workday it hasn&rsquo;t
+          {trend.headline_unexposed}% of the workday it has not
         </div>
       </div>
       <div style={{ fontSize: 13.5, color: "var(--text-secondary)", marginTop: 10 }}>
@@ -99,7 +99,7 @@ function TrendBlock({ trend }: { trend: EconomyTrend }) {
 
   return (
     <Block title="How fast it is moving"
-      blurb="Five snapshots of the same measure. Physical work is under-covered by construction — the underlying data is digital AI use — so the split is shown rather than hidden in the aggregate.">
+      blurb="Five snapshots of the same measure, August 2025 to May 2026. Three lines: all work; non-physical work only; and physical work only. Physical work is under-covered by construction — the underlying record is digital AI use — so it is drawn separately rather than hidden inside the aggregate.">
       <div style={{ overflowX: "auto" }}>
         <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", minWidth: 480, height: "auto" }} role="img"
           aria-label="Exposure trend, August 2025 to May 2026">
@@ -137,7 +137,7 @@ function TrendBlock({ trend }: { trend: EconomyTrend }) {
 function FamilyBlock({ families }: { families: EconomyFamily[] }) {
   return (
     <Block title="What kind of work"
-      blurb="Every task in the economy grouped by the kind of action it is. This is the cut that separates the work AI reaches from the work it doesn't — and the two are not the same fields, they are different activities inside every field.">
+      blurb="AI exposure and actual usage across the eight verb families — every task in the economy grouped by the kind of action it is. Each row, left to right: the family and the share of the workday it accounts for; a bar whose filled part is the share of that family's work time AI has been observed doing and whose remainder is the work it has not; that share as a number; and actual AI use on the family as a multiple of the median family. Exposure varies far more between kinds of work than between fields.">
       <div style={{ border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
         {families.map((f, i) => (
           <div key={f.family} style={{
@@ -167,9 +167,9 @@ function FamilyBlock({ families }: { families: EconomyFamily[] }) {
 function Legend() {
   return (
     <div style={{ display: "flex", gap: 18, fontSize: 11, color: "var(--text-muted)", marginTop: 9, flexWrap: "wrap" }}>
-      <span><Swatch c={EXPOSED} /> share of that work AI has been seen doing</span>
+      <span><Swatch c={EXPOSED} /> share AI has been observed doing</span>
       <span><Swatch c={UNEXPOSED} /> the rest</span>
-      <span><Swatch c={USAGE} /> how much AI use lands there, vs. the median</span>
+      <span><Swatch c={USAGE} /> actual AI use, vs. the median family</span>
     </div>
   );
 }
@@ -201,7 +201,7 @@ function GroupBlock({ title, rows, blurb }: { title: string; rows: EconomyGroup[
         ))}
       </div>
       <div style={{ display: "flex", gap: 18, fontSize: 11, color: "var(--text-muted)", marginTop: 8 }}>
-        <span>bar &amp; % — exposed vs. not</span><span>then FTE workers exposed</span><span>then AI use vs. median</span>
+        <span>bar &amp; % — observed vs. not</span><span>then workers&rsquo; worth of exposed work time</span><span>then AI use vs. median</span>
       </div>
     </Block>
   );
@@ -214,7 +214,7 @@ function FocusedBlock({ focused }: { focused: EconomyResponse["focused"] }) {
   const rows = all ? focused.rows : focused.rows.slice(0, 12);
   return (
     <Block title={`The ${focused.count}`}
-      blurb={`Occupations where AI already reaches at least ${focused.exposure_min}% of the workday AND the BLS projects employment to fall through 2034. Two gates, nothing else — ${fmtM(focused.total_workers)} full-time-equivalent workers.`}>
+      blurb={`Occupations where AI already reaches at least ${focused.exposure_min}% of the workday AND the BLS projects employment to fall through 2034. Two gates, nothing else. The exposed work across them adds up to the full working time of ${fmtM(focused.total_workers)} workers.`}>
       <div style={{ border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 56px 68px 56px", gap: 10, padding: "8px 14px",
           background: "var(--brand-light)", fontSize: 10.5, fontWeight: 600, letterSpacing: "0.04em",
@@ -229,7 +229,7 @@ function FocusedBlock({ focused }: { focused: EconomyResponse["focused"] }) {
             <div style={{ minWidth: 0 }}>
               <div style={{ fontSize: 12.5, color: "var(--text-primary)", overflow: "hidden",
                 textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={r.title}>{r.title}</div>
-              <div style={{ fontSize: 10.5, color: "var(--text-muted)" }}>{r.major} · {fmtM(r.workers_exposed)} FTE</div>
+              <div style={{ fontSize: 10.5, color: "var(--text-muted)" }}>{r.major} · {fmtM(r.workers_exposed)} workers&rsquo; worth</div>
             </div>
             <div style={{ fontSize: 12.5, fontWeight: 600, color: EXPOSED, textAlign: "right" }}>{r.pct_exposed}%</div>
             <div style={{ fontSize: 12.5, color: "var(--text-secondary)", textAlign: "right" }}>{r.emp_proj_pct}%</div>
@@ -265,7 +265,7 @@ function StatesBlock({ states }: { states: EconomyResponse["states"] }) {
   );
   return (
     <Block title="Where"
-      blurb="States ranked by the exposure of their job mix. A single occupation's exposure is the same in every state — what differs is which jobs the state has, so read this as a statement about the mix, not about the work.">
+      blurb="States ranked by the exposure of their job mix: each state's occupations weighted by how many people it employs in them. A single occupation's exposure is identical in every state — what differs is which jobs the state has — so this is a statement about the mix, not about the work.">
       <div style={{ border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
         {states.top.map(Row)}
         <div style={{ padding: "7px 14px", background: "var(--brand-light)", fontSize: 10.5,

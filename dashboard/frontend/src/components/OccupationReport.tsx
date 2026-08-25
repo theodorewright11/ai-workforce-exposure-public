@@ -3,11 +3,14 @@
 /* My Occupation — the v2 card (PRD §3.1).
  *
  * One control (which job). Four headline numbers. Then the verb families,
- * each showing what AI reaches AND what it doesn't, with the usage signal
- * beside it. Expand a family for the actual tasks.
+ * each showing the work AI has been observed doing AND the work it hasn't,
+ * with the usage signal beside it. Expand a family for its tasks; expand a
+ * task for its work-activity hierarchy and the AI tools aimed at it.
  *
- * Every exposure bar draws its own complement — that is the contrast rule
- * made visual, and it is why nothing here is a lone number.
+ * Language rule: we observe AI being used on a task and how completely it
+ * did the work. We do NOT observe what AI is capable of. So every label here
+ * says "observed doing", never "can do" or "AI-capable" — the data supports
+ * the first and not the second.
  */
 
 import { useEffect, useMemo, useState } from "react";
@@ -17,73 +20,48 @@ import { fetchOccupationReport, fetchOccupationReportTitles } from "@/lib/api";
 
 interface Headline {
   title: string;
-  major: string | null;
-  minor: string | null;
-  broad: string | null;
+  major: string | null; minor: string | null; broad: string | null;
   job_zone: number | null;
-  pct_exposed: number;
-  pct_unexposed: number;
-  pct_rank: number;
-  total_occupations: number;
-  usage_x: number;
-  usage_rank: number | null;
-  usage_of: number;
-  pct_first: number | null;
-  change_pp: number | null;
-  first_date: string;
-  latest_date: string;
-  employment: number;
-  median_wage: number | null;
-  workers_exposed: number;
+  pct_exposed: number; pct_unexposed: number;
+  pct_rank: number; total_occupations: number;
+  usage_x: number; usage_rank: number | null; usage_of: number;
+  pct_first: number | null; change_pp: number | null;
+  first_date: string; latest_date: string;
+  employment: number; median_wage: number | null; workers_exposed: number;
 }
 
 interface FamilyRow {
-  family: string;
-  label: string;
-  short: string;
-  pct_exposed: number;
-  pct_unexposed: number;
-  usage_x: number;
-  usage_share: number;
-  share_of_day: number;
-  n_tasks: number;
+  family: string; label: string; short: string;
+  pct_exposed: number; pct_unexposed: number;
+  usage_x: number; usage_share: number; share_of_day: number; n_tasks: number;
 }
+
+interface Mcp { title: string; rating: number | null; url: string | null; description: string | null }
 
 interface TaskRow {
   task: string;
-  activities: string[];
-  pct_exposed: number;
-  pct_unexposed: number;
-  usage_x: number;
-  usage_share: number;
-  auto_aug: number | null;
+  activities: { general: string[]; intermediate: string[]; detailed: string[] };
+  top_mcps: Mcp[];
+  pct_exposed: number; pct_unexposed: number;
+  usage_x: number; usage_share: number; auto_aug: number | null;
 }
 
-interface Card {
-  headline: Headline;
-  families: FamilyRow[];
-  tasks: Record<string, TaskRow[]>;
-}
-
+interface Card { headline: Headline; families: FamilyRow[]; tasks: Record<string, TaskRow[]> }
 interface HierEntry { title: string; broad: string; minor: string; major: string }
 
-/* ── Palette ───────────────────────────────────────────────────────────────
+/* ── Palette ────────────────────────────────────────────────────────────
  * Single hue per measure, intensity carries magnitude. Deliberately not
  * red/green: high exposure is bad news to a worker and good news to an
  * employer, and the chart must not assert either.
  */
-const EXPOSED = "#3a5f83";        // steel blue — what AI reaches
-const UNEXPOSED = "#dfe4e8";      // pale grey — what it doesn't
-const USAGE = "#b0894a";          // warm sand — observed AI use
+const OBSERVED = "#3a5f83";
+const NOT_OBSERVED = "#dfe4e8";
+const USAGE = "#b0894a";
 
 const nf = new Intl.NumberFormat("en-US");
 const sentence = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
-
-function monthYear(d?: string) {
-  if (!d) return "";
-  const dt = new Date(d + "T00:00:00Z");
-  return dt.toLocaleString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
-}
+const monthYear = (d?: string) =>
+  d ? new Date(d + "T00:00:00Z").toLocaleString("en-US", { month: "long", year: "numeric", timeZone: "UTC" }) : "";
 
 /* ── Page ──────────────────────────────────────────────────────────────── */
 
@@ -99,25 +77,20 @@ export default function OccupationReport() {
     fetchOccupationReportTitles().then((d) => {
       setTitles(d.titles);
       setHier((d.hierarchy as HierEntry[]) ?? []);
-      if (d.titles.length) {
-        setTitle(d.titles.find((t) => t === "Computer Programmers") ?? d.titles[0]);
-      }
+      if (d.titles.length) setTitle(d.titles.find((t) => t === "Computer Programmers") ?? d.titles[0]);
     });
   }, []);
 
   useEffect(() => {
     if (!title) return;
-    setLoading(true);
-    setStale(false);
+    setLoading(true); setStale(false);
     fetchOccupationReport(title, "nat")
       .then((r) => {
         const c = r as unknown as Card;
-        // The v2 card and v1 report share the /api/occupation-report route, so
-        // a frontend that deploys ahead of the backend gets the old shape back.
-        // Detect it rather than letting `families.map` throw a white screen.
-        if (!c || !Array.isArray(c.families) || !c.headline) {
-          setCard(null); setStale(true); return;
-        }
+        // The v2 card and the v1 report share this route, so a frontend that
+        // deploys ahead of the backend gets the old shape. Detect it rather
+        // than letting `families.map` throw a white screen.
+        if (!c || !Array.isArray(c.families) || !c.headline) { setCard(null); setStale(true); return; }
         setCard(c); setStale(false);
       })
       .catch(() => { setCard(null); setStale(true); })
@@ -142,26 +115,48 @@ export default function OccupationReport() {
 
 function BackendMismatch() {
   return (
-    <div style={{
-      border: "1px solid var(--border)", borderRadius: 10, padding: "18px 20px",
-      background: "var(--bg-surface)", fontSize: 13.5, lineHeight: 1.6,
-      color: "var(--text-secondary)",
-    }}>
+    <div style={{ border: "1px solid var(--border)", borderRadius: 10, padding: "18px 20px",
+      background: "var(--bg-surface)", fontSize: 13.5, lineHeight: 1.6, color: "var(--text-secondary)" }}>
       <strong style={{ color: "var(--text-primary)" }}>This page is updating.</strong>{" "}
-      The API is still serving the previous version of this report. It should resolve on its
-      own once the backend finishes deploying — try again in a few minutes.
+      The API is still serving the previous version of this report. It should resolve on its own
+      once the backend finishes deploying — try again in a few minutes.
     </div>
   );
 }
 
 /* ── The one control ───────────────────────────────────────────────────── */
 
-function OccupationPicker({
-  titles, hier, current, onPick,
-}: { titles: string[]; hier: HierEntry[]; current: string; onPick: (t: string) => void }) {
+function OccupationPicker({ titles, hier, current, onPick }: {
+  titles: string[]; hier: HierEntry[]; current: string; onPick: (t: string) => void;
+}) {
+  const [mode, setMode] = useState<"search" | "browse">("search");
+  const major = hier.find((h) => h.title === current)?.major;
+  return (
+    <div style={{ marginBottom: 26 }}>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 8 }}>
+        <label style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.06em",
+          textTransform: "uppercase", color: "var(--text-muted)" }}>What do you do?</label>
+        <button onClick={() => setMode(mode === "search" ? "browse" : "search")}
+          style={{ fontSize: 12, fontWeight: 600, color: "var(--brand)", background: "none",
+            border: "none", cursor: "pointer", padding: 0 }}>
+          {mode === "search" ? "Don't know the title? Browse by category →" : "← Back to search"}
+        </button>
+      </div>
+      {mode === "search"
+        ? <SearchPicker titles={titles} current={current} onPick={onPick} />
+        : <BrowsePicker hier={hier} onPick={(t) => { onPick(t); setMode("search"); }} />}
+      {major && mode === "search" && (
+        <div style={{ fontSize: 12.5, color: "var(--text-muted)", marginTop: 7 }}>{major}</div>
+      )}
+    </div>
+  );
+}
+
+function SearchPicker({ titles, current, onPick }: {
+  titles: string[]; current: string; onPick: (t: string) => void;
+}) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
-
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return [];
@@ -169,49 +164,90 @@ function OccupationPicker({
     const rest = titles.filter((t) => !t.toLowerCase().startsWith(q) && t.toLowerCase().includes(q));
     return [...starts, ...rest].slice(0, 10);
   }, [query, titles]);
-
-  const major = hier.find((h) => h.title === current)?.major;
-
   return (
-    <div style={{ marginBottom: 28 }}>
-      <label style={{ display: "block", fontSize: 12, fontWeight: 600, letterSpacing: "0.06em",
-        textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 8 }}>
-        What do you do?
-      </label>
-      <div style={{ position: "relative" }}>
-        <input
-          value={open ? query : current}
-          onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
-          onFocus={() => { setQuery(""); setOpen(true); }}
-          onBlur={() => setTimeout(() => setOpen(false), 150)}
-          placeholder="Search 923 occupations…"
-          style={{
-            width: "100%", fontSize: 19, fontWeight: 500, padding: "13px 16px",
-            border: "1px solid var(--border)", borderRadius: 10,
-            background: "var(--bg-surface)", color: "var(--text-primary)", outline: "none",
-          }}
-        />
-        {open && matches.length > 0 && (
-          <div style={{
-            position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, zIndex: 20,
-            background: "var(--bg-surface)", border: "1px solid var(--border)",
-            borderRadius: 10, boxShadow: "0 8px 24px rgba(0,0,0,0.10)",
-            maxHeight: 320, overflowY: "auto",
-          }}>
-            {matches.map((m) => (
-              <div key={m} onMouseDown={() => { onPick(m); setOpen(false); }}
-                style={{ padding: "10px 16px", fontSize: 14, cursor: "pointer", color: "var(--text-primary)" }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "var(--brand-light)")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>
-                {m}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      {major && !open && (
-        <div style={{ fontSize: 12.5, color: "var(--text-muted)", marginTop: 7 }}>{major}</div>
+    <div style={{ position: "relative" }}>
+      <input value={open ? query : current}
+        onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
+        onFocus={() => { setQuery(""); setOpen(true); }}
+        onBlur={() => setTimeout(() => setOpen(false), 150)}
+        placeholder="Search 923 occupations…"
+        style={{ width: "100%", fontSize: 19, fontWeight: 500, padding: "13px 16px",
+          border: "1px solid var(--border)", borderRadius: 10, background: "var(--bg-surface)",
+          color: "var(--text-primary)", outline: "none" }} />
+      {open && matches.length > 0 && (
+        <div style={{ position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, zIndex: 20,
+          background: "var(--bg-surface)", border: "1px solid var(--border)", borderRadius: 10,
+          boxShadow: "0 8px 24px rgba(0,0,0,0.10)", maxHeight: 320, overflowY: "auto" }}>
+          {matches.map((m) => (
+            <div key={m} onMouseDown={() => { onPick(m); setOpen(false); }}
+              style={{ padding: "10px 16px", fontSize: 14, cursor: "pointer", color: "var(--text-primary)" }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "var(--brand-light)")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}>{m}</div>
+          ))}
+        </div>
       )}
+    </div>
+  );
+}
+
+/* Narrow down by O*NET's occupational hierarchy for anyone who does not know
+ * the official title of their job — which is most people. */
+function BrowsePicker({ hier, onPick }: { hier: HierEntry[]; onPick: (t: string) => void }) {
+  const [major, setMajor] = useState("");
+  const [minor, setMinor] = useState("");
+  const [broad, setBroad] = useState("");
+  const uniq = (xs: (string | undefined)[]) => Array.from(new Set(xs.filter(Boolean) as string[])).sort();
+  const majors = useMemo(() => uniq(hier.map((h) => h.major)), [hier]);
+  const minors = useMemo(() => uniq(hier.filter((h) => h.major === major).map((h) => h.minor)), [hier, major]);
+  const broads = useMemo(() => uniq(hier.filter((h) => h.minor === minor).map((h) => h.broad)), [hier, minor]);
+  const occs = useMemo(() => uniq(hier.filter((h) => h.broad === broad).map((h) => h.title)), [hier, broad]);
+  const sel: React.CSSProperties = {
+    width: "100%", fontSize: 14, padding: "10px 12px", marginBottom: 8,
+    border: "1px solid var(--border)", borderRadius: 8,
+    background: "var(--bg-surface)", color: "var(--text-primary)",
+  };
+  return (
+    <div>
+      <Step n={1} label="Field">
+        <select value={major} onChange={(e) => { setMajor(e.target.value); setMinor(""); setBroad(""); }} style={sel}>
+          <option value="">Choose a field…</option>
+          {majors.map((m) => <option key={m} value={m}>{m.replace(" Occupations", "")}</option>)}
+        </select>
+      </Step>
+      {major && (
+        <Step n={2} label="Group">
+          <select value={minor} onChange={(e) => { setMinor(e.target.value); setBroad(""); }} style={sel}>
+            <option value="">Choose a group…</option>
+            {minors.map((m) => <option key={m} value={m}>{m}</option>)}
+          </select>
+        </Step>
+      )}
+      {minor && (
+        <Step n={3} label="Kind of role">
+          <select value={broad} onChange={(e) => setBroad(e.target.value)} style={sel}>
+            <option value="">Choose a kind of role…</option>
+            {broads.map((b) => <option key={b} value={b}>{b}</option>)}
+          </select>
+        </Step>
+      )}
+      {broad && (
+        <Step n={4} label="Occupation">
+          <select onChange={(e) => e.target.value && onPick(e.target.value)} style={sel} defaultValue="">
+            <option value="">Choose an occupation…</option>
+            {occs.map((o) => <option key={o} value={o}>{o}</option>)}
+          </select>
+        </Step>
+      )}
+    </div>
+  );
+}
+
+function Step({ n, label, children }: { n: number; label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <div style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase",
+        color: "var(--text-muted)", marginBottom: 4 }}>{n} · {label}</div>
+      {children}
     </div>
   );
 }
@@ -219,49 +255,47 @@ function OccupationPicker({
 /* ── Four numbers ──────────────────────────────────────────────────────── */
 
 function Headlines({ h }: { h: Headline }) {
-  const rising = (h.change_pp ?? 0) > 0;
   return (
-    <div style={{
-      display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-      gap: 1, background: "var(--border)", border: "1px solid var(--border)",
-      borderRadius: 12, overflow: "hidden", marginBottom: 30,
-    }}>
-      <Stat
-        value={`${h.pct_exposed}%`}
-        label="of work time AI can do"
-        sub={`${h.pct_unexposed}% it can't · rank ${h.pct_rank} of ${h.total_occupations}`}
-        accent
-      />
-      <Stat
-        value={h.usage_x > 0 ? `${h.usage_x}×` : "—"}
-        label="AI use vs. the median job"
-        sub={h.usage_rank ? `rank ${h.usage_rank} of ${h.usage_of}` : "no usage observed"}
-      />
-      <Stat
-        value={h.change_pp == null ? "—" : `${rising ? "+" : ""}${h.change_pp} pp`}
-        label={`since ${monthYear(h.first_date)}`}
-        sub={h.pct_first != null ? `was ${h.pct_first}%` : ""}
-      />
-      <Stat
-        value={nf.format(Math.round(h.employment))}
-        label="people do this job"
-        sub={`≈ ${nf.format(h.workers_exposed)} FTE of it is exposed`}
-      />
-    </div>
+    <>
+      <div style={{ fontSize: 22, fontWeight: 700, color: "var(--text-primary)", marginBottom: 3 }}>{h.title}</div>
+      <div style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 14 }}>
+        {[h.major, h.minor, h.broad].filter(Boolean).join(" · ")}
+        {h.job_zone ? ` · Job Zone ${h.job_zone}` : ""}
+        {h.median_wage ? ` · median wage $${nf.format(Math.round(h.median_wage))}` : ""}
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(178px, 1fr))", gap: 1,
+        background: "var(--border)", border: "1px solid var(--border)", borderRadius: 12,
+        overflow: "hidden", marginBottom: 12 }}>
+        <Stat value={`${h.pct_exposed}%`} label="of work time AI has been observed doing"
+          sub={`${h.pct_unexposed}% it has not · rank ${h.pct_rank} of ${h.total_occupations}`} accent />
+        <Stat value={h.usage_x > 0 ? `${h.usage_x}×` : "—"} label="AI use vs. the median occupation"
+          sub={h.usage_rank ? `rank ${h.usage_rank} of ${h.usage_of} occupations with observed use` : "no use observed"} />
+        <Stat value={h.change_pp == null ? "—" : `${(h.change_pp ?? 0) > 0 ? "+" : ""}${h.change_pp} pp`}
+          label={`change since ${monthYear(h.first_date)}`}
+          sub={h.pct_first != null ? `was ${h.pct_first}%` : ""} />
+        <Stat value={nf.format(Math.round(h.employment))} label="people do this job"
+          sub={`the exposed share is ≈ ${nf.format(h.workers_exposed)} workers' worth of work time`} />
+      </div>
+      <Caption>
+        Left to right: the share of this occupation&rsquo;s workday spent on tasks AI has been
+        observed doing, weighted by how completely it did them, with the remainder and the
+        occupation&rsquo;s rank among all {h.total_occupations}; actual AI use, as a multiple of
+        the median occupation in which any use was observed; the change in the first figure since
+        the earliest snapshot, {monthYear(h.first_date)}; and how many people hold the job, with
+        the exposed share restated as the number of workers whose full working time it adds up to
+        — not a count of jobs at risk.
+      </Caption>
+    </>
   );
 }
 
-function Stat({ value, label, sub, accent }: {
-  value: string; label: string; sub: string; accent?: boolean;
-}) {
+function Stat({ value, label, sub, accent }: { value: string; label: string; sub: string; accent?: boolean }) {
   return (
     <div style={{ background: "var(--bg-surface)", padding: "18px 18px 16px" }}>
-      <div style={{
-        fontSize: 30, fontWeight: 680, lineHeight: 1.05, letterSpacing: "-0.025em",
-        color: accent ? EXPOSED : "var(--text-primary)",
-      }}>{value}</div>
-      <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 6, lineHeight: 1.35 }}>{label}</div>
-      {sub && <div style={{ fontSize: 11.5, color: "var(--text-muted)", marginTop: 4 }}>{sub}</div>}
+      <div style={{ fontSize: 29, fontWeight: 680, lineHeight: 1.05, letterSpacing: "-0.025em",
+        color: accent ? OBSERVED : "var(--text-primary)" }}>{value}</div>
+      <div style={{ fontSize: 12.5, color: "var(--text-secondary)", marginTop: 6, lineHeight: 1.35 }}>{label}</div>
+      {sub && <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 4, lineHeight: 1.35 }}>{sub}</div>}
     </div>
   );
 }
@@ -271,25 +305,27 @@ function Stat({ value, label, sub, accent }: {
 function Families({ families, tasks }: { families: FamilyRow[]; tasks: Record<string, TaskRow[]> }) {
   const [open, setOpen] = useState<string | null>(null);
   return (
-    <section>
-      <h2 style={{ fontSize: 17, fontWeight: 700, color: "var(--text-primary)", marginBottom: 4 }}>
+    <section style={{ marginTop: 30 }}>
+      <h2 style={{ fontSize: 17, fontWeight: 700, color: "var(--text-primary)", marginBottom: 10 }}>
         What kind of work is exposed
       </h2>
-      <p style={{ fontSize: 13, color: "var(--text-muted)", lineHeight: 1.55, marginBottom: 16 }}>
-        This job&rsquo;s tasks grouped by the kind of work they are. The filled part of each bar is
-        the share of that work AI has been observed doing; the rest is what it hasn&rsquo;t.
-        Click a row for the tasks behind it.
-      </p>
       <div style={{ border: "1px solid var(--border)", borderRadius: 12, overflow: "hidden" }}>
         {families.map((f, i) => (
-          <FamilyRowView
-            key={f.family} f={f} first={i === 0}
-            open={open === f.family}
-            onToggle={() => setOpen(open === f.family ? null : f.family)}
-            tasks={tasks[f.family] ?? []}
-          />
+          <FamilyRowView key={f.family} f={f} first={i === 0}
+            open={open === f.family} onToggle={() => setOpen(open === f.family ? null : f.family)}
+            tasks={tasks[f.family] ?? []} />
         ))}
       </div>
+      <Caption>
+        AI exposure and actual usage across this occupation&rsquo;s verb families — its tasks
+        grouped by the kind of action they are. Each row, left to right: the share of the
+        occupation&rsquo;s workday the family accounts for and how many tasks sit in it; a bar
+        whose filled part is the share of that family&rsquo;s work time AI has been observed doing
+        and whose remainder is the work it has not; that share as a number; actual AI use on the
+        family as a multiple of the median verb family across the whole economy; and the share of
+        all AI use observed in this occupation that lands on the family. Click a row to open the
+        tasks behind it.
+      </Caption>
     </section>
   );
 }
@@ -299,77 +335,149 @@ function FamilyRowView({ f, first, open, onToggle, tasks }: {
 }) {
   return (
     <div style={{ borderTop: first ? "none" : "1px solid var(--border)", background: "var(--bg-surface)" }}>
-      <div onClick={onToggle} style={{ padding: "14px 16px", cursor: "pointer", display: "grid",
-        gridTemplateColumns: "150px 1fr 88px", gap: 14, alignItems: "center" }}>
+      <div onClick={onToggle} role="button" tabIndex={0}
+        onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onToggle()}
+        style={{ padding: "13px 14px", cursor: "pointer", display: "grid",
+          gridTemplateColumns: "16px 146px 1fr 62px 62px 60px", gap: 10, alignItems: "center" }}>
+        <Caret open={open} />
         <div>
           <div style={{ fontSize: 14, fontWeight: 600, color: "var(--text-primary)" }}>{f.label.split(" / ")[0]}</div>
-          <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2 }}>
+          <div style={{ fontSize: 10.5, color: "var(--text-muted)", marginTop: 2 }}>
             {f.n_tasks} task{f.n_tasks === 1 ? "" : "s"} · {f.share_of_day}% of the day
           </div>
         </div>
-
-        {/* the bar draws its own complement */}
-        <div>
-          <div style={{ height: 22, borderRadius: 4, overflow: "hidden", display: "flex", background: UNEXPOSED }}>
-            <div style={{ width: `${f.pct_exposed}%`, background: EXPOSED, transition: "width .25s" }} />
-          </div>
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, marginTop: 4 }}>
-            <span style={{ color: EXPOSED, fontWeight: 600 }}>{f.pct_exposed}% AI can do</span>
-            <span style={{ color: "var(--text-muted)" }}>{f.pct_unexposed}% it can&rsquo;t</span>
-          </div>
+        <div style={{ height: 20, borderRadius: 4, overflow: "hidden", display: "flex", background: NOT_OBSERVED }}>
+          <div style={{ width: `${f.pct_exposed}%`, background: OBSERVED, transition: "width .25s" }} />
         </div>
-
-        <div style={{ textAlign: "right" }}>
-          <div style={{ fontSize: 15, fontWeight: 650, color: f.usage_share > 0 ? USAGE : "var(--text-muted)" }}>
-            {f.usage_share > 0 ? `${f.usage_share}%` : "0%"}
-          </div>
-          <div style={{ fontSize: 10.5, color: "var(--text-muted)", lineHeight: 1.25, marginTop: 2 }}>
-            of this job&rsquo;s AI use
-          </div>
-        </div>
+        <Num v={`${f.pct_exposed}%`} c={OBSERVED} sub="observed" />
+        <Num v={`${f.usage_x}×`} c={USAGE} sub="vs. median" />
+        <Num v={`${f.usage_share}%`} c={USAGE} sub="of AI use here" />
       </div>
+      {open && <TaskList tasks={tasks} />}
+    </div>
+  );
+}
 
+function Num({ v, c, sub }: { v: string; c: string; sub: string }) {
+  return (
+    <div style={{ textAlign: "right" }}>
+      <div style={{ fontSize: 13.5, fontWeight: 650, color: c }}>{v}</div>
+      <div style={{ fontSize: 9.5, color: "var(--text-muted)", lineHeight: 1.2, marginTop: 2 }}>{sub}</div>
+    </div>
+  );
+}
+
+function Caret({ open }: { open: boolean }) {
+  return (
+    <span aria-hidden style={{ fontSize: 10, color: "var(--text-muted)", lineHeight: 1,
+      display: "inline-block", transform: open ? "rotate(90deg)" : "none", transition: "transform .15s" }}>▶</span>
+  );
+}
+
+/* ── Tasks inside a family ─────────────────────────────────────────────── */
+
+function TaskList({ tasks }: { tasks: TaskRow[] }) {
+  return (
+    <div style={{ padding: "4px 14px 14px", background: "var(--brand-light)" }}>
+      <div style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase",
+        color: "var(--text-muted)", padding: "8px 0 4px" }}>
+        Tasks in this occupation ({tasks.length})
+      </div>
+      {tasks.length === 0 && <div style={{ fontSize: 12.5, color: "var(--text-muted)" }}>No tasks listed.</div>}
+      {tasks.map((t) => <TaskItem key={t.task} t={t} />)}
+    </div>
+  );
+}
+
+function TaskItem({ t }: { t: TaskRow }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ borderTop: "1px solid var(--border)" }}>
+      <div onClick={() => setOpen(!open)} role="button" tabIndex={0}
+        onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setOpen(!open)}
+        style={{ display: "grid", gridTemplateColumns: "16px 1fr 56px 56px", gap: 10,
+          alignItems: "baseline", padding: "9px 0", cursor: "pointer" }}>
+        <Caret open={open} />
+        <div style={{ fontSize: 12.5, color: "var(--text-primary)", lineHeight: 1.45 }}>{sentence(t.task)}</div>
+        <div style={{ fontSize: 12.5, fontWeight: 600, color: OBSERVED, textAlign: "right" }}>{t.pct_exposed}%</div>
+        <div style={{ fontSize: 12.5, fontWeight: 600, color: USAGE, textAlign: "right" }}>{t.usage_x}×</div>
+      </div>
       {open && (
-        <div style={{ padding: "2px 16px 14px", background: "var(--brand-light)" }}>
-          {tasks.length === 0 && (
-            <div style={{ fontSize: 12.5, color: "var(--text-muted)", padding: "8px 0" }}>No tasks listed.</div>
-          )}
-          {tasks.map((t) => (
-            <div key={t.task} style={{ padding: "9px 0", borderTop: "1px solid var(--border)" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 64px 60px", gap: 12, alignItems: "baseline" }}>
-                <div style={{ fontSize: 12.5, color: "var(--text-primary)", lineHeight: 1.45 }}>
-                  {sentence(t.task)}
+        <div style={{ padding: "2px 0 14px 26px" }}>
+          <ActivityLevel label="General work activity" items={t.activities.general} />
+          <ActivityLevel label="Intermediate work activity" items={t.activities.intermediate} />
+          <ActivityLevel label="Detailed work activity" items={t.activities.detailed} />
+          {t.top_mcps.length > 0 && (
+            <div style={{ marginTop: 12 }}>
+              <SubLabel>AI tools built for this task ({t.top_mcps.length})</SubLabel>
+              {t.top_mcps.map((m) => (
+                <div key={m.title} style={{ marginBottom: 6 }}>
+                  <div style={{ fontSize: 12, color: "var(--text-primary)" }}>
+                    {m.url
+                      ? <a href={m.url} target="_blank" rel="noopener noreferrer"
+                          style={{ color: "var(--brand)", textDecoration: "none" }}>{m.title}</a>
+                      : m.title}
+                    {m.rating != null && (
+                      <span style={{ color: "var(--text-muted)", marginLeft: 6 }}>· match {m.rating}/5</span>
+                    )}
+                  </div>
+                  {m.description && (
+                    <div style={{ fontSize: 11, color: "var(--text-muted)", lineHeight: 1.45, marginTop: 1 }}>
+                      {m.description.length > 190 ? m.description.slice(0, 190) + "…" : m.description}
+                    </div>
+                  )}
                 </div>
-                <div style={{ fontSize: 12.5, fontWeight: 600, color: EXPOSED, textAlign: "right" }}>
-                  {t.pct_exposed}%
-                </div>
-                <div style={{ fontSize: 12.5, color: t.usage_share > 0 ? USAGE : "var(--text-muted)", textAlign: "right" }}>
-                  {t.usage_share}%
-                </div>
+              ))}
+              <div style={{ fontSize: 10.5, color: "var(--text-muted)", lineHeight: 1.5, marginTop: 6 }}>
+                MCP servers our classification pipeline matched to this task, with how well each
+                matched. A tool existing is not evidence it is in use here.
               </div>
-              {t.activities.length > 0 && (
-                <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 3 }}>
-                  {t.activities.slice(0, 2).join(" · ")}
-                  {t.activities.length > 2 ? ` · +${t.activities.length - 2} more` : ""}
-                </div>
-              )}
             </div>
-          ))}
+          )}
         </div>
       )}
     </div>
   );
 }
 
-/* ── Framing (PRD §7) ──────────────────────────────────────────────────── */
+function ActivityLevel({ label, items }: { label: string; items: string[] }) {
+  if (!items.length) return null;
+  return (
+    <div style={{ marginBottom: 7 }}>
+      <SubLabel>{label}</SubLabel>
+      {items.map((a) => (
+        <div key={a} style={{ fontSize: 11.5, color: "var(--text-secondary)", lineHeight: 1.5 }}>{a}</div>
+      ))}
+    </div>
+  );
+}
+
+function SubLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ fontSize: 9.5, fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase",
+      color: "var(--text-muted)", marginBottom: 2 }}>{children}</div>
+  );
+}
+
+/* ── Chrome ────────────────────────────────────────────────────────────── */
+
+function Caption({ children }: { children: React.ReactNode }) {
+  return (
+    <p style={{ fontSize: 11.5, color: "var(--text-muted)", lineHeight: 1.65, marginTop: 10, maxWidth: 780 }}>
+      {children}
+    </p>
+  );
+}
 
 function Footnote() {
   return (
-    <p style={{ fontSize: 11.5, color: "var(--text-muted)", lineHeight: 1.6, marginTop: 24 }}>
-      Exposure measures task-level overlap with observed AI capability, weighted by how much
-      of the workday each task takes. It is not a forecast of job loss, and it is an upper
-      bound — it compresses how often AI is used with how completely it does the work.
-      Physical work is under-covered by construction: the underlying data is digital AI use.
+    <p style={{ fontSize: 11.5, color: "var(--text-muted)", lineHeight: 1.65, marginTop: 26,
+      borderTop: "1px solid var(--border)", paddingTop: 16 }}>
+      Exposure records where AI has been observed doing a task and how completely it did it,
+      weighted by how much of the workday the task takes. It is not a measure of what AI is
+      capable of, and it is not a forecast of job loss. Because it compresses how often AI is
+      used with how completely it works, read it as an upper bound. Physical work is under-covered
+      by construction: the underlying record is digital AI use.
     </p>
   );
 }

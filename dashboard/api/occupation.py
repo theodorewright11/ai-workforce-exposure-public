@@ -23,6 +23,12 @@ from lib import families as fam_lib
 from lib import figure_data
 from lib.figure_data import DEFAULT_GEO
 
+from dashboard.api.wa_tasks import (
+    N_TASK_MCPS,
+    _mcp_titles_desc_lookup,
+)
+from compute import _build_top_mcps_lookup
+
 figure_data.register_datasets()
 
 DATASET = figure_data.PRIMARY_DATASET
@@ -63,6 +69,56 @@ def get_occupation_hierarchy() -> list[dict]:
             for r in idx.itertuples()
         ]
     return _hierarchy_cache
+
+
+# ── Per-task detail: activity hierarchy + the tools aimed at it ───────────
+
+_task_activity_cache: dict[str, dict[str, dict[str, list[str]]]] = {}
+
+
+def _task_activities(title: str) -> dict[str, dict[str, list[str]]]:
+    """task_normalized → {general, intermediate, detailed} activity names.
+
+    O*NET's own three-level hierarchy for the task, spelled out rather than
+    abbreviated: a reader who does not know what a "DWA" is still needs to
+    see which work the task belongs to.
+    """
+    if title in _task_activity_cache:
+        return _task_activity_cache[title]
+    eco = figure_data.load_eco_raw()
+    assert eco is not None and not eco.empty, "final_eco_2025.csv missing"
+    sub = eco[eco["title_current"] == title]
+    out: dict[str, dict[str, list[str]]] = {}
+    for level, col in (("general", "gwa_title"),
+                       ("intermediate", "iwa_title"),
+                       ("detailed", "dwa_title")):
+        for task, names in sub.groupby("task_normalized")[col]:
+            slot = out.setdefault(str(task), {})
+            slot[level] = sorted({str(v) for v in names.dropna() if str(v)})
+    _task_activity_cache[title] = out
+    return out
+
+
+def _task_mcps(task_normalized: str) -> list[dict]:
+    """Up to five MCP servers mapped to this task, with descriptions.
+
+    These are the real tools the classification pipeline matched to the task
+    — the most concrete evidence on the card that something exists which
+    targets this work.
+    """
+    desc = _mcp_titles_desc_lookup()
+    out: list[dict] = []
+    for m in _build_top_mcps_lookup().get(task_normalized, [])[:N_TASK_MCPS]:
+        name = (m.get("title") or "").strip()
+        if not name:
+            continue
+        out.append({
+            "title": name,
+            "rating": m.get("rating"),
+            "url": m.get("url"),
+            "description": desc.get(name) or desc.get(name.lower()),
+        })
+    return out
 
 
 # ── Headline ──────────────────────────────────────────────────────────────
@@ -146,11 +202,20 @@ def get_occupation_card(title: str, geo: str = DEFAULT_GEO) -> Optional[dict]:
         for r in fam.itertuples()
     ]
 
+    acts = _task_activities(title)
     tasks_out: dict[str, list[dict]] = {}
     for r in tasks.itertuples():
+        tn = str(r.task_normalized)
         tasks_out.setdefault(r.family, []).append({
-            "task": str(r.task_normalized),
-            "activities": list(r.dwas),
+            "task": tn,
+            # O*NET's three levels, spelled out. `detailed` falls back to the
+            # DWA titles the family grouping already resolved.
+            "activities": {
+                "general": acts.get(tn, {}).get("general", []),
+                "intermediate": acts.get(tn, {}).get("intermediate", []),
+                "detailed": acts.get(tn, {}).get("detailed", list(r.dwas)),
+            },
+            "top_mcps": _task_mcps(tn),
             "pct_exposed": round(float(r.pct_exposed), 1),
             "pct_unexposed": round(float(r.pct_unexposed), 1),
             "usage_x": round(float(r.usage_x), 2),
