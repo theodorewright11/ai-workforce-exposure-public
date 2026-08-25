@@ -93,6 +93,7 @@ export default function OccupationReport() {
   const [title, setTitle] = useState("");
   const [card, setCard] = useState<Card | null>(null);
   const [loading, setLoading] = useState(false);
+  const [stale, setStale] = useState(false);
 
   useEffect(() => {
     fetchOccupationReportTitles().then((d) => {
@@ -107,8 +108,19 @@ export default function OccupationReport() {
   useEffect(() => {
     if (!title) return;
     setLoading(true);
+    setStale(false);
     fetchOccupationReport(title, "nat")
-      .then((r) => setCard(r as unknown as Card))
+      .then((r) => {
+        const c = r as unknown as Card;
+        // The v2 card and v1 report share the /api/occupation-report route, so
+        // a frontend that deploys ahead of the backend gets the old shape back.
+        // Detect it rather than letting `families.map` throw a white screen.
+        if (!c || !Array.isArray(c.families) || !c.headline) {
+          setCard(null); setStale(true); return;
+        }
+        setCard(c); setStale(false);
+      })
+      .catch(() => { setCard(null); setStale(true); })
       .finally(() => setLoading(false));
   }, [title]);
 
@@ -116,6 +128,7 @@ export default function OccupationReport() {
     <div style={{ maxWidth: 880, margin: "0 auto", padding: "28px 24px 72px" }}>
       <OccupationPicker titles={titles} hier={hier} current={title} onPick={setTitle} />
       {loading && !card && <div style={{ color: "var(--text-muted)", fontSize: 13 }}>Loading…</div>}
+      {!loading && stale && <BackendMismatch />}
       {card && (
         <>
           <Headlines h={card.headline} />
@@ -123,6 +136,20 @@ export default function OccupationReport() {
           <Footnote />
         </>
       )}
+    </div>
+  );
+}
+
+function BackendMismatch() {
+  return (
+    <div style={{
+      border: "1px solid var(--border)", borderRadius: 10, padding: "18px 20px",
+      background: "var(--bg-surface)", fontSize: 13.5, lineHeight: 1.6,
+      color: "var(--text-secondary)",
+    }}>
+      <strong style={{ color: "var(--text-primary)" }}>This page is updating.</strong>{" "}
+      The API is still serving the previous version of this report. It should resolve on its
+      own once the backend finishes deploying — try again in a few minutes.
     </div>
   );
 }
