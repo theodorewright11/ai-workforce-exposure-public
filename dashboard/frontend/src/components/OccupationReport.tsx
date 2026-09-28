@@ -8,9 +8,10 @@
  * task for its work-activity hierarchy and the AI tools aimed at it.
  *
  * Language rule: we observe AI being used on a task and how completely it
- * did the work. We do NOT observe what AI is capable of. So every label here
- * says "observed doing", never "can do" or "AI-capable" — the data supports
- * the first and not the second.
+ * did the work. We do NOT observe what AI is capable of, and exposure is not
+ * what AI is doing today — it is what AI would do or assist if every worker
+ * used it as observed. So labels say "exposed", never "can do", "AI-capable"
+ * or "observed doing".
  */
 
 import { useEffect, useMemo, useState } from "react";
@@ -57,6 +58,10 @@ interface HierEntry { title: string; broad: string; minor: string; major: string
 const OBSERVED = "#3a5f83";
 const NOT_OBSERVED = "#dfe4e8";
 const USAGE = "#b0894a";
+
+// Header and rows share these so the column labels stay over their numbers.
+const FAMILY_COLS = "16px 146px 1fr 68px 84px 84px";
+const TASK_COLS = "16px 1fr 68px 84px";
 
 const nf = new Intl.NumberFormat("en-US");
 const sentence = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -308,8 +313,18 @@ function Families({ families, tasks }: { families: FamilyRow[]; tasks: Record<st
         What kind of work is exposed
       </h2>
       <div style={{ border: "1px solid var(--border)", borderRadius: 12, overflow: "hidden" }}>
-        {families.map((f, i) => (
-          <FamilyRowView key={f.family} f={f} first={i === 0}
+        <div style={{ display: "grid", gridTemplateColumns: FAMILY_COLS, gap: 10, alignItems: "end",
+          padding: "9px 14px", background: "var(--brand-light)", fontSize: 10, fontWeight: 600,
+          letterSpacing: "0.04em", textTransform: "uppercase", lineHeight: 1.3, color: "var(--text-muted)" }}>
+          <div />
+          <div>Kind of work</div>
+          <div>Work time exposed vs. not</div>
+          <div style={{ textAlign: "right" }}>Work time exposed</div>
+          <div style={{ textAlign: "right" }}>AI use vs. this job&rsquo;s median</div>
+          <div style={{ textAlign: "right" }}>Share of this job&rsquo;s AI use</div>
+        </div>
+        {families.map((f) => (
+          <FamilyRowView key={f.family} f={f}
             open={open === f.family} onToggle={() => setOpen(open === f.family ? null : f.family)}
             tasks={tasks[f.family] ?? []} />
         ))}
@@ -317,22 +332,22 @@ function Families({ families, tasks }: { families: FamilyRow[]; tasks: Record<st
       <Caption>
         This job&rsquo;s tasks, grouped by the kind of action they are. The bar and the first
         number are the group&rsquo;s exposure. The last two numbers are real AI use: compared
-        with the median group across the economy, and as a share of all AI use seen in this job.
-        Click a row to see its tasks.
+        with the median group in this job (1× is a typical part of the job), and as a share of
+        all AI use seen in this job. Click a row to see its tasks.
       </Caption>
     </section>
   );
 }
 
-function FamilyRowView({ f, first, open, onToggle, tasks }: {
-  f: FamilyRow; first: boolean; open: boolean; onToggle: () => void; tasks: TaskRow[];
+function FamilyRowView({ f, open, onToggle, tasks }: {
+  f: FamilyRow; open: boolean; onToggle: () => void; tasks: TaskRow[];
 }) {
   return (
-    <div style={{ borderTop: first ? "none" : "1px solid var(--border)", background: "var(--bg-surface)" }}>
+    <div style={{ borderTop: "1px solid var(--border)", background: "var(--bg-surface)" }}>
       <div onClick={onToggle} role="button" tabIndex={0}
         onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onToggle()}
         style={{ padding: "13px 14px", cursor: "pointer", display: "grid",
-          gridTemplateColumns: "16px 146px 1fr 62px 62px 60px", gap: 10, alignItems: "center" }}>
+          gridTemplateColumns: FAMILY_COLS, gap: 10, alignItems: "center" }}>
         <Caret open={open} />
         <div>
           <div style={{ fontSize: 14, fontWeight: 600, color: "var(--text-primary)" }}>{f.label.split(" / ")[0]}</div>
@@ -343,22 +358,17 @@ function FamilyRowView({ f, first, open, onToggle, tasks }: {
         <div style={{ height: 20, borderRadius: 4, overflow: "hidden", display: "flex", background: NOT_OBSERVED }}>
           <div style={{ width: `${f.pct_exposed}%`, background: OBSERVED, transition: "width .25s" }} />
         </div>
-        <Num v={`${f.pct_exposed}%`} c={OBSERVED} sub="exposed" />
-        <Num v={`${f.usage_x}×`} c={USAGE} sub="vs. median" />
-        <Num v={`${f.usage_share}%`} c={USAGE} sub="of AI use here" />
+        <Num v={`${f.pct_exposed}%`} c={OBSERVED} />
+        <Num v={`${f.usage_x}×`} c={USAGE} />
+        <Num v={`${f.usage_share}%`} c={USAGE} />
       </div>
       {open && <TaskList tasks={tasks} />}
     </div>
   );
 }
 
-function Num({ v, c, sub }: { v: string; c: string; sub: string }) {
-  return (
-    <div style={{ textAlign: "right" }}>
-      <div style={{ fontSize: 13.5, fontWeight: 650, color: c }}>{v}</div>
-      <div style={{ fontSize: 9.5, color: "var(--text-muted)", lineHeight: 1.2, marginTop: 2 }}>{sub}</div>
-    </div>
-  );
+function Num({ v, c }: { v: string; c: string }) {
+  return <div style={{ textAlign: "right", fontSize: 13.5, fontWeight: 650, color: c }}>{v}</div>;
 }
 
 function Caret({ open }: { open: boolean }) {
@@ -373,9 +383,13 @@ function Caret({ open }: { open: boolean }) {
 function TaskList({ tasks }: { tasks: TaskRow[] }) {
   return (
     <div style={{ padding: "4px 14px 14px", background: "var(--brand-light)" }}>
-      <div style={{ fontSize: 10.5, fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase",
-        color: "var(--text-muted)", padding: "8px 0 4px" }}>
-        Tasks in this occupation ({tasks.length})
+      <div style={{ display: "grid", gridTemplateColumns: TASK_COLS, gap: 10, alignItems: "end",
+        fontSize: 10, fontWeight: 600, letterSpacing: "0.04em", textTransform: "uppercase",
+        lineHeight: 1.3, color: "var(--text-muted)", padding: "8px 0 4px" }}>
+        <div />
+        <div>Tasks in this occupation ({tasks.length})</div>
+        <div style={{ textAlign: "right" }}>Work time exposed</div>
+        <div style={{ textAlign: "right" }}>AI use vs. this job&rsquo;s median task</div>
       </div>
       {tasks.length === 0 && <div style={{ fontSize: 12.5, color: "var(--text-muted)" }}>No tasks listed.</div>}
       {tasks.map((t) => <TaskItem key={t.task} t={t} />)}
@@ -389,7 +403,7 @@ function TaskItem({ t }: { t: TaskRow }) {
     <div style={{ borderTop: "1px solid var(--border)" }}>
       <div onClick={() => setOpen(!open)} role="button" tabIndex={0}
         onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setOpen(!open)}
-        style={{ display: "grid", gridTemplateColumns: "16px 1fr 56px 56px", gap: 10,
+        style={{ display: "grid", gridTemplateColumns: TASK_COLS, gap: 10,
           alignItems: "baseline", padding: "9px 0", cursor: "pointer" }}>
         <Caret open={open} />
         <div style={{ fontSize: 12.5, color: "var(--text-primary)", lineHeight: 1.45 }}>{sentence(t.task)}</div>
