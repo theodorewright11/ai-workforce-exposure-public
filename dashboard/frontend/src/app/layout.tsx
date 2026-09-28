@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <a href="https://commerce.utah.gov/ai/" target="_blank" rel="noreferrer" style={{ color: "#8a5a1a", fontWeight: 600, textDecoration: "underline" }}>OAIP website</a>.
             </div>
             <div style={{ fontSize: 11, marginTop: 3, opacity: 0.8 }}>
-              Work in progress, might be some minor bugs. Best viewed on a computer.
+              Temporarily open for a conference poster session. Work in progress, might be some minor bugs. Best viewed on a computer.
             </div>
           </div>
           {children}
