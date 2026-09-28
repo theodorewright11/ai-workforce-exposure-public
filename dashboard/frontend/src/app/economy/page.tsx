@@ -56,7 +56,7 @@ export default function EconomyPage() {
 }
 
 function Shell({ children }: { children: React.ReactNode }) {
-  return <div style={{ maxWidth: 940, margin: "0 auto", padding: "28px 24px 72px" }}>{children}</div>;
+  return <div className="page-shell" style={{ maxWidth: 940, margin: "0 auto", padding: "28px 24px 72px" }}>{children}</div>;
 }
 
 /* ── 1 · Headline ──────────────────────────────────────────────────────── */
@@ -96,9 +96,9 @@ function Headline({ trend }: { trend: EconomyTrend }) {
 function TrendBlock({ trend }: { trend: EconomyTrend }) {
   const all = trend.series.flatMap((s) => s.points.map((p) => p.pct));
   const max = Math.max(...all, 60);
-  const W = 620, H = 190, PADL = 40, PADB = 26, PADT = 8;
+  const W = 620, H = 190, PADL = 40, PADR = 22, PADB = 26, PADT = 8;
   const dates = trend.series[0]?.points.map((p) => p.date) ?? [];
-  const x = (i: number) => PADL + (i / Math.max(dates.length - 1, 1)) * (W - PADL - 12);
+  const x = (i: number) => PADL + (i / Math.max(dates.length - 1, 1)) * (W - PADL - PADR);
   const y = (v: number) => PADT + (1 - v / max) * (H - PADT - PADB);
   const colors: Record<string, string> = { all: EXPOSED, exclude: "#7aa5c4", only: "#b8c4cc" };
 
@@ -110,7 +110,7 @@ function TrendBlock({ trend }: { trend: EconomyTrend }) {
           aria-label="Exposure trend, August 2025 to May 2026">
           {[0, 20, 40, 60].filter((g) => g <= max).map((g) => (
             <g key={g}>
-              <line x1={PADL} x2={W - 12} y1={y(g)} y2={y(g)} stroke="var(--border)" strokeWidth={1} />
+              <line x1={PADL} x2={W - PADR} y1={y(g)} y2={y(g)} stroke="var(--border)" strokeWidth={1} />
               <text x={PADL - 7} y={y(g) + 4} textAnchor="end" fontSize={10} fill="var(--text-muted)">{g}%</text>
             </g>
           ))}
@@ -145,8 +145,8 @@ function FamilyBlock({ families }: { families: EconomyFamily[] }) {
       blurb="AI exposure and actual usage across the eight verb families — every task in the economy grouped by the kind of action it is. Each row, left to right: the family and the share of the workday it accounts for; a bar whose filled part is the share of that family's work time AI has been observed doing and whose remainder is the work it has not; that share as a number; and actual AI use on the family as a multiple of the median family. Exposure varies far more between kinds of work than between fields.">
       <div style={{ border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
         {families.map((f, i) => (
-          <div key={f.family} style={{
-            display: "grid", gridTemplateColumns: "132px 1fr 74px 62px", gap: 12, alignItems: "center",
+          <div key={f.family} className="eco-fam-grid" style={{
+            alignItems: "center",
             padding: "12px 14px", background: "var(--bg-surface)",
             borderTop: i ? "1px solid var(--border)" : "none",
           }}>
@@ -189,12 +189,12 @@ function GroupBlock({ title, rows, blurb }: { title: string; rows: EconomyGroup[
     <Block title={title} blurb={blurb}>
       <div style={{ border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
         {rows.map((r, i) => (
-          <div key={r.category} style={{
-            display: "grid", gridTemplateColumns: "1fr 92px 58px 62px 62px", gap: 10, alignItems: "center",
+          <div key={r.category} className="eco-group-grid" style={{
+            alignItems: "center",
             padding: "10px 14px", background: "var(--bg-surface)",
             borderTop: i ? "1px solid var(--border)" : "none",
           }}>
-            <div style={{ fontSize: 13, color: "var(--text-primary)", overflow: "hidden",
+            <div className="row-name" style={{ fontSize: 13, color: "var(--text-primary)", overflow: "hidden",
               textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={r.category}>{r.category}</div>
             <div style={{ height: 15, borderRadius: 3, overflow: "hidden", display: "flex", background: UNEXPOSED }}>
               <div style={{ width: `${r.pct_exposed}%`, background: EXPOSED }} />
@@ -205,7 +205,7 @@ function GroupBlock({ title, rows, blurb }: { title: string; rows: EconomyGroup[
           </div>
         ))}
       </div>
-      <div style={{ display: "flex", gap: 18, fontSize: 11, color: "var(--text-muted)", marginTop: 8 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "2px 18px", fontSize: 11, color: "var(--text-muted)", marginTop: 8 }}>
         <span>bar &amp; % — exposed vs. not (if everyone used AI as observed)</span><span>then workers&rsquo; worth of exposed work time</span><span>then AI use vs. median</span>
       </div>
     </Block>
@@ -221,18 +221,18 @@ function FocusedBlock({ focused }: { focused: EconomyResponse["focused"] }) {
     <Block title={`The ${focused.count}`}
       blurb={`Occupations where AI already reaches at least ${focused.exposure_min}% of the workday AND the BLS projects employment to fall through 2034. Two gates, nothing else. The exposed work across them adds up to the full working time of ${fmtM(focused.total_workers)} workers.`}>
       <div style={{ border: "1px solid var(--border)", borderRadius: 10, overflow: "hidden" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 56px 68px 56px", gap: 10, padding: "8px 14px",
+        <div className="eco-focus-grid" style={{ padding: "8px 14px",
           background: "var(--brand-light)", fontSize: 10.5, fontWeight: 600, letterSpacing: "0.04em",
           textTransform: "uppercase", color: "var(--text-muted)" }}>
           <div>Occupation</div><div style={{ textAlign: "right" }}>Exposed</div>
           <div style={{ textAlign: "right" }}>BLS 25–34</div><div style={{ textAlign: "right" }}>Use</div>
         </div>
         {rows.map((r: FocusedRow) => (
-          <div key={r.title} style={{ display: "grid", gridTemplateColumns: "1fr 56px 68px 56px", gap: 10,
+          <div key={r.title} className="eco-focus-grid" style={{
             alignItems: "center", padding: "9px 14px", background: "var(--bg-surface)",
             borderTop: "1px solid var(--border)" }}>
             <div style={{ minWidth: 0 }}>
-              <div style={{ fontSize: 12.5, color: "var(--text-primary)", overflow: "hidden",
+              <div className="wrap-mobile" style={{ fontSize: 12.5, color: "var(--text-primary)", overflow: "hidden",
                 textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={r.title}>{r.title}</div>
               <div style={{ fontSize: 10.5, color: "var(--text-muted)" }}>{r.major} · {fmtM(r.workers_exposed)} workers&rsquo; worth</div>
             </div>

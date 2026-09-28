@@ -195,8 +195,8 @@ export default function DataPage() {
   const mFmt = metricFmt(sortMetric);
 
   return (
-    <div style={{ maxWidth: 1180, margin: "0 auto", padding: "22px 24px 60px" }}>
-      <div style={{ display: "flex", gap: 4, borderBottom: "1px solid var(--border)", marginBottom: 18 }}>
+    <div className="page-shell" style={{ maxWidth: 1180, margin: "0 auto", padding: "22px 24px 60px" }}>
+      <div className="tab-row" style={{ borderBottom: "1px solid var(--border)", marginBottom: 18 }}>
         {TABS.map((t) => <button key={t.key} onClick={() => setTab(t.key)} style={tabStyle(tab === t.key)}>{t.label}</button>)}
       </div>
 
@@ -254,7 +254,7 @@ export default function DataPage() {
           </div>
         ) : <Empty />
       ) : (
-        <div style={{ display: "flex", gap: 26 }}>
+        <div className="metric-cols">
           {METRICS.map((m) => {
             const bars: BarDatum[] = displayRows.map((r) => ({
               category: r.category, value: mVal(r, m.key), rank: mRank(r, m.key),
@@ -290,9 +290,9 @@ function WaTaskList({ tasks }: { tasks: WaTask[] }) {
   return (
     <div style={{ maxWidth: 900 }}>
       <div style={{ display: "flex", padding: "6px", fontSize: 10.5, color: "var(--text-muted)", fontWeight: 600, textTransform: "uppercase" }}>
-        <span style={{ flex: 1 }}>Task</span><span style={{ width: 90, textAlign: "right" }}>Centrality</span>
-        <span style={{ width: 80, textAlign: "right" }}>Usage</span>
-        <span style={{ width: 110, textAlign: "right", lineHeight: 1.15 }}>Automation<br />level</span>
+        <span style={{ flex: 1 }}>Task</span><span className="wa-num-a" style={{ textAlign: "right" }}>Centrality</span>
+        <span className="wa-num-b" style={{ textAlign: "right" }}>Usage</span>
+        <span className="wa-num-c" style={{ textAlign: "right", lineHeight: 1.15 }}>Automation<br />level</span>
       </div>
       {tasks.map((t) => <WaTaskItem key={t.task_normalized} t={t} n={tasks.length} />)}
     </div>
@@ -305,9 +305,9 @@ function WaTaskItem({ t, n }: { t: WaTask; n: number }) {
     <div style={{ borderBottom: "1px solid var(--border)" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 6px", cursor: "pointer" }} onClick={() => setOpen((v) => !v)}>
         <span style={{ flex: 1, fontSize: 12.5 }}><span style={{ opacity: 0.4, marginRight: 6 }}>{open ? "▾" : "▸"}</span>{t.task}</span>
-        <span style={{ width: 90, textAlign: "right", fontSize: 12 }}>#{t.centrality_rank}<span style={{ color: "var(--text-muted)" }}>/{n}</span></span>
-        <span style={{ width: 80, textAlign: "right", fontSize: 12 }}>{t.usage_mult != null ? `${t.usage_mult}×` : "—"}</span>
-        <span style={{ width: 110, textAlign: "right", fontSize: 15, fontWeight: 700, color }}>{t.auto != null ? `${t.auto}/5` : "—"}</span>
+        <span className="wa-num-a" style={{ textAlign: "right", fontSize: 12 }}>#{t.centrality_rank}<span style={{ color: "var(--text-muted)" }}>/{n}</span></span>
+        <span className="wa-num-b" style={{ textAlign: "right", fontSize: 12 }}>{t.usage_mult != null ? `${t.usage_mult}×` : "—"}</span>
+        <span className="wa-num-c" style={{ textAlign: "right", fontSize: 15, fontWeight: 700, color }}>{t.auto != null ? `${t.auto}/5` : "—"}</span>
       </div>
       {open && (
         <div style={{ padding: "10px 14px 14px 26px", background: "var(--bg-sidebar)", fontSize: 12 }}>
@@ -471,10 +471,10 @@ function FamilyPanel({ rows, parent, onDrill }: {
           border: "none", cursor: "pointer", padding: "0 0 10px",
         }}>← All verb families</button>
       )}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 120px 58px 58px 62px", gap: 10,
+      <div className="explore-fam-grid" style={{
         padding: "6px 10px", fontSize: 10.5, color: "var(--text-muted)", fontWeight: 600,
         textTransform: "uppercase", letterSpacing: "0.04em" }}>
-        <span>{parent ? "Detailed work activity" : "Verb family"}</span>
+        <span className="row-name">{parent ? "Detailed work activity" : "Verb family"}</span>
         <span />
         <span style={{ textAlign: "right" }}>Exposed</span>
         <span style={{ textAlign: "right" }}>Not</span>
@@ -485,13 +485,13 @@ function FamilyPanel({ rows, parent, onDrill }: {
         return (
           <div key={r.category}
             onClick={() => clickable && r.family && onDrill(r.family)}
+            className="explore-fam-grid"
             style={{
-              display: "grid", gridTemplateColumns: "1fr 120px 58px 58px 62px", gap: 10,
               alignItems: "center", padding: "9px 10px", borderBottom: "1px solid var(--border)",
               cursor: clickable ? "pointer" : "default",
             }}>
-            <div style={{ minWidth: 0 }}>
-              <div style={{ fontSize: 12.5, color: "var(--text-primary)", overflow: "hidden",
+            <div className="row-name" style={{ minWidth: 0 }}>
+              <div className="wrap-mobile" style={{ fontSize: 12.5, color: "var(--text-primary)", overflow: "hidden",
                 textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={r.category}>
                 {clickable && <span style={{ opacity: 0.4, marginRight: 6 }}>▸</span>}{r.category}
               </div>

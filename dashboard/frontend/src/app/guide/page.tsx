@@ -25,7 +25,7 @@ const EQ: React.CSSProperties = {
 
 export default function GuidePage() {
   return (
-    <div style={{ maxWidth: 780, margin: "0 auto", padding: "28px 24px 72px" }}>
+    <div className="page-shell" style={{ maxWidth: 780, margin: "0 auto", padding: "28px 24px 72px" }}>
       <h1 style={{ fontSize: 25, fontWeight: 700, color: "var(--text-primary)", marginBottom: 20 }}>Guide</h1>
 
       <div style={SECTION}>

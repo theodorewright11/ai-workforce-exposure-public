@@ -4,10 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
-  { href: "/occupation", label: "My Occupation" },
-  { href: "/economy",    label: "Economy at a Glance" },
-  { href: "/data",       label: "Explore the Data" },
-  { href: "/guide",      label: "Guide" },
+  { href: "/occupation", label: "My Occupation",       short: "Occupation" },
+  { href: "/economy",    label: "Economy at a Glance", short: "Economy" },
+  { href: "/data",       label: "Explore the Data",    short: "Explore" },
+  { href: "/guide",      label: "Guide",               short: "Guide" },
 ];
 
 export default function Navigation() {
@@ -20,7 +20,7 @@ export default function Navigation() {
       display: "flex", alignItems: "center", padding: "0 24px",
     }}>
       {/* left: brand (truncates) */}
-      <Link href="/occupation" style={{ textDecoration: "none", flex: "1 1 0", minWidth: 0, display: "flex", alignItems: "center", gap: 12 }}>
+      <Link href="/occupation" className="nav-brand" style={{ textDecoration: "none", flex: "1 1 0", minWidth: 0, display: "flex", alignItems: "center", gap: 12 }}>
         <div className="nav-brand-accent" style={{ width: 3, height: 34, borderRadius: 2, backgroundColor: "var(--brand)", opacity: 0.75, flexShrink: 0 }} />
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", minWidth: 0 }}>
           <span className="nav-brand-title" style={{ fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.02em", lineHeight: 1.2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
@@ -34,7 +34,7 @@ export default function Navigation() {
 
       {/* center: links */}
       <div className="nav-links" style={{ display: "flex", alignItems: "center", gap: 8, flex: "0 0 auto" }}>
-        {NAV_LINKS.map(({ href, label }) => {
+        {NAV_LINKS.map(({ href, label, short }) => {
           const active = pathname === href || pathname.startsWith(href);
           return (
             <Link key={href} href={href} className="nav-link" style={{
@@ -43,13 +43,13 @@ export default function Navigation() {
               backgroundColor: active ? "var(--brand-light)" : "transparent",
               textDecoration: "none", transition: "all 0.13s", whiteSpace: "nowrap",
               borderBottom: active ? "2px solid var(--brand)" : "2px solid transparent",
-            }}>{label}</Link>
+            }}><span className="nav-long">{label}</span><span className="nav-short">{short}</span></Link>
           );
         })}
       </div>
 
       {/* right: spacer to keep links centered */}
-      <div style={{ flex: "1 1 0" }} />
+      <div className="nav-spacer" style={{ flex: "1 1 0" }} />
     </nav>
   );
 }

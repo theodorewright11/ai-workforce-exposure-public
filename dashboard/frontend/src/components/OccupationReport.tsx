@@ -59,10 +59,6 @@ const OBSERVED = "#3a5f83";
 const NOT_OBSERVED = "#dfe4e8";
 const USAGE = "#b0894a";
 
-// Header and rows share these so the column labels stay over their numbers.
-const FAMILY_COLS = "16px 146px 1fr 68px 84px 84px";
-const TASK_COLS = "16px 1fr 68px 84px";
-
 const nf = new Intl.NumberFormat("en-US");
 const sentence = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const monthYear = (d?: string) =>
@@ -103,7 +99,7 @@ export default function OccupationReport() {
   }, [title]);
 
   return (
-    <div style={{ maxWidth: 880, margin: "0 auto", padding: "28px 24px 72px" }}>
+    <div className="page-shell" style={{ maxWidth: 880, margin: "0 auto", padding: "28px 24px 72px" }}>
       <OccupationPicker titles={titles} hier={hier} current={title} onPick={setTitle} />
       {loading && !card && <div style={{ color: "var(--text-muted)", fontSize: 13 }}>Loading…</div>}
       {!loading && stale && <BackendMismatch />}
@@ -312,8 +308,12 @@ function Families({ families, tasks }: { families: FamilyRow[]; tasks: Record<st
       <h2 style={{ fontSize: 17, fontWeight: 700, color: "var(--text-primary)", marginBottom: 10 }}>
         What kind of work is exposed
       </h2>
-      <div style={{ border: "1px solid var(--border)", borderRadius: 12, overflow: "hidden" }}>
-        <div style={{ display: "grid", gridTemplateColumns: FAMILY_COLS, gap: 10, alignItems: "end",
+      <div className="mobile-only" style={{ fontSize: 11, color: "var(--text-muted)", marginBottom: 6 }}>
+        Swipe the table sideways for AI use →
+      </div>
+      <div className="fam-scroll" style={{ border: "1px solid var(--border)", borderRadius: 12 }}>
+        <div className="fam-inner">
+        <div className="fam-grid" style={{ alignItems: "end",
           padding: "9px 14px", background: "var(--brand-light)", fontSize: 10, fontWeight: 600,
           letterSpacing: "0.04em", textTransform: "uppercase", lineHeight: 1.3, color: "var(--text-muted)" }}>
           <div />
@@ -328,6 +328,7 @@ function Families({ families, tasks }: { families: FamilyRow[]; tasks: Record<st
             open={open === f.family} onToggle={() => setOpen(open === f.family ? null : f.family)}
             tasks={tasks[f.family] ?? []} />
         ))}
+        </div>
       </div>
       <Caption>
         This job&rsquo;s tasks, grouped by the kind of action they are. The bar and the first
@@ -344,10 +345,9 @@ function FamilyRowView({ f, open, onToggle, tasks }: {
 }) {
   return (
     <div style={{ borderTop: "1px solid var(--border)", background: "var(--bg-surface)" }}>
-      <div onClick={onToggle} role="button" tabIndex={0}
+      <div onClick={onToggle} role="button" tabIndex={0} className="fam-grid"
         onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onToggle()}
-        style={{ padding: "13px 14px", cursor: "pointer", display: "grid",
-          gridTemplateColumns: FAMILY_COLS, gap: 10, alignItems: "center" }}>
+        style={{ padding: "13px 14px", cursor: "pointer", alignItems: "center" }}>
         <Caret open={open} />
         <div>
           <div style={{ fontSize: 14, fontWeight: 600, color: "var(--text-primary)" }}>{f.label.split(" / ")[0]}</div>
@@ -372,9 +372,12 @@ function Num({ v, c }: { v: string; c: string }) {
 }
 
 function Caret({ open }: { open: boolean }) {
+  // Drawn, not typed: phones render the triangle character as a colour emoji.
   return (
-    <span aria-hidden style={{ fontSize: 10, color: "var(--text-muted)", lineHeight: 1,
-      display: "inline-block", transform: open ? "rotate(90deg)" : "none", transition: "transform .15s" }}>▶</span>
+    <svg aria-hidden width="9" height="9" viewBox="0 0 10 10" style={{ display: "block", flexShrink: 0,
+      transform: open ? "rotate(90deg)" : "none", transition: "transform .15s" }}>
+      <path d="M2 0.5 L9 5 L2 9.5 Z" fill="var(--text-primary)" />
+    </svg>
   );
 }
 
@@ -382,8 +385,8 @@ function Caret({ open }: { open: boolean }) {
 
 function TaskList({ tasks }: { tasks: TaskRow[] }) {
   return (
-    <div style={{ padding: "4px 14px 14px", background: "var(--brand-light)" }}>
-      <div style={{ display: "grid", gridTemplateColumns: TASK_COLS, gap: 10, alignItems: "end",
+    <div className="fam-tasks" style={{ padding: "4px 14px 14px", background: "var(--brand-light)" }}>
+      <div className="task-grid" style={{ alignItems: "end",
         fontSize: 10, fontWeight: 600, letterSpacing: "0.04em", textTransform: "uppercase",
         lineHeight: 1.3, color: "var(--text-muted)", padding: "8px 0 4px" }}>
         <div />
@@ -401,10 +404,9 @@ function TaskItem({ t }: { t: TaskRow }) {
   const [open, setOpen] = useState(false);
   return (
     <div style={{ borderTop: "1px solid var(--border)" }}>
-      <div onClick={() => setOpen(!open)} role="button" tabIndex={0}
+      <div onClick={() => setOpen(!open)} role="button" tabIndex={0} className="task-grid"
         onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setOpen(!open)}
-        style={{ display: "grid", gridTemplateColumns: TASK_COLS, gap: 10,
-          alignItems: "baseline", padding: "9px 0", cursor: "pointer" }}>
+        style={{ alignItems: "baseline", padding: "9px 0", cursor: "pointer" }}>
         <Caret open={open} />
         <div style={{ fontSize: 12.5, color: "var(--text-primary)", lineHeight: 1.45 }}>{sentence(t.task)}</div>
         <div style={{ fontSize: 12.5, fontWeight: 600, color: OBSERVED, textAlign: "right" }}>{t.pct_exposed}%</div>

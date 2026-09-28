@@ -61,7 +61,8 @@ export default function TrendChart({ series, yLabel, format, ols, activeCat, onH
   const gridY = Array.from({ length: 5 }, (_, i) => lo + ((hi - lo) * i) / 4);
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ display: "block" }}>
+    <div style={{ overflowX: "auto" }}>
+    <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ display: "block", minWidth: 640 }}>
       {gridY.map((v, i) => (
         <g key={i}>
           <line x1={PAD_L} y1={yOf(v)} x2={W - PAD_R} y2={yOf(v)} stroke="var(--border)" strokeWidth={0.5} />
@@ -94,5 +95,6 @@ export default function TrendChart({ series, yLabel, format, ols, activeCat, onH
         );
       })}
     </svg>
+    </div>
   );
 }
