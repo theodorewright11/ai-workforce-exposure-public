@@ -41,16 +41,24 @@ export default function GuidePage() {
         <div style={H2}>1 · Exposure — the share of the workday</div>
         <p style={P}>
           Each task an occupation performs carries an estimate of how many hours a day it takes,
-          normalised so a job&rsquo;s tasks add up to a seven-hour day. If AI has been observed
-          doing that task, the task counts toward exposure in proportion to how completely AI
-          does it.
+          normalised so a job&rsquo;s tasks add up to a seven-hour day. A task counts toward
+          exposure if people have brought it to AI often enough to pass a minimum threshold in
+          the usage data, and it counts in proportion to the level of automation they brought
+          it at.
         </p>
         <div style={EQ}>{`exposed hours = hours per day × workers × (automation level ÷ 5)
 exposure %    = exposed hours ÷ total hours`}</div>
         <p style={P}>
-          So <strong>62% exposed means 62% of the workday</strong>, not 62% of tasks and not 62%
-          of jobs. Above a single occupation the percentage is employment-weighted: &ldquo;of all
-          the hours worked in this group, this share is reachable.&rdquo;
+          <strong>Exposure is not the share of work AI is doing today.</strong> It answers a
+          what-if: if every worker used AI on the tasks people have already brought to it, at
+          the level of automation they brought them at, this is the share of work time AI would
+          do or assist. Most workers do not use AI that way yet, so the real share is lower.
+        </p>
+        <p style={P}>
+          So <strong>62% exposed means 62% of the workday under that what-if</strong>, not 62% of
+          tasks and not 62% of jobs. Above a single occupation the percentage is
+          employment-weighted: &ldquo;of all the hours worked in this group, this share is
+          exposed.&rdquo;
         </p>
       </div>
 
@@ -101,9 +109,9 @@ exposure %    = exposed hours ÷ total hours`}</div>
           share of its work is technically reachable today.
         </p>
         <p style={P}>
-          <strong>It is an upper bound.</strong> The measure compresses how often AI is used with
-          how completely it does the work, so it runs ahead of what is actually happening in
-          workplaces.
+          <strong>It is an upper bound.</strong> Exposure assumes every worker uses AI on every
+          task it has been observed on, at the level of automation observed. Most do not, so it
+          runs ahead of what is actually happening in workplaces.
         </p>
         <p style={P}>
           <strong>Growth is partly measurement.</strong> Some of the rise across snapshots is real

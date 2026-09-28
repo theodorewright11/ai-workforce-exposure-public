@@ -65,19 +65,24 @@ function Headline({ trend }: { trend: EconomyTrend }) {
   return (
     <div style={{ marginBottom: 34 }}>
       <div style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 10 }}>
-        Share of the U.S. workday AI has been observed doing
+        Share of the U.S. workday exposed to AI
       </div>
       <div style={{ display: "flex", alignItems: "baseline", gap: 16, flexWrap: "wrap" }}>
         <div style={{ fontSize: 62, fontWeight: 700, lineHeight: 1, letterSpacing: "-0.03em", color: EXPOSED }}>
           {trend.headline_pct}%
         </div>
         <div style={{ fontSize: 15, color: "var(--text-secondary)" }}>
-          {trend.headline_unexposed}% of the workday it has not
+          {trend.headline_unexposed}% of the workday is not
         </div>
       </div>
       <div style={{ fontSize: 13.5, color: "var(--text-secondary)", marginTop: 10 }}>
         Up <strong style={{ color: "var(--text-primary)" }}>{trend.change_pp} points</strong> from{" "}
         {trend.first_pct}% in {trend.first_date}.
+      </div>
+      <div style={{ fontSize: 12.5, color: "var(--text-muted)", lineHeight: 1.55, marginTop: 8, maxWidth: 700 }}>
+        <strong>This is not the share of work AI is doing today.</strong> It is the share of work
+        time AI would do or assist if every worker used it on the tasks people have already
+        brought to AI, at the level of automation they brought them at.
       </div>
       <div style={{ height: 26, borderRadius: 5, overflow: "hidden", display: "flex", background: UNEXPOSED, marginTop: 16 }}>
         <div style={{ width: `${trend.headline_pct}%`, background: EXPOSED }} />
@@ -167,7 +172,7 @@ function FamilyBlock({ families }: { families: EconomyFamily[] }) {
 function Legend() {
   return (
     <div style={{ display: "flex", gap: 18, fontSize: 11, color: "var(--text-muted)", marginTop: 9, flexWrap: "wrap" }}>
-      <span><Swatch c={EXPOSED} /> share AI has been observed doing</span>
+      <span><Swatch c={EXPOSED} /> exposed share: what AI would do or assist if everyone used it as observed</span>
       <span><Swatch c={UNEXPOSED} /> the rest</span>
       <span><Swatch c={USAGE} /> actual AI use, vs. the median family</span>
     </div>
@@ -201,7 +206,7 @@ function GroupBlock({ title, rows, blurb }: { title: string; rows: EconomyGroup[
         ))}
       </div>
       <div style={{ display: "flex", gap: 18, fontSize: 11, color: "var(--text-muted)", marginTop: 8 }}>
-        <span>bar &amp; % — observed vs. not</span><span>then workers&rsquo; worth of exposed work time</span><span>then AI use vs. median</span>
+        <span>bar &amp; % — exposed vs. not (if everyone used AI as observed)</span><span>then workers&rsquo; worth of exposed work time</span><span>then AI use vs. median</span>
       </div>
     </Block>
   );
@@ -297,9 +302,10 @@ function Block({ title, blurb, children }: { title: string; blurb: string; child
 function Footnote() {
   return (
     <p style={{ fontSize: 11.5, color: "var(--text-muted)", lineHeight: 1.6, borderTop: "1px solid var(--border)", paddingTop: 16 }}>
-      Exposure measures task-level overlap with observed AI capability, weighted by how much of the
-      workday each task takes. It is not a forecast of job loss, and it is an upper bound — it
-      compresses how often AI is used with how completely it does the work. Figures are U.S.-only
+      Exposure is the share of work time AI would do or assist if every worker used it on the
+      tasks people have already brought to AI often enough to pass a minimum threshold, at the
+      level of automation they brought them at. It is not the share of work AI is doing today,
+      which makes it an upper bound, and it is not a forecast of job loss. Figures are U.S.-only
       and from past snapshots.
     </p>
   );

@@ -266,8 +266,8 @@ function Headlines({ h }: { h: Headline }) {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(178px, 1fr))", gap: 1,
         background: "var(--border)", border: "1px solid var(--border)", borderRadius: 12,
         overflow: "hidden", marginBottom: 12 }}>
-        <Stat value={`${h.pct_exposed}%`} label="of work time AI has been observed doing"
-          sub={`${h.pct_unexposed}% it has not · rank ${h.pct_rank} of ${h.total_occupations}`} accent />
+        <Stat value={`${h.pct_exposed}%`} label="of work time exposed to AI"
+          sub={`${h.pct_unexposed}% not exposed · rank ${h.pct_rank} of ${h.total_occupations}`} accent />
         <Stat value={h.usage_x > 0 ? `${h.usage_x}×` : "—"} label="AI use vs. the median occupation"
           sub={h.usage_rank ? `rank ${h.usage_rank} of ${h.usage_of} occupations with observed use` : "no use observed"} />
         <Stat value={h.change_pp == null ? "—" : `${(h.change_pp ?? 0) > 0 ? "+" : ""}${h.change_pp} pp`}
@@ -277,13 +277,11 @@ function Headlines({ h }: { h: Headline }) {
           sub={`the exposed share is ≈ ${nf.format(h.workers_exposed)} workers' worth of work time`} />
       </div>
       <Caption>
-        Left to right: the share of this occupation&rsquo;s workday spent on tasks AI has been
-        observed doing, weighted by how completely it did them, with the remainder and the
-        occupation&rsquo;s rank among all {h.total_occupations}; actual AI use, as a multiple of
-        the median occupation in which any use was observed; the change in the first figure since
-        the earliest snapshot, {monthYear(h.first_date)}; and how many people hold the job, with
-        the exposed share restated as the number of workers whose full working time it adds up to
-        — not a count of jobs at risk.
+        <strong>Exposure is not the share of work AI is doing today.</strong> It is the share of
+        this job&rsquo;s work time AI would do or assist if every worker used it on the tasks
+        people have already brought to AI, at the level of automation they brought them at. AI
+        use is real usage per worker, compared with the median occupation. Workers&rsquo; worth
+        of work time is hours restated as people, not a count of jobs at risk.
       </Caption>
     </>
   );
@@ -317,14 +315,10 @@ function Families({ families, tasks }: { families: FamilyRow[]; tasks: Record<st
         ))}
       </div>
       <Caption>
-        AI exposure and actual usage across this occupation&rsquo;s verb families — its tasks
-        grouped by the kind of action they are. Each row, left to right: the share of the
-        occupation&rsquo;s workday the family accounts for and how many tasks sit in it; a bar
-        whose filled part is the share of that family&rsquo;s work time AI has been observed doing
-        and whose remainder is the work it has not; that share as a number; actual AI use on the
-        family as a multiple of the median verb family across the whole economy; and the share of
-        all AI use observed in this occupation that lands on the family. Click a row to open the
-        tasks behind it.
+        This job&rsquo;s tasks, grouped by the kind of action they are. The bar and the first
+        number are the group&rsquo;s exposure. The last two numbers are real AI use: compared
+        with the median group across the economy, and as a share of all AI use seen in this job.
+        Click a row to see its tasks.
       </Caption>
     </section>
   );
@@ -349,7 +343,7 @@ function FamilyRowView({ f, first, open, onToggle, tasks }: {
         <div style={{ height: 20, borderRadius: 4, overflow: "hidden", display: "flex", background: NOT_OBSERVED }}>
           <div style={{ width: `${f.pct_exposed}%`, background: OBSERVED, transition: "width .25s" }} />
         </div>
-        <Num v={`${f.pct_exposed}%`} c={OBSERVED} sub="observed" />
+        <Num v={`${f.pct_exposed}%`} c={OBSERVED} sub="exposed" />
         <Num v={`${f.usage_x}×`} c={USAGE} sub="vs. median" />
         <Num v={`${f.usage_share}%`} c={USAGE} sub="of AI use here" />
       </div>
@@ -473,11 +467,10 @@ function Footnote() {
   return (
     <p style={{ fontSize: 11.5, color: "var(--text-muted)", lineHeight: 1.65, marginTop: 26,
       borderTop: "1px solid var(--border)", paddingTop: 16 }}>
-      Exposure records where AI has been observed doing a task and how completely it did it,
-      weighted by how much of the workday the task takes. It is not a measure of what AI is
-      capable of, and it is not a forecast of job loss. Because it compresses how often AI is
-      used with how completely it works, read it as an upper bound. Physical work is under-covered
-      by construction: the underlying record is digital AI use.
+      Exposure counts only tasks people have brought to AI often enough to pass a minimum
+      threshold. It assumes every worker uses AI on those tasks, so it is an upper bound on what
+      is happening today. It is not a measure of what AI is capable of, and not a forecast of job
+      loss. Physical work is under-covered: the underlying record is digital AI use.
     </p>
   );
 }
