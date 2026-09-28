@@ -35,6 +35,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div style={{ fontSize: 11, marginTop: 3, opacity: 0.8 }}>
               Temporarily open for a conference poster session. Work in progress, might be some minor bugs. Best viewed on a computer.
             </div>
+            <div style={{ fontSize: 11, marginTop: 2, opacity: 0.8 }}>
+              Some documentation has not caught up with recent changes; the numbers should be up to date.
+            </div>
           </div>
           {children}
         </div>
